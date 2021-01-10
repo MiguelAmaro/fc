@@ -1,0 +1,409 @@
+Component: ARM Compiler 6.14 Tool: armlink [5db06800]
+
+==============================================================================
+
+Section Cross References
+
+    K82F_FlightController.o(.ARM.exidx.text.main) refers to K82F_FlightController.o(.text.main) for [Anonymous Symbol]
+    startup_MK82F25615.o(.text) refers to startup_MK82F25615.o(.isr_vector) for __Vectors
+    startup_MK82F25615.o(.text) refers to system_MK82F25615.o(.text.SystemInit) for SystemInit
+    startup_MK82F25615.o(.text) refers to entry.o(.ARM.Collect$$$$00000000) for __main
+    startup_MK82F25615.o(.isr_vector) refers to startup_MK82F25615.o(.text) for Reset_Handler
+    system_MK82F25615.o(.text.SystemInit) refers to system_MK82F25615.o(.text.SystemInitHook) for SystemInitHook
+    system_MK82F25615.o(.ARM.exidx.text.SystemInit) refers to system_MK82F25615.o(.text.SystemInit) for [Anonymous Symbol]
+    system_MK82F25615.o(.ARM.exidx.text.SystemInitHook) refers to system_MK82F25615.o(.text.SystemInitHook) for [Anonymous Symbol]
+    system_MK82F25615.o(.text.SystemCoreClockUpdate) refers to system_MK82F25615.o(.data.SystemCoreClock) for SystemCoreClock
+    system_MK82F25615.o(.ARM.exidx.text.SystemCoreClockUpdate) refers to system_MK82F25615.o(.text.SystemCoreClockUpdate) for [Anonymous Symbol]
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry10a.o(.ARM.Collect$$$$0000000D) for __rt_final_cpp
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry11a.o(.ARM.Collect$$$$0000000F) for __rt_final_exit
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry7b.o(.ARM.Collect$$$$00000008) for _main_clock
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry8b.o(.ARM.Collect$$$$0000000A) for _main_cpp_init
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry9a.o(.ARM.Collect$$$$0000000B) for _main_init
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry5.o(.ARM.Collect$$$$00000004) for _main_scatterload
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry4.o(.ARM.Collect$$$$00000003) for _main_stk
+    entry4.o(.ARM.Collect$$$$00000003) refers to entry4.o(.ARM.Collect$$$$00002714) for __lit__00000000
+    entry4.o(__vectab_stack_and_reset_area) refers to entry.o(.ARM.Collect$$$$00000000) for __main
+    entry5.o(.ARM.Collect$$$$00000004) refers to init.o(.text) for __scatterload
+    entry9a.o(.ARM.Collect$$$$0000000B) refers to K82F_FlightController.o(.text.main) for main
+    entry9b.o(.ARM.Collect$$$$0000000C) refers to K82F_FlightController.o(.text.main) for main
+    init.o(.text) refers to entry5.o(.ARM.Collect$$$$00000004) for __main_after_scatterload
+
+
+==============================================================================
+
+Removing Unused input sections from the image.
+
+    Removing K82F_FlightController.o(.text), (0 bytes).
+    Removing K82F_FlightController.o(.ARM.exidx.text.main), (8 bytes).
+    Removing K82F_FlightController.o(.ARM.use_no_argv), (4 bytes).
+    Removing system_MK82F25615.o(.text), (0 bytes).
+    Removing system_MK82F25615.o(.ARM.exidx.text.SystemInit), (8 bytes).
+    Removing system_MK82F25615.o(.ARM.exidx.text.SystemInitHook), (8 bytes).
+    Removing system_MK82F25615.o(.text.SystemCoreClockUpdate), (372 bytes).
+    Removing system_MK82F25615.o(.ARM.exidx.text.SystemCoreClockUpdate), (8 bytes).
+    Removing system_MK82F25615.o(.data.SystemCoreClock), (4 bytes).
+
+9 unused section(s) (total 412 bytes) removed from the image.
+
+==============================================================================
+
+Image Symbol Table
+
+    Local Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry4.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    K82F_FlightController.c                  0x00000000   Number         0  K82F_FlightController.o ABSOLUTE
+    dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
+    init.s                                   0x00000000   Number         0  init.o ABSOLUTE
+    system_MK82F25615.c                      0x00000000   Number         0  system_MK82F25615.o ABSOLUTE
+    [Anonymous Symbol]                       0x00000000   Section        0  startup_MK82F25615.o(.isr_vector)
+    .ARM.Collect$$$$00000000                 0x00000410   Section        0  entry.o(.ARM.Collect$$$$00000000)
+    .ARM.Collect$$$$00000003                 0x00000410   Section        4  entry4.o(.ARM.Collect$$$$00000003)
+    .ARM.Collect$$$$00000004                 0x00000414   Section        4  entry5.o(.ARM.Collect$$$$00000004)
+    .ARM.Collect$$$$00000008                 0x00000418   Section        0  entry7b.o(.ARM.Collect$$$$00000008)
+    .ARM.Collect$$$$0000000A                 0x00000418   Section        0  entry8b.o(.ARM.Collect$$$$0000000A)
+    .ARM.Collect$$$$0000000B                 0x00000418   Section        8  entry9a.o(.ARM.Collect$$$$0000000B)
+    __lit__00000000                          0x00000420   Data           4  entry4.o(.ARM.Collect$$$$00002714)
+    .ARM.Collect$$$$0000000D                 0x00000420   Section        0  entry10a.o(.ARM.Collect$$$$0000000D)
+    .ARM.Collect$$$$0000000F                 0x00000420   Section        0  entry11a.o(.ARM.Collect$$$$0000000F)
+    .ARM.Collect$$$$00002714                 0x00000420   Section        4  entry4.o(.ARM.Collect$$$$00002714)
+    [Anonymous Symbol]                       0x00000424   Section        0  startup_MK82F25615.o(.text)
+    .text                                    0x00000588   Section       36  init.o(.text)
+    [Anonymous Symbol]                       0x000005ac   Section        0  system_MK82F25615.o(.text.SystemInit)
+    [Anonymous Symbol]                       0x000005e0   Section        0  system_MK82F25615.o(.text.SystemInitHook)
+    [Anonymous Symbol]                       0x000005e4   Section        0  K82F_FlightController.o(.text.main)
+    VTOR                                     0xe000ed08   Number         0  startup_MK82F25615.o ABSOLUTE
+
+    Global Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    BuildAttributes$$THM_ISAv4$E$P$D$K$B$S$7EM$VFPi3$EXTD16$VFPS$VFMA$PE$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OTIME$EBA8$MICROLIB$REQ8$PRES8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    __Vectors                                0x00000000   Number       960  startup_MK82F25615.o(.isr_vector)
+    __cpp_initialize__aeabi_                  - Undefined Weak Reference
+    __cxa_finalize                            - Undefined Weak Reference
+    __decompress                              - Undefined Weak Reference
+    _clock_init                               - Undefined Weak Reference
+    _microlib_exit                            - Undefined Weak Reference
+    __main                                   0x00000411   Thumb Code     0  entry.o(.ARM.Collect$$$$00000000)
+    _main_stk                                0x00000411   Thumb Code     0  entry4.o(.ARM.Collect$$$$00000003)
+    _main_scatterload                        0x00000415   Thumb Code     0  entry5.o(.ARM.Collect$$$$00000004)
+    __main_after_scatterload                 0x00000419   Thumb Code     0  entry5.o(.ARM.Collect$$$$00000004)
+    _main_clock                              0x00000419   Thumb Code     0  entry7b.o(.ARM.Collect$$$$00000008)
+    _main_cpp_init                           0x00000419   Thumb Code     0  entry8b.o(.ARM.Collect$$$$0000000A)
+    _main_init                               0x00000419   Thumb Code     0  entry9a.o(.ARM.Collect$$$$0000000B)
+    __rt_final_cpp                           0x00000421   Thumb Code     0  entry10a.o(.ARM.Collect$$$$0000000D)
+    __rt_final_exit                          0x00000421   Thumb Code     0  entry11a.o(.ARM.Collect$$$$0000000F)
+    Reset_Handler                            0x00000425   Thumb Code    40  startup_MK82F25615.o(.text)
+    ADC0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    BusFault_Handler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    CMP0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    CMP1_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    CMT_IRQHandler                           0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DAC0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA0_DMA16_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA10_DMA26_DriverIRQHandler             0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA11_DMA27_DriverIRQHandler             0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA12_DMA28_DriverIRQHandler             0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA13_DMA29_DriverIRQHandler             0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA14_DMA30_DriverIRQHandler             0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA15_DMA31_DriverIRQHandler             0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA1_DMA17_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA2_DMA18_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA3_DMA19_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA4_DMA20_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA5_DMA21_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA6_DMA22_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA7_DMA23_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA8_DMA24_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA9_DMA25_DriverIRQHandler              0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA_Error_DriverIRQHandler               0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DebugMon_Handler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DefaultISR                               0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    EMVSIM0_IRQHandler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    EMVSIM1_IRQHandler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    FLEXIO0_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    FTFA_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    FTM0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    FTM1_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    FTM2_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    FTM3_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C0_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C1_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C2_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C3_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2S0_Rx_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2S0_Tx_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LLWU_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPTMR0_LPTMR1_IRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART0_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART1_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART2_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART3_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART4_DriverIRQHandler                 0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LTC0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    LVD_LVW_IRQHandler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    MCG_IRQHandler                           0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    MCM_IRQHandler                           0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    MemManage_Handler                        0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PDB0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PIT0CH0_IRQHandler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PIT0CH1_IRQHandler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PIT0CH2_IRQHandler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PIT0CH3_IRQHandler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PORTA_IRQHandler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PORTB_IRQHandler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PORTC_IRQHandler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PORTD_IRQHandler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    PORTE_IRQHandler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    QuadSPI0_DriverIRQHandler                0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    RTC_IRQHandler                           0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    RTC_Seconds_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Read_Collision_IRQHandler                0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved100_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved101_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved102_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved106_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved108_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved109_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved110_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved111_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved112_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved113_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved114_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved115_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved117_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved118_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved119_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved121_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved122_IRQHandler                   0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved51_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved52_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved71_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved82_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved83_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved84_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved85_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved88_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved89_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved91_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved92_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved93_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved94_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved95_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved96_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved98_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    Reserved99_IRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    SDHC_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    SPI0_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    SPI1_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    SPI2_DriverIRQHandler                    0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    SWI_IRQHandler                           0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    TPM1_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    TPM2_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    TRNG0_IRQHandler                         0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    TSI0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    USB0_IRQHandler                          0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    USBDCD_IRQHandler                        0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    UsageFault_Handler                       0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    WDOG_EWM_IRQHandler                      0x0000044d   Thumb Code     4  startup_MK82F25615.o(.text)
+    NMI_Handler                              0x00000451   Thumb Code     4  startup_MK82F25615.o(.text)
+    HardFault_Handler                        0x00000455   Thumb Code     4  startup_MK82F25615.o(.text)
+    SVC_Handler                              0x00000459   Thumb Code     4  startup_MK82F25615.o(.text)
+    PendSV_Handler                           0x0000045d   Thumb Code     4  startup_MK82F25615.o(.text)
+    SysTick_Handler                          0x00000461   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA0_DMA16_IRQHandler                    0x00000465   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA1_DMA17_IRQHandler                    0x00000469   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA2_DMA18_IRQHandler                    0x0000046d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA3_DMA19_IRQHandler                    0x00000471   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA4_DMA20_IRQHandler                    0x00000475   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA5_DMA21_IRQHandler                    0x00000479   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA6_DMA22_IRQHandler                    0x0000047d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA7_DMA23_IRQHandler                    0x00000481   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA8_DMA24_IRQHandler                    0x00000485   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA9_DMA25_IRQHandler                    0x00000489   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA10_DMA26_IRQHandler                   0x0000048d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA11_DMA27_IRQHandler                   0x00000491   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA12_DMA28_IRQHandler                   0x00000495   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA13_DMA29_IRQHandler                   0x00000499   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA14_DMA30_IRQHandler                   0x0000049d   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA15_DMA31_IRQHandler                   0x000004a1   Thumb Code     4  startup_MK82F25615.o(.text)
+    DMA_Error_IRQHandler                     0x000004a5   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C0_IRQHandler                          0x000004a9   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C1_IRQHandler                          0x000004ad   Thumb Code     4  startup_MK82F25615.o(.text)
+    SPI0_IRQHandler                          0x000004b1   Thumb Code     4  startup_MK82F25615.o(.text)
+    SPI1_IRQHandler                          0x000004b5   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2S0_Tx_IRQHandler                       0x000004b9   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2S0_Rx_IRQHandler                       0x000004bd   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART0_IRQHandler                       0x000004c1   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART1_IRQHandler                       0x000004c5   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART2_IRQHandler                       0x000004c9   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART3_IRQHandler                       0x000004cd   Thumb Code     4  startup_MK82F25615.o(.text)
+    LPUART4_IRQHandler                       0x000004d1   Thumb Code     4  startup_MK82F25615.o(.text)
+    SPI2_IRQHandler                          0x000004d5   Thumb Code     4  startup_MK82F25615.o(.text)
+    FLEXIO0_IRQHandler                       0x000004d9   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C2_IRQHandler                          0x000004dd   Thumb Code     4  startup_MK82F25615.o(.text)
+    SDHC_IRQHandler                          0x000004e1   Thumb Code     4  startup_MK82F25615.o(.text)
+    I2C3_IRQHandler                          0x000004e5   Thumb Code     4  startup_MK82F25615.o(.text)
+    QuadSPI0_IRQHandler                      0x000004e9   Thumb Code     4  startup_MK82F25615.o(.text)
+    __scatterload                            0x00000589   Thumb Code    28  init.o(.text)
+    __scatterload_rt2                        0x00000589   Thumb Code     0  init.o(.text)
+    SystemInit                               0x000005ad   Thumb Code    52  system_MK82F25615.o(.text.SystemInit)
+    SystemInitHook                           0x000005e1   Thumb Code     2  system_MK82F25615.o(.text.SystemInitHook)
+    main                                     0x000005e5   Thumb Code   194  K82F_FlightController.o(.text.main)
+    Region$$Table$$Base                      0x000006a8   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x000006a8   Number         0  anon$$obj.o(Region$$Table)
+    Image$$ARM_LIB_STACK$$ZI$$Limit          0x20030000   Number         0  anon$$obj.o ABSOLUTE
+
+
+
+==============================================================================
+
+Memory Map of the image
+
+  Image Entry point : 0x00000411
+
+  Load Region LR_m_text (Base: 0x00000000, Size: 0x000006a8, Max: 0x00040000, ABSOLUTE)
+
+    Execution Region VECTOR_ROM (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x000003c0, Max: 0x000003c0, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00000000   0x00000000   0x000003c0   Data   RO           14    .isr_vector         startup_MK82F25615.o
+
+
+    Execution Region ER_m_bootloader_config (Exec base: 0x000003c0, Load base: 0x000003c0, Size: 0x00000000, Max: 0x00000040, ABSOLUTE, FIXED)
+
+    **** No section assigned to this execution region ****
+
+
+    Execution Region ER_m_flash_config (Exec base: 0x00000400, Load base: 0x00000400, Size: 0x00000010, Max: 0x00000010, ABSOLUTE, FIXED)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00000400   0x00000400   0x00000010   Data   RO           15    .FlashConfig        startup_MK82F25615.o
+
+
+    Execution Region ER_m_text (Exec base: 0x00000410, Load base: 0x00000410, Size: 0x00000298, Max: 0x0003fbf0, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00000410   0x00000410   0x00000000   Code   RO           35  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x00000410   0x00000410   0x00000004   Code   RO           38    .ARM.Collect$$$$00000003  mc_w.l(entry4.o)
+    0x00000414   0x00000414   0x00000004   Code   RO           41    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x00000418   0x00000418   0x00000000   Code   RO           43    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x00000418   0x00000418   0x00000000   Code   RO           45    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x00000418   0x00000418   0x00000008   Code   RO           46    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x00000420   0x00000420   0x00000000   Code   RO           48    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x00000420   0x00000420   0x00000000   Code   RO           50    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x00000420   0x00000420   0x00000004   Code   RO           39    .ARM.Collect$$$$00002714  mc_w.l(entry4.o)
+    0x00000424   0x00000424   0x00000164   Code   RO           13    .text               startup_MK82F25615.o
+    0x00000588   0x00000588   0x00000024   Code   RO           52    .text               mc_w.l(init.o)
+    0x000005ac   0x000005ac   0x00000034   Code   RO           21    .text.SystemInit    system_MK82F25615.o
+    0x000005e0   0x000005e0   0x00000002   Code   RO           23    .text.SystemInitHook  system_MK82F25615.o
+    0x000005e2   0x000005e2   0x00000002   PAD
+    0x000005e4   0x000005e4   0x000000c2   Code   RO            4    .text.main          K82F_FlightController.o
+    0x000006a6   0x000006a6   0x00000002   PAD
+    0x000006a8   0x000006a8   0x00000000   Data   RO           55    Region$$Table       anon$$obj.o
+
+
+    Execution Region RW_m_data (Exec base: 0x1fff0000, Load base: 0x000006a8, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
+
+    **** No section assigned to this execution region ****
+
+
+    Execution Region RW_m_data_2 (Exec base: 0x20000000, Load base: 0x000006a8, Size: 0x00000000, Max: 0x0002f800, ABSOLUTE)
+
+    **** No section assigned to this execution region ****
+
+
+    Execution Region ARM_LIB_HEAP (Exec base: 0x20000000, Load base: 0x000006a8, Size: 0x00000400, Max: 0x00000400, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000000        -       0x00000400   Zero   RW            1    ARM_LIB_HEAP.bss    anon$$obj.o
+
+
+    Execution Region ARM_LIB_STACK (Exec base: 0x2002fc00, Load base: 0x000006a8, Size: 0x00000400, Max: 0x00000400, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x2002fc00        -       0x00000400   Zero   RW            2    ARM_LIB_STACK.bss   anon$$obj.o
+
+
+==============================================================================
+
+Image component sizes
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+       194          0          0          0          0       1942   K82F_FlightController.o
+       356        172        976          0          0       1903   startup_MK82F25615.o
+        54          0          0          0          0       3688   system_MK82F25615.o
+
+    ----------------------------------------------------------------------
+       608        172        976          0       2048       7533   Object Totals
+         0          0          0          0       2048          0   (incl. Generated)
+         4          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+         0          0          0          0          0          0   entry.o
+         0          0          0          0          0          0   entry10a.o
+         0          0          0          0          0          0   entry11a.o
+         8          4          0          0          0          0   entry4.o
+         4          0          0          0          0          0   entry5.o
+         0          0          0          0          0          0   entry7b.o
+         0          0          0          0          0          0   entry8b.o
+         8          4          0          0          0          0   entry9a.o
+        36          8          0          0          0         68   init.o
+
+    ----------------------------------------------------------------------
+        56         16          0          0          0         68   Library Totals
+         0          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
+
+        56         16          0          0          0         68   mc_w.l
+
+    ----------------------------------------------------------------------
+        56         16          0          0          0         68   Library Totals
+
+    ----------------------------------------------------------------------
+
+==============================================================================
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
+
+       664        188        976          0       2048       7585   Grand Totals
+       664        188        976          0       2048       7585   ELF Image Totals
+       664        188        976          0          0          0   ROM Totals
+
+==============================================================================
+
+    Total RO  Size (Code + RO Data)                 1640 (   1.60kB)
+    Total RW  Size (RW Data + ZI Data)              2048 (   2.00kB)
+    Total ROM Size (Code + RO Data + RW Data)       1640 (   1.60kB)
+
+==============================================================================
+

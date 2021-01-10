@@ -1,0 +1,1 @@
+startup_MK82F25615.o: ..\RTE\Device\MK82FN256VLL15\startup_MK82F25615.S

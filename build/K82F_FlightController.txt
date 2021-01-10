@@ -1,0 +1,187 @@
+
+========================================================================
+
+** ELF Header Information
+
+    File Name: K82F_FlightController.o
+
+    Machine class: ELFCLASS32 (32-bit)
+    Data encoding: ELFDATA2LSB (Little endian)
+    Header version: EV_CURRENT (Current version)
+    Operating System ABI: none
+    ABI Version: 0
+    File Type: ET_REL (Relocatable object) (1)
+    Machine: EM_ARM (ARM)
+
+    Entry offset (in SHF_ENTRYSECT section): 0x00000000
+    Flags: None (0x05000000)
+
+    ARM ELF revision: 5 (ABI version 2)
+
+    Header size: 52 bytes (0x34)
+    Program header entry size: 0 bytes (0x0)
+    Section header entry size: 40 bytes (0x28)
+
+    Program header entries: 0
+    Section header entries: 20
+
+    Program header offset: 0 (0x00000000)
+    Section header offset: 4228 (0x00001084)
+
+    Section header string table index: 1
+
+========================================================================
+
+** Section #1 '.strtab' (SHT_STRTAB)
+    Size   : 238 bytes
+
+
+** Section #2 '.text' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 0 bytes (alignment 4)
+    Address: 0x00000000
+
+
+** Section #3 '.text.main' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 194 bytes (alignment 4)
+    Address: 0x00000000
+
+    $t.0
+    [Anonymous symbol #60]
+    main
+        0x00000000:    f2480138    H.8.    MOV      r1,#0x8038
+        0x00000004:    f2c40104    ....    MOVT     r1,#0x4004
+        0x00000008:    680a        .h      LDR      r2,[r1,#0]
+        0x0000000a:    f24f0e84    O...    MOV      lr,#0xf084
+        0x0000000e:    f4426200    B..b    ORR      r2,r2,#0x800
+        0x00000012:    600a        .`      STR      r2,[r1,#0]
+        0x00000014:    f24b0120    K. .    MOV      r1,#0xb020
+        0x00000018:    f2c40104    ....    MOVT     r1,#0x4004
+        0x0000001c:    f44f7280    O..r    MOV      r2,#0x100
+        0x00000020:    f2c40e0f    ....    MOVT     lr,#0x400f
+        0x00000024:    600a        .`      STR      r2,[r1,#0]
+        0x00000026:    604a        J`      STR      r2,[r1,#4]
+        0x00000028:    608a        .`      STR      r2,[r1,#8]
+        0x0000002a:    f8de1010    ....    LDR      r1,[lr,#0x10]
+        0x0000002e:    f2442240    D.@"    MOV      r2,#0x4240
+        0x00000032:    f4417180    A..q    ORR      r1,r1,#0x100
+        0x00000036:    f8ce1010    ....    STR      r1,[lr,#0x10]
+        0x0000003a:    f8de1010    ....    LDR      r1,[lr,#0x10]
+        0x0000003e:    f24a1320    J. .    MOV      r3,#0xa120
+        0x00000042:    f4417100    A..q    ORR      r1,r1,#0x200
+        0x00000046:    f8ce1010    ....    STR      r1,[lr,#0x10]
+        0x0000004a:    f8de1010    ....    LDR      r1,[lr,#0x10]
+        0x0000004e:    f24d0c90    M...    MOV      r12,#0xd090
+        0x00000052:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x00000056:    f8ce1010    ....    STR      r1,[lr,#0x10]
+        0x0000005a:    f8de1000    ....    LDR      r1,[lr,#0]
+        0x0000005e:    f2c0020f    ....    MOVT     r2,#0xf
+        0x00000062:    f4417180    A..q    ORR      r1,r1,#0x100
+        0x00000066:    f8ce1000    ....    STR      r1,[lr,#0]
+        0x0000006a:    f8de1000    ....    LDR      r1,[lr,#0]
+        0x0000006e:    f2c00307    ....    MOVT     r3,#7
+        0x00000072:    f4417100    A..q    ORR      r1,r1,#0x200
+        0x00000076:    f8ce1000    ....    STR      r1,[lr,#0]
+        0x0000007a:    f8de1000    ....    LDR      r1,[lr,#0]
+        0x0000007e:    f2c00c03    ....    MOVT     r12,#3
+        0x00000082:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x00000086:    f8ce1000    ....    STR      r1,[lr,#0]
+        0x0000008a:    2100        .!      MOVS     r1,#0
+        0x0000008c:    e007        ..      B        {pc}+0x12 ; 0x9e
+        0x0000008e:    bf00        ..      NOP      
+        0x00000090:    f8de0004    ....    LDR      r0,[lr,#4]
+        0x00000094:    3101        .1      ADDS     r1,#1
+        0x00000096:    f4407000    @..p    ORR      r0,r0,#0x200
+        0x0000009a:    f8ce0004    ....    STR      r0,[lr,#4]
+        0x0000009e:    4291        .B      CMP      r1,r2
+        0x000000a0:    d00c        ..      BEQ      {pc}+0x1c ; 0xbc
+        0x000000a2:    4299        .B      CMP      r1,r3
+        0x000000a4:    d0f4        ..      BEQ      {pc}-0x14 ; 0x90
+        0x000000a6:    4561        aE      CMP      r1,r12
+        0x000000a8:    d109        ..      BNE      {pc}+0x16 ; 0xbe
+        0x000000aa:    f8de0000    ....    LDR      r0,[lr,#0]
+        0x000000ae:    3101        .1      ADDS     r1,#1
+        0x000000b0:    f4407000    @..p    ORR      r0,r0,#0x200
+        0x000000b4:    f8ce0000    ....    STR      r0,[lr,#0]
+        0x000000b8:    e7f1        ..      B        {pc}-0x1a ; 0x9e
+        0x000000ba:    bf00        ..      NOP      
+        0x000000bc:    2100        .!      MOVS     r1,#0
+        0x000000be:    3101        .1      ADDS     r1,#1
+        0x000000c0:    e7ed        ..      B        {pc}-0x22 ; 0x9e
+
+** Section #4 '.ARM.exidx.text.main' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+    Size   : 8 bytes (alignment 4)
+    Address: 0x00000000
+    Link to section #3 '.text.main'
+
+
+** Section #5 '.rel.ARM.exidx.text.main' (SHT_REL)
+    Size   : 8 bytes (alignment 4)
+    Symbol table #19 '.symtab'
+    1 relocations applied to section #4 '.ARM.exidx.text.main'
+
+
+** Section #6 '.ARM.use_no_argv' (SHT_PROGBITS) [SHF_ALLOC + SHF_WRITE]
+    Size   : 4 bytes (alignment 4)
+    Address: 0x00000000
+
+
+** Section #7 '.debug_str' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
+    Size   : 507 bytes
+
+
+** Section #8 '.debug_loc' (SHT_PROGBITS)
+    Size   : 30 bytes
+
+
+** Section #9 '.debug_abbrev' (SHT_PROGBITS)
+    Size   : 204 bytes
+
+
+** Section #10 '.debug_info' (SHT_PROGBITS)
+    Size   : 878 bytes
+
+
+** Section #11 '.rel.debug_info' (SHT_REL)
+    Size   : 528 bytes (alignment 4)
+    Symbol table #19 '.symtab'
+    66 relocations applied to section #10 '.debug_info'
+
+
+** Section #12 '.comment' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
+    Size   : 56 bytes
+
+
+** Section #13 '.note.GNU-stack' (SHT_PROGBITS)
+    Size   : 0 bytes
+
+
+** Section #14 '.ARM.attributes' (SHT_ARM_ATTRIBUTES)
+    Size   : 88 bytes
+
+
+** Section #15 '.debug_frame' (SHT_PROGBITS)
+    Size   : 32 bytes (alignment 4)
+
+
+** Section #16 '.rel.debug_frame' (SHT_REL)
+    Size   : 16 bytes (alignment 4)
+    Symbol table #19 '.symtab'
+    2 relocations applied to section #15 '.debug_frame'
+
+
+** Section #17 '.debug_line' (SHT_PROGBITS)
+    Size   : 291 bytes
+
+
+** Section #18 '.rel.debug_line' (SHT_REL)
+    Size   : 8 bytes (alignment 4)
+    Symbol table #19 '.symtab'
+    1 relocations applied to section #17 '.debug_line'
+
+
+** Section #19 '.symtab' (SHT_SYMTAB)
+    Size   : 1072 bytes (alignment 4)
+    String table #1 '.strtab'
+    Last local symbol no. 64
+
+
