@@ -47,12 +47,13 @@ command_list = {
 		},
 	},
 	{   .name             = "debug",
-        .out              = "*OPENOCD Debug*",
-		.footer_panel     = true, 
-		.save_dirty_files = false, 
-		.cursor_at_end    = true,
 		.cmd              = {
 			{ "debug.bat", .os = "win" },
+		},
+	},
+	{.name             = "read-elf",
+		.cmd              = {
+			{ "START cmd /k F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-readelf.exe -S .\build\K82F_FlightController.axf", .os = "win" },
 		},
 	},
 };
@@ -60,3 +61,4 @@ command_list = {
 fkey_command[1] = "build";
 fkey_command[2] = "flash";
 fkey_command[3] = "debug";
+fkey_command[4] = "read-elf";
