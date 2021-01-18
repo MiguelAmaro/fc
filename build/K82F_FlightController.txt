@@ -23,17 +23,17 @@
     Section header entry size: 40 bytes (0x28)
 
     Program header entries: 0
-    Section header entries: 45
+    Section header entries: 49
 
     Program header offset: 0 (0x00000000)
-    Section header offset: 16336 (0x00003fd0)
+    Section header offset: 17216 (0x00004340)
 
     Section header string table index: 1
 
 ========================================================================
 
 ** Section #1 '.strtab' (SHT_STRTAB)
-    Size   : 674 bytes
+    Size   : 795 bytes
 
 
 ** Section #2 '.text' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
@@ -41,449 +41,660 @@
     Address: 0x00000000
 
 
-** Section #3 '.text.fputc' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 32 bytes (alignment 4)
+** Section #3 '.text.Debug_init_uart' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 336 bytes (alignment 8)
     Address: 0x00000000
 
     $t.0
-    [Anonymous symbol #268]
-    fputc
-        0x00000000:    f2460104    F...    MOV      r1,#0x6004
-        0x00000004:    f2c4010d    ....    MOVT     r1,#0x400d
-        0x00000008:    680a        .h      LDR      r2,[r1,#0]
-        0x0000000a:    0212        ..      LSLS     r2,r2,#8
-        0x0000000c:    bf5c        \.      ITT      PL
-        0x0000000e:    680a        .h      LDRPL    r2,[r1,#0]
-        0x00000010:    ea5f2242    _.B"    LSLSPL   r2,r2,#9
-        0x00000014:    d5f8        ..      BPL      {pc}-0xc ; 0x8
-        0x00000016:    688a        .h      LDR      r2,[r1,#8]
-        0x00000018:    b2c3        ..      UXTB     r3,r0
-        0x0000001a:    431a        .C      ORRS     r2,r2,r3
-        0x0000001c:    608a        .`      STR      r2,[r1,#8]
-        0x0000001e:    4770        pG      BX       lr
+    [Anonymous symbol #270]
+    Debug_init_uart
+        0x00000000:    b580        ..      PUSH     {r7,lr}
+        0x00000002:    b086        ..      SUB      sp,sp,#0x18
+        0x00000004:    9005        ..      STR      r0,[sp,#0x14]
+        0x00000006:    f2480038    H.8.    MOV      r0,#0x8038
+        0x0000000a:    f2c40004    ....    MOVT     r0,#0x4004
+        0x0000000e:    6801        .h      LDR      r1,[r0,#0]
+        0x00000010:    f4416100    A..a    ORR      r1,r1,#0x800
+        0x00000014:    6001        .`      STR      r1,[r0,#0]
+        0x00000016:    f248002c    H.,.    MOV      r0,#0x802c
+        0x0000001a:    f2c40004    ....    MOVT     r0,#0x4004
+        0x0000001e:    6801        .h      LDR      r1,[r0,#0]
+        0x00000020:    f4410180    A...    ORR      r1,r1,#0x400000
+        0x00000024:    6001        .`      STR      r1,[r0,#0]
+        0x00000026:    f2460008    F...    MOV      r0,#0x6008
+        0x0000002a:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x0000002e:    6801        .h      LDR      r1,[r0,#0]
+        0x00000030:    f4212140    !.@!    BIC      r1,r1,#0xc0000
+        0x00000034:    6001        .`      STR      r1,[r0,#0]
+        0x00000036:    f2480104    H...    MOV      r1,#0x8004
+        0x0000003a:    f2c40104    ....    MOVT     r1,#0x4004
+        0x0000003e:    680a        .h      LDR      r2,[r1,#0]
+        0x00000040:    f0426280    B..b    ORR      r2,r2,#0x4000000
+        0x00000044:    600a        .`      STR      r2,[r1,#0]
+        0x00000046:    680a        .h      LDR      r2,[r1,#0]
+        0x00000048:    f4423240    B.@2    ORR      r2,r2,#0x30000
+        0x0000004c:    600a        .`      STR      r2,[r1,#0]
+        0x0000004e:    f24b0138    K.8.    MOV      r1,#0xb038
+        0x00000052:    f2c40104    ....    MOVT     r1,#0x4004
+        0x00000056:    f44f7240    O.@r    MOV      r2,#0x300
+        0x0000005a:    600a        .`      STR      r2,[r1,#0]
+        0x0000005c:    f24b013c    K.<.    MOV      r1,#0xb03c
+        0x00000060:    f2c40104    ....    MOVT     r1,#0x4004
+        0x00000064:    600a        .`      STR      r2,[r1,#0]
+        0x00000066:    9905        ..      LDR      r1,[sp,#0x14]
+        0x00000068:    0109        ..      LSLS     r1,r1,#4
+        0x0000006a:    9003        ..      STR      r0,[sp,#0xc]
+        0x0000006c:    4608        .F      MOV      r0,r1
+        0x0000006e:    f7fffffe    ....    BL       __aeabi_ui2d
+        0x00000072:    ec410b10    A...    VMOV     d0,r0,r1
+        0x00000076:    ed9f1b34    ..4.    VLDR     d1,[pc,#208] ; [0x148] = 0
+        0x0000007a:    ec510b11    Q...    VMOV     r0,r1,d1
+        0x0000007e:    ec532b10    S..+    VMOV     r2,r3,d0
+        0x00000082:    f7fffffe    ....    BL       __aeabi_ddiv
+        0x00000086:    ec410b10    A...    VMOV     d0,r0,r1
+        0x0000008a:    ec510b10    Q...    VMOV     r0,r1,d0
+        0x0000008e:    f7fffffe    ....    BL       __aeabi_d2iz
+        0x00000092:    f8ad0010    ....    STRH     r0,[sp,#0x10]
+        0x00000096:    f2460000    F...    MOVW     r0,#0x6000
+        0x0000009a:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x0000009e:    6801        .h      LDR      r1,[r0,#0]
+        0x000000a0:    f64172ff    A..r    MOV      r2,#0x1fff
+        0x000000a4:    4391        .C      BICS     r1,r1,r2
+        0x000000a6:    6001        .`      STR      r1,[r0,#0]
+        0x000000a8:    f8bd1010    ....    LDRH     r1,[sp,#0x10]
+        0x000000ac:    f36f315f    o._1    BFC      r1,#13,#19
+        0x000000b0:    6802        .h      LDR      r2,[r0,#0]
+        0x000000b2:    4311        .C      ORRS     r1,r1,r2
+        0x000000b4:    6001        .`      STR      r1,[r0,#0]
+        0x000000b6:    6801        .h      LDR      r1,[r0,#0]
+        0x000000b8:    f0416170    A.pa    ORR      r1,r1,#0xf000000
+        0x000000bc:    6001        .`      STR      r1,[r0,#0]
+        0x000000be:    6801        .h      LDR      r1,[r0,#0]
+        0x000000c0:    6001        .`      STR      r1,[r0,#0]
+        0x000000c2:    2000        .       MOVS     r0,#0
+        0x000000c4:    9903        ..      LDR      r1,[sp,#0xc]
+        0x000000c6:    6008        .`      STR      r0,[r1,#0]
+        0x000000c8:    6008        .`      STR      r0,[r1,#0]
+        0x000000ca:    f2460004    F...    MOV      r0,#0x6004
+        0x000000ce:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x000000d2:    f44f2270    O.p"    MOV      r2,#0xf0000
+        0x000000d6:    6002        .`      STR      r2,[r0,#0]
+        0x000000d8:    6802        .h      LDR      r2,[r0,#0]
+        0x000000da:    f4422270    B.p"    ORR      r2,r2,#0xf0000
+        0x000000de:    6002        .`      STR      r2,[r0,#0]
+        0x000000e0:    6802        .h      LDR      r2,[r0,#0]
+        0x000000e2:    6002        .`      STR      r2,[r0,#0]
+        0x000000e4:    f2400200    @...    MOVW     r2,#:LOWER16: transmitQueue
+        0x000000e8:    f2c00200    ....    MOVT     r2,#:UPPER16: transmitQueue
+        0x000000ec:    9002        ..      STR      r0,[sp,#8]
+        0x000000ee:    4610        .F      MOV      r0,r2
+        0x000000f0:    f7fffffe    ....    BL       RingBuffer_Init
+        0x000000f4:    f2400000    @...    MOVW     r0,#:LOWER16: receiveQueue
+        0x000000f8:    f2c00000    ....    MOVT     r0,#:UPPER16: receiveQueue
+        0x000000fc:    f7fffffe    ....    BL       RingBuffer_Init
+        0x00000100:    2022        "       MOVS     r0,#0x22
+        0x00000102:    2102        .!      MOVS     r1,#2
+        0x00000104:    9001        ..      STR      r0,[sp,#4]
+        0x00000106:    f7fffffe    ....    BL       __NVIC_SetPriority ; 0x0 Section #7
+        0x0000010a:    9801        ..      LDR      r0,[sp,#4]
+        0x0000010c:    f7fffffe    ....    BL       __NVIC_ClearPendingIRQ ; 0x0 Section #10
+        0x00000110:    9801        ..      LDR      r0,[sp,#4]
+        0x00000112:    f7fffffe    ....    BL       __NVIC_EnableIRQ ; 0x0 Section #13
+        0x00000116:    9803        ..      LDR      r0,[sp,#0xc]
+        0x00000118:    6801        .h      LDR      r1,[r0,#0]
+        0x0000011a:    f4411100    A...    ORR      r1,r1,#0x200000
+        0x0000011e:    6001        .`      STR      r1,[r0,#0]
+        0x00000120:    6801        .h      LDR      r1,[r0,#0]
+        0x00000122:    f4412140    A.@!    ORR      r1,r1,#0xc0000
+        0x00000126:    6001        .`      STR      r1,[r0,#0]
+        0x00000128:    f246010c    F...    MOV      r1,#0x600c
+        0x0000012c:    f2c4010d    ....    MOVT     r1,#0x400d
+        0x00000130:    6809        .h      LDR      r1,[r1,#0]
+        0x00000132:    f88d1013    ....    STRB     r1,[sp,#0x13]
+        0x00000136:    9902        ..      LDR      r1,[sp,#8]
+        0x00000138:    680a        .h      LDR      r2,[r1,#0]
+        0x0000013a:    f4221200    "...    BIC      r2,r2,#0x200000
+        0x0000013e:    600a        .`      STR      r2,[r1,#0]
+        0x00000140:    b006        ..      ADD      sp,sp,#0x18
+        0x00000142:    bd80        ..      POP      {r7,pc}
+        0x00000144:    bf00        ..      NOP      
+        0x00000146:    bf00        ..      NOP      
+    $d.1
+        0x00000148:    00000000    ....    DCD    0
+        0x0000014c:    4186e360    `..A    DCD    1099359072
 
-** Section #4 '.ARM.exidx.text.fputc' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+** Section #4 '.rel.text.Debug_init_uart' (SHT_REL)
+    Size   : 96 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    12 relocations applied to section #3 '.text.Debug_init_uart'
+
+
+** Section #5 '.ARM.exidx.text.Debug_init_uart' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
     Address: 0x00000000
-    Link to section #3 '.text.fputc'
+    Link to section #3 '.text.Debug_init_uart'
 
 
-** Section #5 '.rel.ARM.exidx.text.fputc' (SHT_REL)
+** Section #6 '.rel.ARM.exidx.text.Debug_init_uart' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    1 relocations applied to section #4 '.ARM.exidx.text.fputc'
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #5 '.ARM.exidx.text.Debug_init_uart'
 
 
-** Section #6 '.text.fgetc' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 20 bytes (alignment 4)
-    Address: 0x00000000
-
-    $t.1
-    [Anonymous symbol #269]
-    fgetc
-        0x00000000:    f2460004    F...    MOV      r0,#0x6004
-        0x00000004:    f2c4000d    ....    MOVT     r0,#0x400d
-        0x00000008:    6801        .h      LDR      r1,[r0,#0]
-        0x0000000a:    0289        ..      LSLS     r1,r1,#10
-        0x0000000c:    d5fc        ..      BPL      {pc}-0x4 ; 0x8
-        0x0000000e:    6880        .h      LDR      r0,[r0,#8]
-        0x00000010:    b2c0        ..      UXTB     r0,r0
-        0x00000012:    4770        pG      BX       lr
-
-** Section #7 '.ARM.exidx.text.fgetc' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
-    Size   : 8 bytes (alignment 4)
-    Address: 0x00000000
-    Link to section #6 '.text.fgetc'
-
-
-** Section #8 '.rel.ARM.exidx.text.fgetc' (SHT_REL)
-    Size   : 8 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    1 relocations applied to section #7 '.ARM.exidx.text.fgetc'
-
-
-** Section #9 '.text.UART0_IRQHandler' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 140 bytes (alignment 4)
+** Section #7 '.text.__NVIC_SetPriority' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 68 bytes (alignment 4)
     Address: 0x00000000
 
     $t.2
-    [Anonymous symbol #270]
-    UART0_IRQHandler
-        0x00000000:    b5b0        ..      PUSH     {r4,r5,r7,lr}
-        0x00000002:    f2460404    F...    MOV      r4,#0x6004
-        0x00000006:    f2c4040d    ....    MOVT     r4,#0x400d
-        0x0000000a:    6820         h      LDR      r0,[r4,#0]
-        0x0000000c:    f4102f70    ..p/    TST      r0,#0xf0000
-        0x00000010:    d004        ..      BEQ      {pc}+0xc ; 0x1c
-        0x00000012:    6820         h      LDR      r0,[r4,#0]
-        0x00000014:    f4402070    @.p     ORR      r0,r0,#0xf0000
-        0x00000018:    6020         `      STR      r0,[r4,#0]
-        0x0000001a:    68a0        .h      LDR      r0,[r4,#8]
-        0x0000001c:    6820         h      LDR      r0,[r4,#0]
-        0x0000001e:    0280        ..      LSLS     r0,r0,#10
-        0x00000020:    d50e        ..      BPL      {pc}+0x20 ; 0x40
-        0x00000022:    f2400000    @...    MOVW     r0,#:LOWER16: receiveQueue
-        0x00000026:    68a5        .h      LDR      r5,[r4,#8]
-        0x00000028:    f2c00000    ....    MOVT     r0,#:UPPER16: receiveQueue
-        0x0000002c:    f7fffffe    ....    BL       RingBuffer_Full
-        0x00000030:    b930        0.      CBNZ     r0,{pc}+0x10 ; 0x40
-        0x00000032:    f2400000    @...    MOVW     r0,#:LOWER16: receiveQueue
-        0x00000036:    b2e9        ..      UXTB     r1,r5
-        0x00000038:    f2c00000    ....    MOVT     r0,#:UPPER16: receiveQueue
-        0x0000003c:    f7fffffe    ....    BL       RingBuffer_Enqueue_Byte
-        0x00000040:    6860        `h      LDR      r0,[r4,#4]
-        0x00000042:    0200        ..      LSLS     r0,r0,#8
-        0x00000044:    bf44        D.      ITT      MI
-        0x00000046:    6820         h      LDRMI    r0,[r4,#0]
-        0x00000048:    ea5f2000    _..     LSLSMI   r0,r0,#8
-        0x0000004c:    d400        ..      BMI      {pc}+0x4 ; 0x50
-        0x0000004e:    bdb0        ..      POP      {r4,r5,r7,pc}
-        0x00000050:    f24f0084    O...    MOV      r0,#0xf084
-        0x00000054:    f2c4000f    ....    MOVT     r0,#0x400f
-        0x00000058:    6801        .h      LDR      r1,[r0,#0]
-        0x0000005a:    f4417100    A..q    ORR      r1,r1,#0x200
-        0x0000005e:    6001        .`      STR      r1,[r0,#0]
-        0x00000060:    f2400000    @...    MOVW     r0,#:LOWER16: transmitQueue
-        0x00000064:    f2c00000    ....    MOVT     r0,#:UPPER16: transmitQueue
-        0x00000068:    f7fffffe    ....    BL       RingBuffer_Empty
-        0x0000006c:    b120         .      CBZ      r0,{pc}+0xc ; 0x78
-        0x0000006e:    6860        `h      LDR      r0,[r4,#4]
-        0x00000070:    f4200000     ...    BIC      r0,r0,#0x800000
-        0x00000074:    6060        ``      STR      r0,[r4,#4]
-        0x00000076:    bdb0        ..      POP      {r4,r5,r7,pc}
-        0x00000078:    f2400000    @...    MOVW     r0,#:LOWER16: transmitQueue
-        0x0000007c:    f2c00000    ....    MOVT     r0,#:UPPER16: transmitQueue
-        0x00000080:    f7fffffe    ....    BL       RingBuffer_Dequeue_Byte
-        0x00000084:    68a1        .h      LDR      r1,[r4,#8]
-        0x00000086:    4308        .C      ORRS     r0,r0,r1
-        0x00000088:    60a0        .`      STR      r0,[r4,#8]
-        0x0000008a:    bdb0        ..      POP      {r4,r5,r7,pc}
+    __NVIC_SetPriority
+    [Anonymous symbol #271]
+        0x00000000:    b082        ..      SUB      sp,sp,#8
+        0x00000002:    4602        .F      MOV      r2,r0
+        0x00000004:    f88d0007    ....    STRB     r0,[sp,#7]
+        0x00000008:    9100        ..      STR      r1,[sp,#0]
+        0x0000000a:    f99d0007    ....    LDRSB    r0,[sp,#7]
+        0x0000000e:    2800        .(      CMP      r0,#0
+        0x00000010:    d40a        ..      BMI      {pc}+0x18 ; 0x28
+        0x00000012:    e7ff        ..      B        {pc}+0x2 ; 0x14
+        0x00000014:    9800        ..      LDR      r0,[sp,#0]
+        0x00000016:    0100        ..      LSLS     r0,r0,#4
+        0x00000018:    f99d1007    ....    LDRSB    r1,[sp,#7]
+        0x0000001c:    f24e4200    N..B    MOVW     r2,#0xe400
+        0x00000020:    f2ce0200    ....    MOVT     r2,#0xe000
+        0x00000024:    5488        .T      STRB     r0,[r1,r2]
+        0x00000026:    e00b        ..      B        {pc}+0x1a ; 0x40
+        0x00000028:    9800        ..      LDR      r0,[sp,#0]
+        0x0000002a:    0100        ..      LSLS     r0,r0,#4
+        0x0000002c:    f89d1007    ....    LDRB     r1,[sp,#7]
+        0x00000030:    f001010f    ....    AND      r1,r1,#0xf
+        0x00000034:    f64e5214    N..R    MOV      r2,#0xed14
+        0x00000038:    f2ce0200    ....    MOVT     r2,#0xe000
+        0x0000003c:    5488        .T      STRB     r0,[r1,r2]
+        0x0000003e:    e7ff        ..      B        {pc}+0x2 ; 0x40
+        0x00000040:    b002        ..      ADD      sp,sp,#8
+        0x00000042:    4770        pG      BX       lr
 
-** Section #10 '.rel.text.UART0_IRQHandler' (SHT_REL)
-    Size   : 96 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    12 relocations applied to section #9 '.text.UART0_IRQHandler'
-
-
-** Section #11 '.ARM.exidx.text.UART0_IRQHandler' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+** Section #8 '.ARM.exidx.text.__NVIC_SetPriority' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
     Address: 0x00000000
-    Link to section #9 '.text.UART0_IRQHandler'
+    Link to section #7 '.text.__NVIC_SetPriority'
 
 
-** Section #12 '.rel.ARM.exidx.text.UART0_IRQHandler' (SHT_REL)
+** Section #9 '.rel.ARM.exidx.text.__NVIC_SetPriority' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    1 relocations applied to section #11 '.ARM.exidx.text.UART0_IRQHandler'
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #8 '.ARM.exidx.text.__NVIC_SetPriority'
 
 
-** Section #13 '.text.main' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 366 bytes (alignment 4)
+** Section #10 '.text.__NVIC_ClearPendingIRQ' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 52 bytes (alignment 4)
     Address: 0x00000000
 
     $t.3
-    [Anonymous symbol #271]
-    main
-        0x00000000:    b082        ..      SUB      sp,sp,#8
-        0x00000002:    f2480038    H.8.    MOV      r0,#0x8038
-        0x00000006:    f2c40004    ....    MOVT     r0,#0x4004
-        0x0000000a:    6801        .h      LDR      r1,[r0,#0]
-        0x0000000c:    f24f0484    O...    MOV      r4,#0xf084
-        0x00000010:    f4416100    A..a    ORR      r1,r1,#0x800
-        0x00000014:    6001        .`      STR      r1,[r0,#0]
-        0x00000016:    f24b0120    K. .    MOV      r1,#0xb020
-        0x0000001a:    f2c40104    ....    MOVT     r1,#0x4004
-        0x0000001e:    f44f7280    O..r    MOV      r2,#0x100
-        0x00000022:    f2c4040f    ....    MOVT     r4,#0x400f
-        0x00000026:    600a        .`      STR      r2,[r1,#0]
-        0x00000028:    604a        J`      STR      r2,[r1,#4]
-        0x0000002a:    608a        .`      STR      r2,[r1,#8]
-        0x0000002c:    6922        "i      LDR      r2,[r4,#0x10]
-        0x0000002e:    f2460608    F...    MOV      r6,#0x6008
-        0x00000032:    f4427280    B..r    ORR      r2,r2,#0x100
-        0x00000036:    6122        "a      STR      r2,[r4,#0x10]
-        0x00000038:    6922        "i      LDR      r2,[r4,#0x10]
-        0x0000003a:    f2c4060d    ....    MOVT     r6,#0x400d
-        0x0000003e:    f4427200    B..r    ORR      r2,r2,#0x200
-        0x00000042:    6122        "a      STR      r2,[r4,#0x10]
-        0x00000044:    6922        "i      LDR      r2,[r4,#0x10]
-        0x00000046:    2500        .%      MOVS     r5,#0
-        0x00000048:    f4426280    B..b    ORR      r2,r2,#0x400
-        0x0000004c:    6122        "a      STR      r2,[r4,#0x10]
-        0x0000004e:    6822        "h      LDR      r2,[r4,#0]
-        0x00000050:    f4427280    B..r    ORR      r2,r2,#0x100
-        0x00000054:    6022        "`      STR      r2,[r4,#0]
-        0x00000056:    6822        "h      LDR      r2,[r4,#0]
-        0x00000058:    f4427200    B..r    ORR      r2,r2,#0x200
-        0x0000005c:    6022        "`      STR      r2,[r4,#0]
-        0x0000005e:    6822        "h      LDR      r2,[r4,#0]
-        0x00000060:    f4426280    B..b    ORR      r2,r2,#0x400
-        0x00000064:    6022        "`      STR      r2,[r4,#0]
-        0x00000066:    6802        .h      LDR      r2,[r0,#0]
-        0x00000068:    f4426200    B..b    ORR      r2,r2,#0x800
-        0x0000006c:    6002        .`      STR      r2,[r0,#0]
-        0x0000006e:    f8502c0c    P..,    LDR      r2,[r0,#-0xc]
-        0x00000072:    f4420280    B...    ORR      r2,r2,#0x400000
-        0x00000076:    f8402c0c    @..,    STR      r2,[r0,#-0xc]
-        0x0000007a:    6832        2h      LDR      r2,[r6,#0]
-        0x0000007c:    f4422240    B.@"    ORR      r2,r2,#0xc0000
-        0x00000080:    6032        2`      STR      r2,[r6,#0]
-        0x00000082:    f8502c34    P.4,    LDR      r2,[r0,#-0x34]
-        0x00000086:    f0426280    B..b    ORR      r2,r2,#0x4000000
-        0x0000008a:    f4423240    B.@2    ORR      r2,r2,#0x30000
-        0x0000008e:    f8402c34    @.4,    STR      r2,[r0,#-0x34]
-        0x00000092:    f44f7000    O..p    MOV      r0,#0x200
-        0x00000096:    6188        .a      STR      r0,[r1,#0x18]
-        0x00000098:    61c8        .a      STR      r0,[r1,#0x1c]
-        0x0000009a:    f8560c08    V...    LDR      r0,[r6,#-8]
-        0x0000009e:    f64171ff    A..q    MOV      r1,#0x1fff
-        0x000000a2:    4388        .C      BICS     r0,r0,r1
-        0x000000a4:    f8460c08    F...    STR      r0,[r6,#-8]
-        0x000000a8:    f8560c08    V...    LDR      r0,[r6,#-8]
-        0x000000ac:    f8460c08    F...    STR      r0,[r6,#-8]
-        0x000000b0:    f8560c08    V...    LDR      r0,[r6,#-8]
-        0x000000b4:    f0206070     .p`    BIC      r0,r0,#0xf000000
-        0x000000b8:    f8460c08    F...    STR      r0,[r6,#-8]
-        0x000000bc:    f8560c08    V...    LDR      r0,[r6,#-8]
-        0x000000c0:    f8460c08    F...    STR      r0,[r6,#-8]
-        0x000000c4:    6830        0h      LDR      r0,[r6,#0]
-        0x000000c6:    6030        0`      STR      r0,[r6,#0]
-        0x000000c8:    f44f2070    O.p     MOV      r0,#0xf0000
-        0x000000cc:    6035        5`      STR      r5,[r6,#0]
-        0x000000ce:    f8460c04    F...    STR      r0,[r6,#-4]
-        0x000000d2:    f8560c04    V...    LDR      r0,[r6,#-4]
-        0x000000d6:    f4402070    @.p     ORR      r0,r0,#0xf0000
-        0x000000da:    f8460c04    F...    STR      r0,[r6,#-4]
-        0x000000de:    f2400000    @...    MOVW     r0,#:LOWER16: transmitQueue
-        0x000000e2:    f2c00000    ....    MOVT     r0,#:UPPER16: transmitQueue
-        0x000000e6:    f8465c04    F..\    STR      r5,[r6,#-4]
-        0x000000ea:    f7fffffe    ....    BL       RingBuffer_Init
-        0x000000ee:    f2400000    @...    MOVW     r0,#:LOWER16: receiveQueue
-        0x000000f2:    f2c00000    ....    MOVT     r0,#:UPPER16: receiveQueue
-        0x000000f6:    f7fffffe    ....    BL       RingBuffer_Init
-        0x000000fa:    f7fffffe    ....    BL       __NVIC_SetPriority ; 0x0 Section #17
-        0x000000fe:    f7fffffe    ....    BL       __NVIC_ClearPendingIRQ ; 0x0 Section #20
-        0x00000102:    f7fffffe    ....    BL       __NVIC_EnableIRQ ; 0x0 Section #23
-        0x00000106:    6830        0h      LDR      r0,[r6,#0]
-        0x00000108:    f24a1120    J. .    MOV      r1,#0xa120
-        0x0000010c:    f4401000    @...    ORR      r0,r0,#0x200000
-        0x00000110:    6030        0`      STR      r0,[r6,#0]
-        0x00000112:    6830        0h      LDR      r0,[r6,#0]
-        0x00000114:    f24d0290    M...    MOV      r2,#0xd090
-        0x00000118:    f4402040    @.@     ORR      r0,r0,#0xc0000
-        0x0000011c:    6030        0`      STR      r0,[r6,#0]
-        0x0000011e:    6870        ph      LDR      r0,[r6,#4]
-        0x00000120:    f2c00107    ....    MOVT     r1,#7
-        0x00000124:    f88d0007    ....    STRB     r0,[sp,#7]
-        0x00000128:    f8560c04    V...    LDR      r0,[r6,#-4]
-        0x0000012c:    f2c00203    ....    MOVT     r2,#3
-        0x00000130:    f4201000     ...    BIC      r0,r0,#0x200000
-        0x00000134:    f8460c04    F...    STR      r0,[r6,#-4]
-        0x00000138:    f2442040    D.@     MOV      r0,#0x4240
-        0x0000013c:    f2c0000f    ....    MOVT     r0,#0xf
-        0x00000140:    e005        ..      B        {pc}+0xe ; 0x14e
-        0x00000142:    bf00        ..      NOP      
-        0x00000144:    6863        ch      LDR      r3,[r4,#4]
-        0x00000146:    3501        .5      ADDS     r5,#1
-        0x00000148:    f4436380    C..c    ORR      r3,r3,#0x400
-        0x0000014c:    6063        c`      STR      r3,[r4,#4]
-        0x0000014e:    4285        .B      CMP      r5,r0
-        0x00000150:    d00a        ..      BEQ      {pc}+0x18 ; 0x168
-        0x00000152:    428d        .B      CMP      r5,r1
-        0x00000154:    d0f6        ..      BEQ      {pc}-0x10 ; 0x144
-        0x00000156:    4295        .B      CMP      r5,r2
-        0x00000158:    d107        ..      BNE      {pc}+0x12 ; 0x16a
-        0x0000015a:    6823        #h      LDR      r3,[r4,#0]
-        0x0000015c:    3501        .5      ADDS     r5,#1
-        0x0000015e:    f4436380    C..c    ORR      r3,r3,#0x400
-        0x00000162:    6023        #`      STR      r3,[r4,#0]
-        0x00000164:    e7f3        ..      B        {pc}-0x16 ; 0x14e
-        0x00000166:    bf00        ..      NOP      
-        0x00000168:    2500        .%      MOVS     r5,#0
-        0x0000016a:    3501        .5      ADDS     r5,#1
-        0x0000016c:    e7ef        ..      B        {pc}-0x1e ; 0x14e
+    __NVIC_ClearPendingIRQ
+    [Anonymous symbol #272]
+        0x00000000:    b081        ..      SUB      sp,sp,#4
+        0x00000002:    4601        .F      MOV      r1,r0
+        0x00000004:    f88d0003    ....    STRB     r0,[sp,#3]
+        0x00000008:    f99d0003    ....    LDRSB    r0,[sp,#3]
+        0x0000000c:    2800        .(      CMP      r0,#0
+        0x0000000e:    d40f        ..      BMI      {pc}+0x22 ; 0x30
+        0x00000010:    e7ff        ..      B        {pc}+0x2 ; 0x12
+        0x00000012:    f99d0003    ....    LDRSB    r0,[sp,#3]
+        0x00000016:    f000011f    ....    AND      r1,r0,#0x1f
+        0x0000001a:    2201        ."      MOVS     r2,#1
+        0x0000001c:    fa02f101    ....    LSL      r1,r2,r1
+        0x00000020:    0940        @.      LSRS     r0,r0,#5
+        0x00000022:    f24e2280    N.."    MOV      r2,#0xe280
+        0x00000026:    f2ce0200    ....    MOVT     r2,#0xe000
+        0x0000002a:    f8421020    B. .    STR      r1,[r2,r0,LSL #2]
+        0x0000002e:    e7ff        ..      B        {pc}+0x2 ; 0x30
+        0x00000030:    b001        ..      ADD      sp,sp,#4
+        0x00000032:    4770        pG      BX       lr
 
-** Section #14 '.rel.text.main' (SHT_REL)
-    Size   : 72 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    9 relocations applied to section #13 '.text.main'
-
-
-** Section #15 '.ARM.exidx.text.main' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+** Section #11 '.ARM.exidx.text.__NVIC_ClearPendingIRQ' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
     Address: 0x00000000
-    Link to section #13 '.text.main'
+    Link to section #10 '.text.__NVIC_ClearPendingIRQ'
 
 
-** Section #16 '.rel.ARM.exidx.text.main' (SHT_REL)
+** Section #12 '.rel.ARM.exidx.text.__NVIC_ClearPendingIRQ' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    1 relocations applied to section #15 '.ARM.exidx.text.main'
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #11 '.ARM.exidx.text.__NVIC_ClearPendingIRQ'
 
 
-** Section #17 '.text.__NVIC_SetPriority' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 14 bytes (alignment 4)
+** Section #13 '.text.__NVIC_EnableIRQ' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 52 bytes (alignment 4)
     Address: 0x00000000
 
     $t.4
-    __NVIC_SetPriority
-    [Anonymous symbol #272]
-        0x00000000:    f24e4022    N."@    MOV      r0,#0xe422
-        0x00000004:    f2ce0000    ....    MOVT     r0,#0xe000
-        0x00000008:    2120         !      MOVS     r1,#0x20
-        0x0000000a:    7001        .p      STRB     r1,[r0,#0]
-        0x0000000c:    4770        pG      BX       lr
+    __NVIC_EnableIRQ
+    [Anonymous symbol #273]
+        0x00000000:    b081        ..      SUB      sp,sp,#4
+        0x00000002:    4601        .F      MOV      r1,r0
+        0x00000004:    f88d0003    ....    STRB     r0,[sp,#3]
+        0x00000008:    f99d0003    ....    LDRSB    r0,[sp,#3]
+        0x0000000c:    2800        .(      CMP      r0,#0
+        0x0000000e:    d40f        ..      BMI      {pc}+0x22 ; 0x30
+        0x00000010:    e7ff        ..      B        {pc}+0x2 ; 0x12
+        0x00000012:    f99d0003    ....    LDRSB    r0,[sp,#3]
+        0x00000016:    f000011f    ....    AND      r1,r0,#0x1f
+        0x0000001a:    2201        ."      MOVS     r2,#1
+        0x0000001c:    fa02f101    ....    LSL      r1,r2,r1
+        0x00000020:    0940        @.      LSRS     r0,r0,#5
+        0x00000022:    f24e1200    N...    MOVW     r2,#0xe100
+        0x00000026:    f2ce0200    ....    MOVT     r2,#0xe000
+        0x0000002a:    f8421020    B. .    STR      r1,[r2,r0,LSL #2]
+        0x0000002e:    e7ff        ..      B        {pc}+0x2 ; 0x30
+        0x00000030:    b001        ..      ADD      sp,sp,#4
+        0x00000032:    4770        pG      BX       lr
 
-** Section #18 '.ARM.exidx.text.__NVIC_SetPriority' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+** Section #14 '.ARM.exidx.text.__NVIC_EnableIRQ' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
     Address: 0x00000000
-    Link to section #17 '.text.__NVIC_SetPriority'
+    Link to section #13 '.text.__NVIC_EnableIRQ'
 
 
-** Section #19 '.rel.ARM.exidx.text.__NVIC_SetPriority' (SHT_REL)
+** Section #15 '.rel.ARM.exidx.text.__NVIC_EnableIRQ' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    1 relocations applied to section #18 '.ARM.exidx.text.__NVIC_SetPriority'
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #14 '.ARM.exidx.text.__NVIC_EnableIRQ'
 
 
-** Section #20 '.text.__NVIC_ClearPendingIRQ' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 14 bytes (alignment 4)
+** Section #16 '.text.LPUART4_IRQHandler' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 228 bytes (alignment 4)
     Address: 0x00000000
 
     $t.5
-    __NVIC_ClearPendingIRQ
-    [Anonymous symbol #273]
-        0x00000000:    f24e2084    N..     MOV      r0,#0xe284
-        0x00000004:    f2ce0000    ....    MOVT     r0,#0xe000
-        0x00000008:    2104        .!      MOVS     r1,#4
-        0x0000000a:    6001        .`      STR      r1,[r0,#0]
-        0x0000000c:    4770        pG      BX       lr
+    [Anonymous symbol #274]
+    LPUART4_IRQHandler
+        0x00000000:    b580        ..      PUSH     {r7,lr}
+        0x00000002:    b082        ..      SUB      sp,sp,#8
+        0x00000004:    f2460004    F...    MOV      r0,#0x6004
+        0x00000008:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x0000000c:    6800        .h      LDR      r0,[r0,#0]
+        0x0000000e:    f4102f70    ..p/    TST      r0,#0xf0000
+        0x00000012:    d010        ..      BEQ      {pc}+0x24 ; 0x36
+        0x00000014:    e7ff        ..      B        {pc}+0x2 ; 0x16
+        0x00000016:    f2460004    F...    MOV      r0,#0x6004
+        0x0000001a:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x0000001e:    6801        .h      LDR      r1,[r0,#0]
+        0x00000020:    f4412170    A.p!    ORR      r1,r1,#0xf0000
+        0x00000024:    6001        .`      STR      r1,[r0,#0]
+        0x00000026:    f246000c    F...    MOV      r0,#0x600c
+        0x0000002a:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x0000002e:    6800        .h      LDR      r0,[r0,#0]
+        0x00000030:    f88d0007    ....    STRB     r0,[sp,#7]
+        0x00000034:    e7ff        ..      B        {pc}+0x2 ; 0x36
+        0x00000036:    f2460004    F...    MOV      r0,#0x6004
+        0x0000003a:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x0000003e:    6800        .h      LDR      r0,[r0,#0]
+        0x00000040:    0280        ..      LSLS     r0,r0,#10
+        0x00000042:    2800        .(      CMP      r0,#0
+        0x00000044:    d51b        ..      BPL      {pc}+0x3a ; 0x7e
+        0x00000046:    e7ff        ..      B        {pc}+0x2 ; 0x48
+        0x00000048:    f246000c    F...    MOV      r0,#0x600c
+        0x0000004c:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x00000050:    6800        .h      LDR      r0,[r0,#0]
+        0x00000052:    f88d0007    ....    STRB     r0,[sp,#7]
+        0x00000056:    f2400000    @...    MOVW     r0,#:LOWER16: receiveQueue
+        0x0000005a:    f2c00000    ....    MOVT     r0,#:UPPER16: receiveQueue
+        0x0000005e:    f7fffffe    ....    BL       RingBuffer_Full
+        0x00000062:    2800        .(      CMP      r0,#0
+        0x00000064:    d109        ..      BNE      {pc}+0x16 ; 0x7a
+        0x00000066:    e7ff        ..      B        {pc}+0x2 ; 0x68
+        0x00000068:    f89d1007    ....    LDRB     r1,[sp,#7]
+        0x0000006c:    f2400000    @...    MOVW     r0,#:LOWER16: receiveQueue
+        0x00000070:    f2c00000    ....    MOVT     r0,#:UPPER16: receiveQueue
+        0x00000074:    f7fffffe    ....    BL       RingBuffer_Enqueue_Byte
+        0x00000078:    e000        ..      B        {pc}+0x4 ; 0x7c
+        0x0000007a:    e7ff        ..      B        {pc}+0x2 ; 0x7c
+        0x0000007c:    e7ff        ..      B        {pc}+0x2 ; 0x7e
+        0x0000007e:    f2460008    F...    MOV      r0,#0x6008
+        0x00000082:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x00000086:    6800        .h      LDR      r0,[r0,#0]
+        0x00000088:    0200        ..      LSLS     r0,r0,#8
+        0x0000008a:    2800        .(      CMP      r0,#0
+        0x0000008c:    d528        (.      BPL      {pc}+0x54 ; 0xe0
+        0x0000008e:    e7ff        ..      B        {pc}+0x2 ; 0x90
+        0x00000090:    f2460004    F...    MOV      r0,#0x6004
+        0x00000094:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x00000098:    6800        .h      LDR      r0,[r0,#0]
+        0x0000009a:    0200        ..      LSLS     r0,r0,#8
+        0x0000009c:    2800        .(      CMP      r0,#0
+        0x0000009e:    d51f        ..      BPL      {pc}+0x42 ; 0xe0
+        0x000000a0:    e7ff        ..      B        {pc}+0x2 ; 0xa2
+        0x000000a2:    f2400000    @...    MOVW     r0,#:LOWER16: transmitQueue
+        0x000000a6:    f2c00000    ....    MOVT     r0,#:UPPER16: transmitQueue
+        0x000000aa:    f7fffffe    ....    BL       RingBuffer_Empty
+        0x000000ae:    2800        .(      CMP      r0,#0
+        0x000000b0:    d10c        ..      BNE      {pc}+0x1c ; 0xcc
+        0x000000b2:    e7ff        ..      B        {pc}+0x2 ; 0xb4
+        0x000000b4:    f2400000    @...    MOVW     r0,#:LOWER16: transmitQueue
+        0x000000b8:    f2c00000    ....    MOVT     r0,#:UPPER16: transmitQueue
+        0x000000bc:    f7fffffe    ....    BL       RingBuffer_Dequeue_Byte
+        0x000000c0:    f246010c    F...    MOV      r1,#0x600c
+        0x000000c4:    f2c4010d    ....    MOVT     r1,#0x400d
+        0x000000c8:    6008        .`      STR      r0,[r1,#0]
+        0x000000ca:    e008        ..      B        {pc}+0x14 ; 0xde
+        0x000000cc:    f2460008    F...    MOV      r0,#0x6008
+        0x000000d0:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x000000d4:    6801        .h      LDR      r1,[r0,#0]
+        0x000000d6:    f4210100    !...    BIC      r1,r1,#0x800000
+        0x000000da:    6001        .`      STR      r1,[r0,#0]
+        0x000000dc:    e7ff        ..      B        {pc}+0x2 ; 0xde
+        0x000000de:    e7ff        ..      B        {pc}+0x2 ; 0xe0
+        0x000000e0:    b002        ..      ADD      sp,sp,#8
+        0x000000e2:    bd80        ..      POP      {r7,pc}
 
-** Section #21 '.ARM.exidx.text.__NVIC_ClearPendingIRQ' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+** Section #17 '.rel.text.LPUART4_IRQHandler' (SHT_REL)
+    Size   : 96 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    12 relocations applied to section #16 '.text.LPUART4_IRQHandler'
+
+
+** Section #18 '.ARM.exidx.text.LPUART4_IRQHandler' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
     Address: 0x00000000
-    Link to section #20 '.text.__NVIC_ClearPendingIRQ'
+    Link to section #16 '.text.LPUART4_IRQHandler'
 
 
-** Section #22 '.rel.ARM.exidx.text.__NVIC_ClearPendingIRQ' (SHT_REL)
+** Section #19 '.rel.ARM.exidx.text.LPUART4_IRQHandler' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    1 relocations applied to section #21 '.ARM.exidx.text.__NVIC_ClearPendingIRQ'
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #18 '.ARM.exidx.text.LPUART4_IRQHandler'
 
 
-** Section #23 '.text.__NVIC_EnableIRQ' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 14 bytes (alignment 4)
+** Section #20 '.text.fputc' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 86 bytes (alignment 4)
     Address: 0x00000000
 
     $t.6
-    __NVIC_EnableIRQ
-    [Anonymous symbol #274]
-        0x00000000:    f24e1004    N...    MOV      r0,#0xe104
-        0x00000004:    f2ce0000    ....    MOVT     r0,#0xe000
-        0x00000008:    2104        .!      MOVS     r1,#4
-        0x0000000a:    6001        .`      STR      r1,[r0,#0]
-        0x0000000c:    4770        pG      BX       lr
+    [Anonymous symbol #275]
+    fputc
+        0x00000000:    b083        ..      SUB      sp,sp,#0xc
+        0x00000002:    9002        ..      STR      r0,[sp,#8]
+        0x00000004:    9101        ..      STR      r1,[sp,#4]
+        0x00000006:    e7ff        ..      B        {pc}+0x2 ; 0x8
+        0x00000008:    f2460004    F...    MOV      r0,#0x6004
+        0x0000000c:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x00000010:    6800        .h      LDR      r0,[r0,#0]
+        0x00000012:    2100        .!      MOVS     r1,#0
+        0x00000014:    0200        ..      LSLS     r0,r0,#8
+        0x00000016:    2800        .(      CMP      r0,#0
+        0x00000018:    9100        ..      STR      r1,[sp,#0]
+        0x0000001a:    d40c        ..      BMI      {pc}+0x1c ; 0x36
+        0x0000001c:    e7ff        ..      B        {pc}+0x2 ; 0x1e
+        0x0000001e:    f2460004    F...    MOV      r0,#0x6004
+        0x00000022:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x00000026:    6800        .h      LDR      r0,[r0,#0]
+        0x00000028:    f4000080    ....    AND      r0,r0,#0x400000
+        0x0000002c:    2101        .!      MOVS     r1,#1
+        0x0000002e:    ea815090    ...P    EOR      r0,r1,r0,LSR #22
+        0x00000032:    9000        ..      STR      r0,[sp,#0]
+        0x00000034:    e7ff        ..      B        {pc}+0x2 ; 0x36
+        0x00000036:    9800        ..      LDR      r0,[sp,#0]
+        0x00000038:    07c0        ..      LSLS     r0,r0,#31
+        0x0000003a:    2800        .(      CMP      r0,#0
+        0x0000003c:    d001        ..      BEQ      {pc}+0x6 ; 0x42
+        0x0000003e:    e7ff        ..      B        {pc}+0x2 ; 0x40
+        0x00000040:    e7e2        ..      B        {pc}-0x38 ; 0x8
+        0x00000042:    f89d0008    ....    LDRB     r0,[sp,#8]
+        0x00000046:    f246010c    F...    MOV      r1,#0x600c
+        0x0000004a:    f2c4010d    ....    MOVT     r1,#0x400d
+        0x0000004e:    6008        .`      STR      r0,[r1,#0]
+        0x00000050:    9802        ..      LDR      r0,[sp,#8]
+        0x00000052:    b003        ..      ADD      sp,sp,#0xc
+        0x00000054:    4770        pG      BX       lr
 
-** Section #24 '.ARM.exidx.text.__NVIC_EnableIRQ' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+** Section #21 '.ARM.exidx.text.fputc' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
     Address: 0x00000000
-    Link to section #23 '.text.__NVIC_EnableIRQ'
+    Link to section #20 '.text.fputc'
 
 
-** Section #25 '.rel.ARM.exidx.text.__NVIC_EnableIRQ' (SHT_REL)
+** Section #22 '.rel.ARM.exidx.text.fputc' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    1 relocations applied to section #24 '.ARM.exidx.text.__NVIC_EnableIRQ'
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #21 '.ARM.exidx.text.fputc'
 
 
-** Section #26 '.bss.receiveQueue' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
+** Section #23 '.text.fgetc' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 42 bytes (alignment 4)
+    Address: 0x00000000
+
+    $t.7
+    [Anonymous symbol #276]
+    fgetc
+        0x00000000:    b081        ..      SUB      sp,sp,#4
+        0x00000002:    9000        ..      STR      r0,[sp,#0]
+        0x00000004:    e7ff        ..      B        {pc}+0x2 ; 0x6
+        0x00000006:    f2460004    F...    MOV      r0,#0x6004
+        0x0000000a:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x0000000e:    6800        .h      LDR      r0,[r0,#0]
+        0x00000010:    0280        ..      LSLS     r0,r0,#10
+        0x00000012:    2800        .(      CMP      r0,#0
+        0x00000014:    d401        ..      BMI      {pc}+0x6 ; 0x1a
+        0x00000016:    e7ff        ..      B        {pc}+0x2 ; 0x18
+        0x00000018:    e7f5        ..      B        {pc}-0x12 ; 0x6
+        0x0000001a:    f246000c    F...    MOV      r0,#0x600c
+        0x0000001e:    f2c4000d    ....    MOVT     r0,#0x400d
+        0x00000022:    6800        .h      LDR      r0,[r0,#0]
+        0x00000024:    b2c0        ..      UXTB     r0,r0
+        0x00000026:    b001        ..      ADD      sp,sp,#4
+        0x00000028:    4770        pG      BX       lr
+
+** Section #24 '.ARM.exidx.text.fgetc' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+    Size   : 8 bytes (alignment 4)
+    Address: 0x00000000
+    Link to section #23 '.text.fgetc'
+
+
+** Section #25 '.rel.ARM.exidx.text.fgetc' (SHT_REL)
+    Size   : 8 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #24 '.ARM.exidx.text.fgetc'
+
+
+** Section #26 '.text.main' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 240 bytes (alignment 4)
+    Address: 0x00000000
+
+    $t.8
+    [Anonymous symbol #277]
+    main
+        0x00000000:    b580        ..      PUSH     {r7,lr}
+        0x00000002:    b082        ..      SUB      sp,sp,#8
+        0x00000004:    f44f30e1    O..0    MOV      r0,#0x1c200
+        0x00000008:    f7fffffe    ....    BL       Debug_init_uart ; 0x0 Section #3
+        0x0000000c:    f2480038    H.8.    MOV      r0,#0x8038
+        0x00000010:    f2c40004    ....    MOVT     r0,#0x4004
+        0x00000014:    6801        .h      LDR      r1,[r0,#0]
+        0x00000016:    f4416100    A..a    ORR      r1,r1,#0x800
+        0x0000001a:    6001        .`      STR      r1,[r0,#0]
+        0x0000001c:    f24b0020    K. .    MOV      r0,#0xb020
+        0x00000020:    f2c40004    ....    MOVT     r0,#0x4004
+        0x00000024:    f44f7180    O..q    MOV      r1,#0x100
+        0x00000028:    6001        .`      STR      r1,[r0,#0]
+        0x0000002a:    f24b0024    K.$.    MOV      r0,#0xb024
+        0x0000002e:    f2c40004    ....    MOVT     r0,#0x4004
+        0x00000032:    6001        .`      STR      r1,[r0,#0]
+        0x00000034:    f24b0028    K.(.    MOV      r0,#0xb028
+        0x00000038:    f2c40004    ....    MOVT     r0,#0x4004
+        0x0000003c:    6001        .`      STR      r1,[r0,#0]
+        0x0000003e:    f24f0094    O...    MOV      r0,#0xf094
+        0x00000042:    f2c4000f    ....    MOVT     r0,#0x400f
+        0x00000046:    6801        .h      LDR      r1,[r0,#0]
+        0x00000048:    f4417180    A..q    ORR      r1,r1,#0x100
+        0x0000004c:    6001        .`      STR      r1,[r0,#0]
+        0x0000004e:    6801        .h      LDR      r1,[r0,#0]
+        0x00000050:    f4417100    A..q    ORR      r1,r1,#0x200
+        0x00000054:    6001        .`      STR      r1,[r0,#0]
+        0x00000056:    6801        .h      LDR      r1,[r0,#0]
+        0x00000058:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x0000005c:    6001        .`      STR      r1,[r0,#0]
+        0x0000005e:    f24f0084    O...    MOV      r0,#0xf084
+        0x00000062:    f2c4000f    ....    MOVT     r0,#0x400f
+        0x00000066:    6801        .h      LDR      r1,[r0,#0]
+        0x00000068:    f4417180    A..q    ORR      r1,r1,#0x100
+        0x0000006c:    6001        .`      STR      r1,[r0,#0]
+        0x0000006e:    6801        .h      LDR      r1,[r0,#0]
+        0x00000070:    f4417100    A..q    ORR      r1,r1,#0x200
+        0x00000074:    6001        .`      STR      r1,[r0,#0]
+        0x00000076:    6801        .h      LDR      r1,[r0,#0]
+        0x00000078:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x0000007c:    6001        .`      STR      r1,[r0,#0]
+        0x0000007e:    f248003c    H.<.    MOV      r0,#0x803c
+        0x00000082:    f2c40004    ....    MOVT     r0,#0x4004
+        0x00000086:    6801        .h      LDR      r1,[r0,#0]
+        0x00000088:    f0417180    A..q    ORR      r1,r1,#0x1000000
+        0x0000008c:    6001        .`      STR      r1,[r0,#0]
+        0x0000008e:    2000        .       MOVS     r0,#0
+        0x00000090:    9001        ..      STR      r0,[sp,#4]
+        0x00000092:    e7ff        ..      B        {pc}+0x2 ; 0x94
+        0x00000094:    f2400000    @...    MOVW     r0,#:LOWER16: .L.str
+        0x00000098:    f2c00000    ....    MOVT     r0,#:UPPER16: .L.str
+        0x0000009c:    f7fffffe    ....    BL       printf
+        0x000000a0:    9901        ..      LDR      r1,[sp,#4]
+        0x000000a2:    29fa        .)      CMP      r1,#0xfa
+        0x000000a4:    d109        ..      BNE      {pc}+0x16 ; 0xba
+        0x000000a6:    e7ff        ..      B        {pc}+0x2 ; 0xa8
+        0x000000a8:    f24f0084    O...    MOV      r0,#0xf084
+        0x000000ac:    f2c4000f    ....    MOVT     r0,#0x400f
+        0x000000b0:    6801        .h      LDR      r1,[r0,#0]
+        0x000000b2:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x000000b6:    6001        .`      STR      r1,[r0,#0]
+        0x000000b8:    e7ff        ..      B        {pc}+0x2 ; 0xba
+        0x000000ba:    9801        ..      LDR      r0,[sp,#4]
+        0x000000bc:    f5b07ffa    ....    CMP      r0,#0x1f4
+        0x000000c0:    d109        ..      BNE      {pc}+0x16 ; 0xd6
+        0x000000c2:    e7ff        ..      B        {pc}+0x2 ; 0xc4
+        0x000000c4:    f24f0088    O...    MOV      r0,#0xf088
+        0x000000c8:    f2c4000f    ....    MOVT     r0,#0x400f
+        0x000000cc:    6801        .h      LDR      r1,[r0,#0]
+        0x000000ce:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x000000d2:    6001        .`      STR      r1,[r0,#0]
+        0x000000d4:    e008        ..      B        {pc}+0x14 ; 0xe8
+        0x000000d6:    9801        ..      LDR      r0,[sp,#4]
+        0x000000d8:    f5b07f7a    ..z.    CMP      r0,#0x3e8
+        0x000000dc:    d103        ..      BNE      {pc}+0xa ; 0xe6
+        0x000000de:    e7ff        ..      B        {pc}+0x2 ; 0xe0
+        0x000000e0:    2000        .       MOVS     r0,#0
+        0x000000e2:    9001        ..      STR      r0,[sp,#4]
+        0x000000e4:    e7ff        ..      B        {pc}+0x2 ; 0xe6
+        0x000000e6:    e7ff        ..      B        {pc}+0x2 ; 0xe8
+        0x000000e8:    9801        ..      LDR      r0,[sp,#4]
+        0x000000ea:    3001        .0      ADDS     r0,#1
+        0x000000ec:    9001        ..      STR      r0,[sp,#4]
+        0x000000ee:    e7d1        ..      B        {pc}-0x5a ; 0x94
+
+** Section #27 '.rel.text.main' (SHT_REL)
+    Size   : 32 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    4 relocations applied to section #26 '.text.main'
+
+
+** Section #28 '.ARM.exidx.text.main' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
+    Size   : 8 bytes (alignment 4)
+    Address: 0x00000000
+    Link to section #26 '.text.main'
+
+
+** Section #29 '.rel.ARM.exidx.text.main' (SHT_REL)
+    Size   : 8 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    1 relocations applied to section #28 '.ARM.exidx.text.main'
+
+
+** Section #30 '.bss.transmitQueue' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
     Size   : 262 bytes (alignment 2)
     Address: 0x00000000
 
 
-** Section #27 '.bss.transmitQueue' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
+** Section #31 '.bss.receiveQueue' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
     Size   : 262 bytes (alignment 2)
     Address: 0x00000000
 
 
-** Section #28 '.ARM.use_no_argv' (SHT_PROGBITS) [SHF_ALLOC + SHF_WRITE]
+** Section #32 '.rodata.str1.1' (SHT_PROGBITS) [SHF_ALLOC + SHF_MERGE + SHF_STRINGS]
+    Size   : 15 bytes
+    Address: 0x00000000
+
+
+** Section #33 '.bss.__stdout' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
     Size   : 4 bytes (alignment 4)
     Address: 0x00000000
 
 
-** Section #29 '.debug_str' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
-    Size   : 2750 bytes
+** Section #34 '.bss.__stdin' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
+    Size   : 4 bytes (alignment 4)
+    Address: 0x00000000
 
 
-** Section #30 '.debug_loc' (SHT_PROGBITS)
-    Size   : 173 bytes
+** Section #35 '.debug_str' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
+    Size   : 2735 bytes
 
 
-** Section #31 '.rel.debug_loc' (SHT_REL)
-    Size   : 48 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    6 relocations applied to section #30 '.debug_loc'
+** Section #36 '.debug_abbrev' (SHT_PROGBITS)
+    Size   : 384 bytes
 
 
-** Section #32 '.debug_abbrev' (SHT_PROGBITS)
-    Size   : 421 bytes
+** Section #37 '.debug_info' (SHT_PROGBITS)
+    Size   : 2956 bytes
 
 
-** Section #33 '.debug_info' (SHT_PROGBITS)
-    Size   : 2965 bytes
+** Section #38 '.rel.debug_info' (SHT_REL)
+    Size   : 2200 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    275 relocations applied to section #37 '.debug_info'
 
 
-** Section #34 '.rel.debug_info' (SHT_REL)
-    Size   : 2288 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    286 relocations applied to section #33 '.debug_info'
+** Section #39 '.debug_ranges' (SHT_PROGBITS)
+    Size   : 72 bytes
 
 
-** Section #35 '.debug_ranges' (SHT_PROGBITS)
-    Size   : 64 bytes
+** Section #40 '.rel.debug_ranges' (SHT_REL)
+    Size   : 128 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    16 relocations applied to section #39 '.debug_ranges'
 
 
-** Section #36 '.rel.debug_ranges' (SHT_REL)
-    Size   : 112 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    14 relocations applied to section #35 '.debug_ranges'
-
-
-** Section #37 '.comment' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
+** Section #41 '.comment' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
     Size   : 56 bytes
 
 
-** Section #38 '.note.GNU-stack' (SHT_PROGBITS)
+** Section #42 '.note.GNU-stack' (SHT_PROGBITS)
     Size   : 0 bytes
 
 
-** Section #39 '.ARM.attributes' (SHT_ARM_ATTRIBUTES)
+** Section #43 '.ARM.attributes' (SHT_ARM_ATTRIBUTES)
     Size   : 88 bytes
 
 
-** Section #40 '.debug_frame' (SHT_PROGBITS)
-    Size   : 144 bytes (alignment 4)
+** Section #44 '.debug_frame' (SHT_PROGBITS)
+    Size   : 204 bytes (alignment 4)
 
 
-** Section #41 '.rel.debug_frame' (SHT_REL)
-    Size   : 112 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    14 relocations applied to section #40 '.debug_frame'
+** Section #45 '.rel.debug_frame' (SHT_REL)
+    Size   : 128 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    16 relocations applied to section #44 '.debug_frame'
 
 
-** Section #42 '.debug_line' (SHT_PROGBITS)
-    Size   : 753 bytes
+** Section #46 '.debug_line' (SHT_PROGBITS)
+    Size   : 1063 bytes
 
 
-** Section #43 '.rel.debug_line' (SHT_REL)
-    Size   : 56 bytes (alignment 4)
-    Symbol table #44 '.symtab'
-    7 relocations applied to section #42 '.debug_line'
+** Section #47 '.rel.debug_line' (SHT_REL)
+    Size   : 64 bytes (alignment 4)
+    Symbol table #48 '.symtab'
+    8 relocations applied to section #46 '.debug_line'
 
 
-** Section #44 '.symtab' (SHT_SYMTAB)
-    Size   : 4672 bytes (alignment 4)
+** Section #48 '.symtab' (SHT_SYMTAB)
+    Size   : 4800 bytes (alignment 4)
     String table #1 '.strtab'
-    Last local symbol no. 281
+    Last local symbol no. 283
 
 

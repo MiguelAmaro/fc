@@ -8,14 +8,30 @@ REM https://developer.arm.com/tools-and-software/open-source-software/developer-
 REM ==================================================
 REM        OPEN A CMD PROMPT & RUN ARM GBD 
 REM ==================================================
-START cmd /k "F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-gdb.exe --quiet --nx -ex "target extended-remote localhost:3333" -f ./build/K82F_FlightController.axf"
+
+REM START cmd /k "F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-gdb.exe --quiet -nh -ex "target extended-remote localhost:3333" -f ./build/K82F_FlightController.axf"
 
 REM ==================================================
-REM         RUN OPENOCD & START GBD SERVER 
+REM         RUN OPENOCD & START GBD SERVER - TELNET
 REM ==================================================
-CALL F:\Dev_Tools\openocd-0.10.0-15\bin\openocd.exe --debug=0
+REM CALL F:\Dev_Tools\openocd-0.10.0-15\bin\openocd.exe --debug=0
+
+REM ------------------------------------------------------------------------
+
+REM ==================================================
+REM        OPEN A CMD PROMPT & RUN ARM GBD 
+REM ==================================================
+
+REM START cmd /k "F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-gdb.exe --quiet -ex "target extended-remote localhost:3333" -f ./build/K82F_FlightController.axf"
 
 
+REM ==================================================
+REM         RUN OPENOCD & START GBD SERVER - PIPES
+REM ==================================================
+REM CALL F:\Dev_Tools\openocd-0.10.0-15\bin\openocd.exe --debug=2 -f ./debug/openocd.cfg -c "gdb_port pipe; log_output ./debug/openocd.log"
+
+REM ------------------------------------------------------------------------
+.\debug\FC_k82F_Debug\FC_k82F_Debug.uvprojx
 
 PAUSE
 

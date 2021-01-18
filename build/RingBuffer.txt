@@ -23,17 +23,17 @@
     Section header entry size: 40 bytes (0x28)
 
     Program header entries: 0
-    Section header entries: 36
+    Section header entries: 34
 
     Program header offset: 0 (0x00000000)
-    Section header offset: 5200 (0x00001450)
+    Section header offset: 4744 (0x00001288)
 
     Section header string table index: 1
 
 ========================================================================
 
 ** Section #1 '.strtab' (SHT_STRTAB)
-    Size   : 474 bytes
+    Size   : 459 bytes
 
 
 ** Section #2 '.text' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
@@ -42,24 +42,38 @@
 
 
 ** Section #3 '.text.RingBuffer_Init' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 34 bytes (alignment 4)
+    Size   : 58 bytes (alignment 4)
     Address: 0x00000000
 
     $t.0
     [Anonymous symbol #40]
     RingBuffer_Init
-        0x00000000:    2100        .!      MOVS     r1,#0
-        0x00000002:    f8a01100    ....    STRH     r1,[r0,#0x100]
-        0x00000006:    f8a01102    ....    STRH     r1,[r0,#0x102]
-        0x0000000a:    f8a01104    ....    STRH     r1,[r0,#0x104]
-        0x0000000e:    3801        .8      SUBS     r0,#1
-        0x00000010:    f44f7180    O..q    MOV      r1,#0x100
-        0x00000014:    2220         "      MOVS     r2,#0x20
-        0x00000016:    bf00        ..      NOP      
-        0x00000018:    3901        .9      SUBS     r1,#1
-        0x0000001a:    f8002f01    .../    STRB     r2,[r0,#1]!
-        0x0000001e:    d1fb        ..      BNE      {pc}-0x6 ; 0x18
-        0x00000020:    4770        pG      BX       lr
+        0x00000000:    b082        ..      SUB      sp,sp,#8
+        0x00000002:    9001        ..      STR      r0,[sp,#4]
+        0x00000004:    9801        ..      LDR      r0,[sp,#4]
+        0x00000006:    2100        .!      MOVS     r1,#0
+        0x00000008:    f8a01100    ....    STRH     r1,[r0,#0x100]
+        0x0000000c:    9801        ..      LDR      r0,[sp,#4]
+        0x0000000e:    f8a01102    ....    STRH     r1,[r0,#0x102]
+        0x00000012:    9801        ..      LDR      r0,[sp,#4]
+        0x00000014:    f8a01104    ....    STRH     r1,[r0,#0x104]
+        0x00000018:    9100        ..      STR      r1,[sp,#0]
+        0x0000001a:    e7ff        ..      B        {pc}+0x2 ; 0x1c
+        0x0000001c:    9800        ..      LDR      r0,[sp,#0]
+        0x0000001e:    28ff        .(      CMP      r0,#0xff
+        0x00000020:    d809        ..      BHI      {pc}+0x16 ; 0x36
+        0x00000022:    e7ff        ..      B        {pc}+0x2 ; 0x24
+        0x00000024:    9801        ..      LDR      r0,[sp,#4]
+        0x00000026:    9900        ..      LDR      r1,[sp,#0]
+        0x00000028:    2220         "      MOVS     r2,#0x20
+        0x0000002a:    5442        BT      STRB     r2,[r0,r1]
+        0x0000002c:    e7ff        ..      B        {pc}+0x2 ; 0x2e
+        0x0000002e:    9800        ..      LDR      r0,[sp,#0]
+        0x00000030:    3001        .0      ADDS     r0,#1
+        0x00000032:    9000        ..      STR      r0,[sp,#0]
+        0x00000034:    e7f2        ..      B        {pc}-0x18 ; 0x1c
+        0x00000036:    b002        ..      ADD      sp,sp,#8
+        0x00000038:    4770        pG      BX       lr
 
 ** Section #4 '.ARM.exidx.text.RingBuffer_Init' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
@@ -69,22 +83,26 @@
 
 ** Section #5 '.rel.ARM.exidx.text.RingBuffer_Init' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #35 '.symtab'
+    Symbol table #33 '.symtab'
     1 relocations applied to section #4 '.ARM.exidx.text.RingBuffer_Init'
 
 
 ** Section #6 '.text.RingBuffer_Full' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 16 bytes (alignment 4)
+    Size   : 24 bytes (alignment 4)
     Address: 0x00000000
 
     $t.1
     [Anonymous symbol #41]
     RingBuffer_Full
-        0x00000000:    f8b00100    ....    LDRH     r0,[r0,#0x100]
-        0x00000004:    f5a07080    ...p    SUB      r0,r0,#0x100
-        0x00000008:    fab0f080    ....    CLZ      r0,r0
-        0x0000000c:    0940        @.      LSRS     r0,r0,#5
-        0x0000000e:    4770        pG      BX       lr
+        0x00000000:    b081        ..      SUB      sp,sp,#4
+        0x00000002:    9000        ..      STR      r0,[sp,#0]
+        0x00000004:    9800        ..      LDR      r0,[sp,#0]
+        0x00000006:    f8b00100    ....    LDRH     r0,[r0,#0x100]
+        0x0000000a:    f5a07080    ...p    SUB      r0,r0,#0x100
+        0x0000000e:    fab0f080    ....    CLZ      r0,r0
+        0x00000012:    0940        @.      LSRS     r0,r0,#5
+        0x00000014:    b001        ..      ADD      sp,sp,#4
+        0x00000016:    4770        pG      BX       lr
 
 ** Section #7 '.ARM.exidx.text.RingBuffer_Full' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
@@ -94,21 +112,25 @@
 
 ** Section #8 '.rel.ARM.exidx.text.RingBuffer_Full' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #35 '.symtab'
+    Symbol table #33 '.symtab'
     1 relocations applied to section #7 '.ARM.exidx.text.RingBuffer_Full'
 
 
 ** Section #9 '.text.RingBuffer_Empty' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 12 bytes (alignment 4)
+    Size   : 20 bytes (alignment 4)
     Address: 0x00000000
 
     $t.2
     [Anonymous symbol #42]
     RingBuffer_Empty
-        0x00000000:    f8b00100    ....    LDRH     r0,[r0,#0x100]
-        0x00000004:    fab0f080    ....    CLZ      r0,r0
-        0x00000008:    0940        @.      LSRS     r0,r0,#5
-        0x0000000a:    4770        pG      BX       lr
+        0x00000000:    b081        ..      SUB      sp,sp,#4
+        0x00000002:    9000        ..      STR      r0,[sp,#0]
+        0x00000004:    9800        ..      LDR      r0,[sp,#0]
+        0x00000006:    f8b00100    ....    LDRH     r0,[r0,#0x100]
+        0x0000000a:    fab0f080    ....    CLZ      r0,r0
+        0x0000000e:    0940        @.      LSRS     r0,r0,#5
+        0x00000010:    b001        ..      ADD      sp,sp,#4
+        0x00000012:    4770        pG      BX       lr
 
 ** Section #10 '.ARM.exidx.text.RingBuffer_Empty' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
     Size   : 8 bytes (alignment 4)
@@ -118,43 +140,60 @@
 
 ** Section #11 '.rel.ARM.exidx.text.RingBuffer_Empty' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #35 '.symtab'
+    Symbol table #33 '.symtab'
     1 relocations applied to section #10 '.ARM.exidx.text.RingBuffer_Empty'
 
 
 ** Section #12 '.text.RingBuffer_Enqueue_Byte' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 64 bytes (alignment 4)
+    Size   : 102 bytes (alignment 4)
     Address: 0x00000000
 
     $t.3
     [Anonymous symbol #43]
     RingBuffer_Enqueue_Byte
-        0x00000000:    b5b0        ..      PUSH     {r4,r5,r7,lr}
-        0x00000002:    460d        .F      MOV      r5,r1
-        0x00000004:    4604        .F      MOV      r4,r0
-        0x00000006:    f7fffffe    ....    BL       RingBuffer_Full ; 0x0 Section #6
-        0x0000000a:    2800        .(      CMP      r0,#0
-        0x0000000c:    bf18        ..      IT       NE
-        0x0000000e:    bdb0        ..      POPNE    {r4,r5,r7,pc}
-        0x00000010:    f8b40104    ....    LDRH     r0,[r4,#0x104]
-        0x00000014:    1c41        A.      ADDS     r1,r0,#1
-        0x00000016:    f8a41104    ....    STRH     r1,[r4,#0x104]
-        0x0000001a:    5425        %T      STRB     r5,[r4,r0]
-        0x0000001c:    f8b40104    ....    LDRH     r0,[r4,#0x104]
-        0x00000020:    b2c0        ..      UXTB     r0,r0
-        0x00000022:    f8a40104    ....    STRH     r0,[r4,#0x104]
-        0x00000026:    f3ef8010    ....    MRS      r0,PRIMASK
-        0x0000002a:    f3ef8110    ....    MRS      r1,PRIMASK
-        0x0000002e:    b672        r.      CPSID    i
-        0x00000030:    f8b41100    ....    LDRH     r1,[r4,#0x100]
-        0x00000034:    3101        .1      ADDS     r1,#1
-        0x00000036:    f8a41100    ....    STRH     r1,[r4,#0x100]
-        0x0000003a:    f3808810    ....    MSR      PRIMASK,r0
-        0x0000003e:    bdb0        ..      POP      {r4,r5,r7,pc}
+        0x00000000:    b580        ..      PUSH     {r7,lr}
+        0x00000002:    b088        ..      SUB      sp,sp,#0x20
+        0x00000004:    460a        .F      MOV      r2,r1
+        0x00000006:    9004        ..      STR      r0,[sp,#0x10]
+        0x00000008:    f88d100f    ....    STRB     r1,[sp,#0xf]
+        0x0000000c:    9804        ..      LDR      r0,[sp,#0x10]
+        0x0000000e:    9201        ..      STR      r2,[sp,#4]
+        0x00000010:    f7fffffe    ....    BL       RingBuffer_Full ; 0x0 Section #6
+        0x00000014:    2800        .(      CMP      r0,#0
+        0x00000016:    d124        $.      BNE      {pc}+0x4c ; 0x62
+        0x00000018:    e7ff        ..      B        {pc}+0x2 ; 0x1a
+        0x0000001a:    f89d000f    ....    LDRB     r0,[sp,#0xf]
+        0x0000001e:    9904        ..      LDR      r1,[sp,#0x10]
+        0x00000020:    f8b12104    ...!    LDRH     r2,[r1,#0x104]
+        0x00000024:    1c53        S.      ADDS     r3,r2,#1
+        0x00000026:    f8a13104    ...1    STRH     r3,[r1,#0x104]
+        0x0000002a:    5488        .T      STRB     r0,[r1,r2]
+        0x0000002c:    9804        ..      LDR      r0,[sp,#0x10]
+        0x0000002e:    f8b01104    ....    LDRH     r1,[r0,#0x104]
+        0x00000032:    b2c9        ..      UXTB     r1,r1
+        0x00000034:    f8a01104    ....    STRH     r1,[r0,#0x104]
+        0x00000038:    f3ef8010    ....    MRS      r0,PRIMASK
+        0x0000003c:    9005        ..      STR      r0,[sp,#0x14]
+        0x0000003e:    9805        ..      LDR      r0,[sp,#0x14]
+        0x00000040:    9002        ..      STR      r0,[sp,#8]
+        0x00000042:    f3ef8010    ....    MRS      r0,PRIMASK
+        0x00000046:    b672        r.      CPSID    i
+        0x00000048:    9006        ..      STR      r0,[sp,#0x18]
+        0x0000004a:    9804        ..      LDR      r0,[sp,#0x10]
+        0x0000004c:    f8b01100    ....    LDRH     r1,[r0,#0x100]
+        0x00000050:    3101        .1      ADDS     r1,#1
+        0x00000052:    f8a01100    ....    STRH     r1,[r0,#0x100]
+        0x00000056:    9802        ..      LDR      r0,[sp,#8]
+        0x00000058:    9007        ..      STR      r0,[sp,#0x1c]
+        0x0000005a:    9807        ..      LDR      r0,[sp,#0x1c]
+        0x0000005c:    f3808810    ....    MSR      PRIMASK,r0
+        0x00000060:    e7ff        ..      B        {pc}+0x2 ; 0x62
+        0x00000062:    b008        ..      ADD      sp,sp,#0x20
+        0x00000064:    bd80        ..      POP      {r7,pc}
 
 ** Section #13 '.rel.text.RingBuffer_Enqueue_Byte' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #35 '.symtab'
+    Symbol table #33 '.symtab'
     1 relocations applied to section #12 '.text.RingBuffer_Enqueue_Byte'
 
 
@@ -166,46 +205,64 @@
 
 ** Section #15 '.rel.ARM.exidx.text.RingBuffer_Enqueue_Byte' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #35 '.symtab'
+    Symbol table #33 '.symtab'
     1 relocations applied to section #14 '.ARM.exidx.text.RingBuffer_Enqueue_Byte'
 
 
 ** Section #16 '.text.RingBuffer_Dequeue_Byte' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 72 bytes (alignment 4)
+    Size   : 114 bytes (alignment 4)
     Address: 0x00000000
 
     $t.4
     [Anonymous symbol #44]
     RingBuffer_Dequeue_Byte
-        0x00000000:    b510        ..      PUSH     {r4,lr}
-        0x00000002:    4604        .F      MOV      r4,r0
-        0x00000004:    f7fffffe    ....    BL       RingBuffer_Empty ; 0x0 Section #9
-        0x00000008:    2800        .(      CMP      r0,#0
-        0x0000000a:    bf1c        ..      ITT      NE
-        0x0000000c:    2000        .       MOVNE    r0,#0
-        0x0000000e:    bd10        ..      POPNE    {r4,pc}
-        0x00000010:    f8b40102    ....    LDRH     r0,[r4,#0x102]
-        0x00000014:    5c20         \      LDRB     r0,[r4,r0]
-        0x00000016:    f8b41102    ....    LDRH     r1,[r4,#0x102]
-        0x0000001a:    1c4a        J.      ADDS     r2,r1,#1
-        0x0000001c:    f8a42102    ...!    STRH     r2,[r4,#0x102]
-        0x00000020:    2220         "      MOVS     r2,#0x20
-        0x00000022:    5462        bT      STRB     r2,[r4,r1]
-        0x00000024:    f8b41102    ....    LDRH     r1,[r4,#0x102]
-        0x00000028:    b2c9        ..      UXTB     r1,r1
-        0x0000002a:    f8a41102    ....    STRH     r1,[r4,#0x102]
-        0x0000002e:    f3ef8110    ....    MRS      r1,PRIMASK
-        0x00000032:    f3ef8210    ....    MRS      r2,PRIMASK
-        0x00000036:    b672        r.      CPSID    i
-        0x00000038:    f8b42100    ...!    LDRH     r2,[r4,#0x100]
-        0x0000003c:    3a01        .:      SUBS     r2,#1
-        0x0000003e:    f8a42100    ...!    STRH     r2,[r4,#0x100]
-        0x00000042:    f3818810    ....    MSR      PRIMASK,r1
-        0x00000046:    bd10        ..      POP      {r4,pc}
+        0x00000000:    b580        ..      PUSH     {r7,lr}
+        0x00000002:    b086        ..      SUB      sp,sp,#0x18
+        0x00000004:    9002        ..      STR      r0,[sp,#8]
+        0x00000006:    2000        .       MOVS     r0,#0
+        0x00000008:    f88d0003    ....    STRB     r0,[sp,#3]
+        0x0000000c:    9802        ..      LDR      r0,[sp,#8]
+        0x0000000e:    f7fffffe    ....    BL       RingBuffer_Empty ; 0x0 Section #9
+        0x00000012:    2800        .(      CMP      r0,#0
+        0x00000014:    d129        ).      BNE      {pc}+0x56 ; 0x6a
+        0x00000016:    e7ff        ..      B        {pc}+0x2 ; 0x18
+        0x00000018:    9802        ..      LDR      r0,[sp,#8]
+        0x0000001a:    f8b01102    ....    LDRH     r1,[r0,#0x102]
+        0x0000001e:    5c40        @\      LDRB     r0,[r0,r1]
+        0x00000020:    f88d0003    ....    STRB     r0,[sp,#3]
+        0x00000024:    9802        ..      LDR      r0,[sp,#8]
+        0x00000026:    f8b01102    ....    LDRH     r1,[r0,#0x102]
+        0x0000002a:    1c4a        J.      ADDS     r2,r1,#1
+        0x0000002c:    f8a02102    ...!    STRH     r2,[r0,#0x102]
+        0x00000030:    2220         "      MOVS     r2,#0x20
+        0x00000032:    5442        BT      STRB     r2,[r0,r1]
+        0x00000034:    9802        ..      LDR      r0,[sp,#8]
+        0x00000036:    f8b01102    ....    LDRH     r1,[r0,#0x102]
+        0x0000003a:    b2c9        ..      UXTB     r1,r1
+        0x0000003c:    f8a01102    ....    STRH     r1,[r0,#0x102]
+        0x00000040:    f3ef8010    ....    MRS      r0,PRIMASK
+        0x00000044:    9003        ..      STR      r0,[sp,#0xc]
+        0x00000046:    9803        ..      LDR      r0,[sp,#0xc]
+        0x00000048:    9001        ..      STR      r0,[sp,#4]
+        0x0000004a:    f3ef8010    ....    MRS      r0,PRIMASK
+        0x0000004e:    b672        r.      CPSID    i
+        0x00000050:    9004        ..      STR      r0,[sp,#0x10]
+        0x00000052:    9802        ..      LDR      r0,[sp,#8]
+        0x00000054:    f8b01100    ....    LDRH     r1,[r0,#0x100]
+        0x00000058:    3901        .9      SUBS     r1,#1
+        0x0000005a:    f8a01100    ....    STRH     r1,[r0,#0x100]
+        0x0000005e:    9801        ..      LDR      r0,[sp,#4]
+        0x00000060:    9005        ..      STR      r0,[sp,#0x14]
+        0x00000062:    9805        ..      LDR      r0,[sp,#0x14]
+        0x00000064:    f3808810    ....    MSR      PRIMASK,r0
+        0x00000068:    e7ff        ..      B        {pc}+0x2 ; 0x6a
+        0x0000006a:    f89d0003    ....    LDRB     r0,[sp,#3]
+        0x0000006e:    b006        ..      ADD      sp,sp,#0x18
+        0x00000070:    bd80        ..      POP      {r7,pc}
 
 ** Section #17 '.rel.text.RingBuffer_Dequeue_Byte' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #35 '.symtab'
+    Symbol table #33 '.symtab'
     1 relocations applied to section #16 '.text.RingBuffer_Dequeue_Byte'
 
 
@@ -217,7 +274,7 @@
 
 ** Section #19 '.rel.ARM.exidx.text.RingBuffer_Dequeue_Byte' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #35 '.symtab'
+    Symbol table #33 '.symtab'
     1 relocations applied to section #18 '.ARM.exidx.text.RingBuffer_Dequeue_Byte'
 
 
@@ -225,75 +282,65 @@
     Size   : 437 bytes
 
 
-** Section #21 '.debug_loc' (SHT_PROGBITS)
-    Size   : 379 bytes
-
-
-** Section #22 '.rel.debug_loc' (SHT_REL)
-    Size   : 96 bytes (alignment 4)
-    Symbol table #35 '.symtab'
-    12 relocations applied to section #21 '.debug_loc'
-
-
-** Section #23 '.debug_abbrev' (SHT_PROGBITS)
+** Section #21 '.debug_abbrev' (SHT_PROGBITS)
     Size   : 309 bytes
 
 
-** Section #24 '.debug_info' (SHT_PROGBITS)
-    Size   : 680 bytes
+** Section #22 '.debug_info' (SHT_PROGBITS)
+    Size   : 658 bytes
 
 
-** Section #25 '.rel.debug_info' (SHT_REL)
-    Size   : 600 bytes (alignment 4)
-    Symbol table #35 '.symtab'
-    75 relocations applied to section #24 '.debug_info'
+** Section #23 '.rel.debug_info' (SHT_REL)
+    Size   : 424 bytes (alignment 4)
+    Symbol table #33 '.symtab'
+    53 relocations applied to section #22 '.debug_info'
 
 
-** Section #26 '.debug_ranges' (SHT_PROGBITS)
+** Section #24 '.debug_ranges' (SHT_PROGBITS)
     Size   : 48 bytes
 
 
-** Section #27 '.rel.debug_ranges' (SHT_REL)
+** Section #25 '.rel.debug_ranges' (SHT_REL)
     Size   : 80 bytes (alignment 4)
-    Symbol table #35 '.symtab'
-    10 relocations applied to section #26 '.debug_ranges'
+    Symbol table #33 '.symtab'
+    10 relocations applied to section #24 '.debug_ranges'
 
 
-** Section #28 '.comment' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
+** Section #26 '.comment' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
     Size   : 56 bytes
 
 
-** Section #29 '.note.GNU-stack' (SHT_PROGBITS)
+** Section #27 '.note.GNU-stack' (SHT_PROGBITS)
     Size   : 0 bytes
 
 
-** Section #30 '.ARM.attributes' (SHT_ARM_ATTRIBUTES)
+** Section #28 '.ARM.attributes' (SHT_ARM_ATTRIBUTES)
     Size   : 88 bytes
 
 
-** Section #31 '.debug_frame' (SHT_PROGBITS)
-    Size   : 116 bytes (alignment 4)
+** Section #29 '.debug_frame' (SHT_PROGBITS)
+    Size   : 136 bytes (alignment 4)
 
 
-** Section #32 '.rel.debug_frame' (SHT_REL)
+** Section #30 '.rel.debug_frame' (SHT_REL)
     Size   : 80 bytes (alignment 4)
-    Symbol table #35 '.symtab'
-    10 relocations applied to section #31 '.debug_frame'
+    Symbol table #33 '.symtab'
+    10 relocations applied to section #29 '.debug_frame'
 
 
-** Section #33 '.debug_line' (SHT_PROGBITS)
-    Size   : 476 bytes
+** Section #31 '.debug_line' (SHT_PROGBITS)
+    Size   : 581 bytes
 
 
-** Section #34 '.rel.debug_line' (SHT_REL)
+** Section #32 '.rel.debug_line' (SHT_REL)
     Size   : 40 bytes (alignment 4)
-    Symbol table #35 '.symtab'
-    5 relocations applied to section #33 '.debug_line'
+    Symbol table #33 '.symtab'
+    5 relocations applied to section #31 '.debug_line'
 
 
-** Section #35 '.symtab' (SHT_SYMTAB)
-    Size   : 880 bytes (alignment 4)
+** Section #33 '.symtab' (SHT_SYMTAB)
+    Size   : 864 bytes (alignment 4)
     String table #1 '.strtab'
-    Last local symbol no. 49
+    Last local symbol no. 48
 
 
