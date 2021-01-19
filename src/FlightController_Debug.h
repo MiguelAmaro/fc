@@ -18,7 +18,7 @@
 #define LPUART_OVERSAMPLE_RATIO   (16)
 #define MUX_LPUART4_TX_RX         (3U)
 #define BUS_CLOCK                 (24e6)
-#define UART_SRC_CLOCK            (48e6)
+#define SYS_CLOCK                 (48e6)
 
 internal RingBuffer transmitQueue, receiveQueue;
 
@@ -49,14 +49,14 @@ Debug_init_uart(u32 baud_rate)
     PORTC->PCR[14] = PORT_PCR_MUX(MUX_LPUART4_TX_RX); /// RX
     PORTC->PCR[15] = PORT_PCR_MUX(MUX_LPUART4_TX_RX); /// TX
     
-    u16 baud_modulo = (u16)((UART_SRC_CLOCK)/(baud_rate * LPUART_OVERSAMPLE_RATIO)); 
+    u16 baud_modulo = (u16)((SYS_CLOCK)/(baud_rate * LPUART_OVERSAMPLE_RATIO)); 
     LPUART4->BAUD  &= ~LPUART_BAUD_SBR_MASK;
     LPUART4->BAUD  |=  LPUART_BAUD_SBR(baud_modulo);
     LPUART4->BAUD  |=  LPUART_BAUD_OSR(LPUART_OVERSAMPLE_RATIO - 1);
     
     LPUART4->BAUD |= LPUART_BAUD_RXEDGIE(0) | LPUART_BAUD_SBNS(0) | LPUART_BAUD_LBKDIE(0);
     // NOTE(MIGUEL): ARE THESE CORRECT AT RT
-    LPUART4->CTRL = LPUART_CTRL_LOOPS  (0) | LPUART_CTRL_M   (0) | LPUART_CTRL_PE    (0);
+    LPUART4->CTRL  = LPUART_CTRL_LOOPS  (0) | LPUART_CTRL_M   (0) | LPUART_CTRL_PE    (0);
     
     /// Enables interrupt on Error Conditions REF pg.1928
     LPUART4->CTRL = 
@@ -127,7 +127,7 @@ LPUART4_IRQHandler(void)
         }
     }
     /// CASE: TRANSMITTER INTERUPT ENABLED And TX DATA REGISTER EMPTY - BYTE TRANSMITTING
-    if ( (LPUART4->CTRL & LPUART_CTRL_TIE_MASK) &&
+    if ((LPUART4->CTRL & LPUART_CTRL_TIE_MASK ) &&
         (LPUART4->STAT & LPUART_STAT_TDRE_MASK) )
     { 
         if (!RingBuffer_Empty(&transmitQueue)) 

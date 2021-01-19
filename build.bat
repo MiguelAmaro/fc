@@ -40,6 +40,7 @@ SET Compiler_Common=^
  -MD
 
 SET Warnings=^
+ -Weverything^
  -Wno-packed^
  -Wno-missing-variable-declarations^
  -Wno-missing-prototypes^
@@ -48,12 +49,12 @@ SET Warnings=^
  -Wno-nonportable-include-path^
  -Wno-reserved-id-macro^
  -Wno-unused-macros^
+ -Wno-unused-parameter^
  -Wno-documentation-unknown-command^
  -Wno-documentation^
  -Wno-license-management^
  -Wno-parentheses-equality^
- -Wno-shadow^
- -Weverything
+ -Wno-shadow
 
 SET Compiler_Flags= %Compiler_Common% %Warnings%
 

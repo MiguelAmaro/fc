@@ -9,4 +9,5 @@ K82F_FlightController.o: ..\src\K82F_FlightController.c \
   C:\Keil_v5\ARM\ARMCLANG\bin\..\include\arm_acle.h \
   C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\system_MK82F25615.h \
   ..\src\LAL.h ..\src\FlightController_Debug.h \
-  C:\Keil_v5\ARM\ARMCLANG\bin\..\include\stdio.h ..\src\RingBuffer.h
+  C:\Keil_v5\ARM\ARMCLANG\bin\..\include\stdio.h ..\src\RingBuffer.h \
+  ..\src\FlightController_OnboardLEDs.h
