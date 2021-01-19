@@ -13,14 +13,17 @@ void FTM0_IRQHandler(void)
 }
 
 #define DSHOT_CMD_BUFFER_SIZE (256)
-u8  Dshot_command_buffer[DSHOT_CMD_BUFFER_SIZE];
-u16 Dshot_last_command = 48;
+global u8  Dshot_command_buffer[DSHOT_CMD_BUFFER_SIZE];
+global u16 Dshot_last_command = 48;
 
 int 
 main(void) 
 {
     Debug_init_uart(115200);
     OBLEDs_init();
+    
+    // NOTE(MIGUEL): DUE TO PIN SHARING MODULES MUST BE TESTED INDIVIDUALLY
+    // TODO(MIGUEL): CREATE A PIN MUTUAL EXCLUSION SYSTEM
     
     // ************ ECOMPASS CONTROL *************
     {
@@ -40,6 +43,7 @@ main(void)
         // Enable PORTA and PORTC
         SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
         SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
+        
         // Config PTA Pins
         PORTA->PCR[ 1] = PORT_PCR_MUX(4); /// SDATA
         PORTA->PCR[ 2] = PORT_PCR_MUX(4); /// SCLOCK
@@ -50,11 +54,31 @@ main(void)
         
         
     }
+    
     // ************ RADIO CONTROL *************
     {
         // ****************************************
         // SPI SETUP
         // ****************************************
+        SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+        SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
+        SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
+        
+        // Config PTB Pins
+        // NOTE(MIGUEL): PTB23 Shared with Camera 
+        PORTB->PCR[ 9] = PORT_PCR_MUX ( 2); /// PCS1
+        PORTB->PCR[23] = PORT_PCR_MUX ( 1); /// IRQ
+        GPIOC->PDDR   |= GPIO_PDDR_PDD(23); /// GPIO
+        
+        // Config PTC Pins
+        PORTC->PCR[0] = PORT_PCR_MUX (1); /// CHIP ENABLE
+        GPIOC->PDDR  |= GPIO_PDDR_PDD(0); /// GPIO
+        
+        // Config PTD Pins
+        PORTC->PCR[5] = PORT_PCR_MUX ( 7); /// SCLOCK
+        PORTC->PCR[6] = PORT_PCR_MUX ( 7); /// SOUT
+        PORTC->PCR[7] = PORT_PCR_MUX ( 7); /// SIN
+        GPIOC->PDDR  |= GPIO_PDDR_PDD(13);
         
         
         // ****************************************
@@ -62,6 +86,7 @@ main(void)
         // ****************************************
         
     }
+    
     // ************ MOTOR CONTROL *************
     {
         /*
@@ -122,6 +147,8 @@ main(void)
         */
         
     }
+    
+    // ************ CAMERA CONTROL *************
     {
         
         // ****************************************
@@ -132,9 +159,10 @@ main(void)
         SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
         
         // NOTE(MIGUEL): PTA1 & PTA2 are shared with ECompass
-        PORTA->PCR[ 1] = PORT_PCR_MUX ( 1); /// SDATA
-        PORTA->PCR[ 2] = PORT_PCR_MUX ( 1); /// SCLOCK
+        PORTA->PCR[ 1] = PORT_PCR_MUX(1); /// SDATA
+        PORTA->PCR[ 2] = PORT_PCR_MUX(1); /// SCLOCK
         
+        // NOTE(MIGUEL): PTB23 Shared with Radio 
         PORTB->PCR[ 0] = PORT_PCR_MUX(7); /// FXIO_DATA__0 - CAM_PCLK
         PORTB->PCR[ 2] = PORT_PCR_MUX(7); /// FXIO_DATA__2 - CAM_VSYNC
         PORTB->PCR[ 3] = PORT_PCR_MUX(7); /// FXIO_DATA__3 - CAM_HREF
@@ -142,15 +170,19 @@ main(void)
         PORTB->PCR[11] = PORT_PCR_MUX(7); /// FXIO_DATA__5 - CAM_DATA_1
         PORTB->PCR[18] = PORT_PCR_MUX(7); /// FXIO_DATA__6 - CAM_DATA_2
         PORTB->PCR[19] = PORT_PCR_MUX(7); /// FXIO_DATA__7 - CAM_DATA_3
+        PORTB->PCR[20] = PORT_PCR_MUX(7); /// FXIO_DATA__8 - CAM_DATA_4
         PORTB->PCR[21] = PORT_PCR_MUX(7); /// FXIO_DATA__9 - CAM_DATA_5
-        PORTB->PCR[22] = PORT_PCR_MUX(7); /// FXIO_DATA__6 - CAM_DATA_2
+        PORTB->PCR[22] = PORT_PCR_MUX(7); /// FXIO_DATA_10 - CAM_DATA_6
         PORTB->PCR[23] = PORT_PCR_MUX(7); /// FXIO_DATA_11 - CAM_DATA_7
         
         PORTC->PCR[ 3] = PORT_PCR_MUX(5); /// CLOCKOUT
         PORTC->PCR[ 8] = PORT_PCR_MUX(1); /// CAM RESET
         PORTC->PCR[ 9] = PORT_PCR_MUX(1); /// POWER DOWN
-        GPIOC->PDDR |= GPIO_PDDR_PDD (8);
-        GPIOC->PDDR |= GPIO_PDDR_PDD (9);
+        
+        GPIOC->PDDR   |= GPIO_PDDR_PDD(8);
+        GPIOC->PDDR   |= GPIO_PDDR_PDD(9);
+        
+        
         // ****************************************
         // OV7670 SETUP
         // ****************************************
