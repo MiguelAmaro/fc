@@ -231,7 +231,7 @@ void SystemCoreClockUpdate (void)
 	}
 	else if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x40U)
 	{
-		/* Internal reference clock is selected */
+		// Internal reference clock is selected
 		if ((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U) 
 		{
 			MCGOUTClock = CPU_INT_SLOW_CLK_HZ; // Slow internal reference clock selected
@@ -248,17 +248,17 @@ void SystemCoreClockUpdate (void)
 		switch (MCG->C7 & MCG_C7_OSCSEL_MASK)
 		{
 			case 0x00U:
-			MCGOUTClock = CPU_XTAL_CLK_HZ;   /* System oscillator drives MCG clock */
+			MCGOUTClock = CPU_XTAL_CLK_HZ;   // System oscillator drives MCG clock
 			break;
 			
 			case 0x01U:
-			MCGOUTClock = CPU_XTAL32k_CLK_HZ; /* RTC 32 kHz oscillator drives MCG clock */
+			MCGOUTClock = CPU_XTAL32k_CLK_HZ; // RTC 32 kHz oscillator drives MCG clock
 			break;
 			
 			case 0x02U:
 			
 			default:
-			MCGOUTClock = CPU_INT_IRC_CLK_HZ; /* IRC 48MHz oscillator drives MCG clock */
+			MCGOUTClock = CPU_INT_IRC_CLK_HZ; // IRC 48MHz oscillator drives MCG clock
 			break;
 		}
 	}

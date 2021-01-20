@@ -23,17 +23,17 @@
     Section header entry size: 40 bytes (0x28)
 
     Program header entries: 0
-    Section header entries: 57
+    Section header entries: 55
 
     Program header offset: 0 (0x00000000)
-    Section header offset: 18400 (0x000047e0)
+    Section header offset: 19560 (0x00004c68)
 
     Section header string table index: 1
 
 ========================================================================
 
 ** Section #1 '.strtab' (SHT_STRTAB)
-    Size   : 941 bytes
+    Size   : 899 bytes
 
 
 ** Section #2 '.text' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
@@ -46,7 +46,7 @@
     Address: 0x00000000
 
     $t.0
-    [Anonymous symbol #276]
+    [Anonymous symbol #303]
     Debug_init_uart
         0x00000000:    b580        ..      PUSH     {r7,lr}
         0x00000002:    b086        ..      SUB      sp,sp,#0x18
@@ -165,7 +165,7 @@
 
 ** Section #4 '.rel.text.Debug_init_uart' (SHT_REL)
     Size   : 96 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     12 relocations applied to section #3 '.text.Debug_init_uart'
 
 
@@ -177,7 +177,7 @@
 
 ** Section #6 '.rel.ARM.exidx.text.Debug_init_uart' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #5 '.ARM.exidx.text.Debug_init_uart'
 
 
@@ -187,7 +187,7 @@
 
     $t.2
     __NVIC_SetPriority
-    [Anonymous symbol #277]
+    [Anonymous symbol #304]
         0x00000000:    b082        ..      SUB      sp,sp,#8
         0x00000002:    4602        .F      MOV      r2,r0
         0x00000004:    f88d0007    ....    STRB     r0,[sp,#7]
@@ -222,7 +222,7 @@
 
 ** Section #9 '.rel.ARM.exidx.text.__NVIC_SetPriority' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #8 '.ARM.exidx.text.__NVIC_SetPriority'
 
 
@@ -232,7 +232,7 @@
 
     $t.3
     __NVIC_ClearPendingIRQ
-    [Anonymous symbol #278]
+    [Anonymous symbol #305]
         0x00000000:    b081        ..      SUB      sp,sp,#4
         0x00000002:    4601        .F      MOV      r1,r0
         0x00000004:    f88d0003    ....    STRB     r0,[sp,#3]
@@ -260,7 +260,7 @@
 
 ** Section #12 '.rel.ARM.exidx.text.__NVIC_ClearPendingIRQ' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #11 '.ARM.exidx.text.__NVIC_ClearPendingIRQ'
 
 
@@ -270,7 +270,7 @@
 
     $t.4
     __NVIC_EnableIRQ
-    [Anonymous symbol #279]
+    [Anonymous symbol #306]
         0x00000000:    b081        ..      SUB      sp,sp,#4
         0x00000002:    4601        .F      MOV      r1,r0
         0x00000004:    f88d0003    ....    STRB     r0,[sp,#3]
@@ -298,7 +298,7 @@
 
 ** Section #15 '.rel.ARM.exidx.text.__NVIC_EnableIRQ' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #14 '.ARM.exidx.text.__NVIC_EnableIRQ'
 
 
@@ -307,7 +307,7 @@
     Address: 0x00000000
 
     $t.5
-    [Anonymous symbol #280]
+    [Anonymous symbol #307]
     LPUART4_IRQHandler
         0x00000000:    b580        ..      PUSH     {r7,lr}
         0x00000002:    b082        ..      SUB      sp,sp,#8
@@ -390,7 +390,7 @@
 
 ** Section #17 '.rel.text.LPUART4_IRQHandler' (SHT_REL)
     Size   : 96 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     12 relocations applied to section #16 '.text.LPUART4_IRQHandler'
 
 
@@ -402,7 +402,7 @@
 
 ** Section #19 '.rel.ARM.exidx.text.LPUART4_IRQHandler' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #18 '.ARM.exidx.text.LPUART4_IRQHandler'
 
 
@@ -411,7 +411,7 @@
     Address: 0x00000000
 
     $t.6
-    [Anonymous symbol #281]
+    [Anonymous symbol #308]
     fputc
         0x00000000:    b083        ..      SUB      sp,sp,#0xc
         0x00000002:    9002        ..      STR      r0,[sp,#8]
@@ -456,7 +456,7 @@
 
 ** Section #22 '.rel.ARM.exidx.text.fputc' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #21 '.ARM.exidx.text.fputc'
 
 
@@ -465,7 +465,7 @@
     Address: 0x00000000
 
     $t.7
-    [Anonymous symbol #282]
+    [Anonymous symbol #309]
     fgetc
         0x00000000:    b081        ..      SUB      sp,sp,#4
         0x00000002:    9000        ..      STR      r0,[sp,#0]
@@ -493,7 +493,7 @@
 
 ** Section #25 '.rel.ARM.exidx.text.fgetc' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #24 '.ARM.exidx.text.fgetc'
 
 
@@ -502,7 +502,7 @@
     Address: 0x00000000
 
     $t.8
-    [Anonymous symbol #283]
+    [Anonymous symbol #310]
     OBLEDs_init
         0x00000000:    f2480038    H.8.    MOV      r0,#0x8038
         0x00000004:    f2c40004    ....    MOVT     r0,#0x4004
@@ -551,7 +551,7 @@
 
 ** Section #28 '.rel.ARM.exidx.text.OBLEDs_init' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #27 '.ARM.exidx.text.OBLEDs_init'
 
 
@@ -560,7 +560,7 @@
     Address: 0x00000000
 
     $t.9
-    [Anonymous symbol #284]
+    [Anonymous symbol #311]
     FTM0_IRQHandler
         0x00000000:    4770        pG      BX       lr
 
@@ -572,19 +572,19 @@
 
 ** Section #31 '.rel.ARM.exidx.text.FTM0_IRQHandler' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #30 '.ARM.exidx.text.FTM0_IRQHandler'
 
 
 ** Section #32 '.text.main' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
-    Size   : 410 bytes (alignment 4)
+    Size   : 404 bytes (alignment 4)
     Address: 0x00000000
 
     $t.10
-    [Anonymous symbol #285]
+    [Anonymous symbol #312]
     main
         0x00000000:    b580        ..      PUSH     {r7,lr}
-        0x00000002:    b082        ..      SUB      sp,sp,#8
+        0x00000002:    b084        ..      SUB      sp,sp,#0x10
         0x00000004:    f44f30e1    O..0    MOV      r0,#0x1c200
         0x00000008:    f7fffffe    ....    BL       Debug_init_uart ; 0x0 Section #3
         0x0000000c:    f7fffffe    ....    BL       OBLEDs_init ; 0x0 Section #26
@@ -600,122 +600,132 @@
         0x0000002c:    f2c40104    ....    MOVT     r1,#0x4004
         0x00000030:    f44f6280    O..b    MOV      r2,#0x400
         0x00000034:    600a        .`      STR      r2,[r1,#0]
-        0x00000036:    f2490308    I...    MOV      r3,#0x9008
-        0x0000003a:    f2c40304    ....    MOVT     r3,#0x4004
-        0x0000003e:    601a        .`      STR      r2,[r3,#0]
-        0x00000040:    f24b0234    K.4.    MOV      r2,#0xb034
-        0x00000044:    f2c40204    ....    MOVT     r2,#0x4004
-        0x00000048:    f44f7c80    O..|    MOV      r12,#0x100
-        0x0000004c:    f8c2c000    ....    STR      r12,[r2,#0]
-        0x00000050:    f24f0294    O...    MOV      r2,#0xf094
-        0x00000054:    f2c4020f    ....    MOVT     r2,#0x400f
-        0x00000058:    f8d2e000    ....    LDR      lr,[r2,#0]
-        0x0000005c:    f04e0e0d    N...    ORR      lr,lr,#0xd
-        0x00000060:    f8c2e000    ....    STR      lr,[r2,#0]
-        0x00000064:    f8d0e000    ....    LDR      lr,[r0,#0]
-        0x00000068:    f44e7e00    N..~    ORR      lr,lr,#0x200
-        0x0000006c:    f8c0e000    ....    STR      lr,[r0,#0]
-        0x00000070:    f8d0e000    ....    LDR      lr,[r0,#0]
-        0x00000074:    f44e6e80    N..n    ORR      lr,lr,#0x400
-        0x00000078:    f8c0e000    ....    STR      lr,[r0,#0]
-        0x0000007c:    f8d0e000    ....    LDR      lr,[r0,#0]
-        0x00000080:    f44e6e00    N..n    ORR      lr,lr,#0x800
-        0x00000084:    f8c0e000    ....    STR      lr,[r0,#0]
-        0x00000088:    f8c1c000    ....    STR      r12,[r1,#0]
-        0x0000008c:    f8c3c000    ....    STR      r12,[r3,#0]
-        0x00000090:    f24a0000    J...    MOVW     r0,#0xa000
-        0x00000094:    f2c40004    ....    MOVT     r0,#0x4004
-        0x00000098:    f44f61e0    O..a    MOV      r1,#0x700
-        0x0000009c:    6001        .`      STR      r1,[r0,#0]
-        0x0000009e:    f24a0008    J...    MOV      r0,#0xa008
-        0x000000a2:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000a6:    6001        .`      STR      r1,[r0,#0]
-        0x000000a8:    f24a000c    J...    MOV      r0,#0xa00c
-        0x000000ac:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000b0:    6001        .`      STR      r1,[r0,#0]
-        0x000000b2:    f24a0028    J.(.    MOV      r0,#0xa028
-        0x000000b6:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000ba:    6001        .`      STR      r1,[r0,#0]
-        0x000000bc:    f24a002c    J.,.    MOV      r0,#0xa02c
-        0x000000c0:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000c4:    6001        .`      STR      r1,[r0,#0]
-        0x000000c6:    f24a0048    J.H.    MOV      r0,#0xa048
-        0x000000ca:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000ce:    6001        .`      STR      r1,[r0,#0]
-        0x000000d0:    f24a004c    J.L.    MOV      r0,#0xa04c
-        0x000000d4:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000d8:    6001        .`      STR      r1,[r0,#0]
-        0x000000da:    f24a0054    J.T.    MOV      r0,#0xa054
-        0x000000de:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000e2:    6001        .`      STR      r1,[r0,#0]
-        0x000000e4:    f24a0058    J.X.    MOV      r0,#0xa058
-        0x000000e8:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000ec:    6001        .`      STR      r1,[r0,#0]
-        0x000000ee:    f24a005c    J.\.    MOV      r0,#0xa05c
-        0x000000f2:    f2c40004    ....    MOVT     r0,#0x4004
-        0x000000f6:    6001        .`      STR      r1,[r0,#0]
-        0x000000f8:    f24b000c    K...    MOV      r0,#0xb00c
-        0x000000fc:    f2c40004    ....    MOVT     r0,#0x4004
-        0x00000100:    f44f61a0    O..a    MOV      r1,#0x500
-        0x00000104:    6001        .`      STR      r1,[r0,#0]
-        0x00000106:    f24b0020    K. .    MOV      r0,#0xb020
-        0x0000010a:    f2c40004    ....    MOVT     r0,#0x4004
-        0x0000010e:    f8c0c000    ....    STR      r12,[r0,#0]
-        0x00000112:    f24b0024    K.$.    MOV      r0,#0xb024
-        0x00000116:    f2c40004    ....    MOVT     r0,#0x4004
-        0x0000011a:    f8c0c000    ....    STR      r12,[r0,#0]
-        0x0000011e:    6810        .h      LDR      r0,[r2,#0]
-        0x00000120:    f0400008    @...    ORR      r0,r0,#8
-        0x00000124:    6010        .`      STR      r0,[r2,#0]
-        0x00000126:    6810        .h      LDR      r0,[r2,#0]
-        0x00000128:    f0400009    @...    ORR      r0,r0,#9
-        0x0000012c:    6010        .`      STR      r0,[r2,#0]
-        0x0000012e:    2000        .       MOVS     r0,#0
-        0x00000130:    9001        ..      STR      r0,[sp,#4]
-        0x00000132:    e7ff        ..      B        {pc}+0x2 ; 0x134
-        0x00000134:    f2400000    @...    MOVW     r0,#:LOWER16: SystemCoreClock
-        0x00000138:    f2c00000    ....    MOVT     r0,#:UPPER16: SystemCoreClock
-        0x0000013c:    6801        .h      LDR      r1,[r0,#0]
-        0x0000013e:    f2400000    @...    MOVW     r0,#:LOWER16: .L.str
-        0x00000142:    f2c00000    ....    MOVT     r0,#:UPPER16: .L.str
-        0x00000146:    f7fffffe    ....    BL       printf
-        0x0000014a:    9901        ..      LDR      r1,[sp,#4]
-        0x0000014c:    29fa        .)      CMP      r1,#0xfa
-        0x0000014e:    d109        ..      BNE      {pc}+0x16 ; 0x164
-        0x00000150:    e7ff        ..      B        {pc}+0x2 ; 0x152
-        0x00000152:    f24f0084    O...    MOV      r0,#0xf084
-        0x00000156:    f2c4000f    ....    MOVT     r0,#0x400f
-        0x0000015a:    6801        .h      LDR      r1,[r0,#0]
-        0x0000015c:    f4416180    A..a    ORR      r1,r1,#0x400
-        0x00000160:    6001        .`      STR      r1,[r0,#0]
-        0x00000162:    e7ff        ..      B        {pc}+0x2 ; 0x164
-        0x00000164:    9801        ..      LDR      r0,[sp,#4]
-        0x00000166:    f5b07ffa    ....    CMP      r0,#0x1f4
-        0x0000016a:    d109        ..      BNE      {pc}+0x16 ; 0x180
-        0x0000016c:    e7ff        ..      B        {pc}+0x2 ; 0x16e
-        0x0000016e:    f24f0088    O...    MOV      r0,#0xf088
-        0x00000172:    f2c4000f    ....    MOVT     r0,#0x400f
-        0x00000176:    6801        .h      LDR      r1,[r0,#0]
-        0x00000178:    f4416180    A..a    ORR      r1,r1,#0x400
-        0x0000017c:    6001        .`      STR      r1,[r0,#0]
-        0x0000017e:    e008        ..      B        {pc}+0x14 ; 0x192
-        0x00000180:    9801        ..      LDR      r0,[sp,#4]
-        0x00000182:    f5b07f7a    ..z.    CMP      r0,#0x3e8
-        0x00000186:    d103        ..      BNE      {pc}+0xa ; 0x190
+        0x00000036:    f2490108    I...    MOV      r1,#0x9008
+        0x0000003a:    f2c40104    ....    MOVT     r1,#0x4004
+        0x0000003e:    600a        .`      STR      r2,[r1,#0]
+        0x00000040:    f24b0134    K.4.    MOV      r1,#0xb034
+        0x00000044:    f2c40104    ....    MOVT     r1,#0x4004
+        0x00000048:    f44f7380    O..s    MOV      r3,#0x100
+        0x0000004c:    600b        .`      STR      r3,[r1,#0]
+        0x0000004e:    f24f0194    O...    MOV      r1,#0xf094
+        0x00000052:    f2c4010f    ....    MOVT     r1,#0x400f
+        0x00000056:    680b        .h      LDR      r3,[r1,#0]
+        0x00000058:    f043030d    C...    ORR      r3,r3,#0xd
+        0x0000005c:    600b        .`      STR      r3,[r1,#0]
+        0x0000005e:    f248013c    H.<.    MOV      r1,#0x803c
+        0x00000062:    f2c40104    ....    MOVT     r1,#0x4004
+        0x00000066:    680b        .h      LDR      r3,[r1,#0]
+        0x00000068:    f0437380    C..s    ORR      r3,r3,#0x1000000
+        0x0000006c:    600b        .`      STR      r3,[r1,#0]
+        0x0000006e:    6801        .h      LDR      r1,[r0,#0]
+        0x00000070:    f4416100    A..a    ORR      r1,r1,#0x800
+        0x00000074:    6001        .`      STR      r1,[r0,#0]
+        0x00000076:    f24b000c    K...    MOV      r0,#0xb00c
+        0x0000007a:    f2c40004    ....    MOVT     r0,#0x4004
+        0x0000007e:    6002        .`      STR      r2,[r0,#0]
+        0x00000080:    f2480084    H...    MOV      r0,#0x8084
+        0x00000084:    f2c40003    ....    MOVT     r0,#0x4003
+        0x00000088:    21c0        .!      MOVS     r1,#0xc0
+        0x0000008a:    6001        .`      STR      r1,[r0,#0]
+        0x0000008c:    f2480074    H.t.    MOV      r0,#0x8074
+        0x00000090:    f2c40003    ....    MOVT     r0,#0x4003
+        0x00000094:    2100        .!      MOVS     r1,#0
+        0x00000096:    6001        .`      STR      r1,[r0,#0]
+        0x00000098:    f2480000    H...    MOVW     r0,#0x8000
+        0x0000009c:    f2c40003    ....    MOVT     r0,#0x4003
+        0x000000a0:    6001        .`      STR      r1,[r0,#0]
+        0x000000a2:    f2480204    H...    MOV      r2,#0x8004
+        0x000000a6:    f2c40203    ....    MOVT     r2,#0x4003
+        0x000000aa:    6011        .`      STR      r1,[r2,#0]
+        0x000000ac:    f6430280    C...    MOVW     r2,#0x3880
+        0x000000b0:    f2c00201    ....    MOVT     r2,#1
+        0x000000b4:    9203        ..      STR      r2,[sp,#0xc]
+        0x000000b6:    9a03        ..      LDR      r2,[sp,#0xc]
+        0x000000b8:    f2400300    @...    MOVW     r3,#:LOWER16: .L.str
+        0x000000bc:    f2c00300    ....    MOVT     r3,#:UPPER16: .L.str
+        0x000000c0:    9001        ..      STR      r0,[sp,#4]
+        0x000000c2:    4618        .F      MOV      r0,r3
+        0x000000c4:    9100        ..      STR      r1,[sp,#0]
+        0x000000c6:    4611        .F      MOV      r1,r2
+        0x000000c8:    f7fffffe    ....    BL       printf
+        0x000000cc:    9903        ..      LDR      r1,[sp,#0xc]
+        0x000000ce:    3901        .9      SUBS     r1,#1
+        0x000000d0:    f2480208    H...    MOV      r2,#0x8008
+        0x000000d4:    f2c40203    ....    MOVT     r2,#0x4003
+        0x000000d8:    6011        .`      STR      r1,[r2,#0]
+        0x000000da:    2108        .!      MOVS     r1,#8
+        0x000000dc:    9a01        ..      LDR      r2,[sp,#4]
+        0x000000de:    6011        .`      STR      r1,[r2,#0]
+        0x000000e0:    f2480154    H.T.    MOV      r1,#0x8054
+        0x000000e4:    f2c40103    ....    MOVT     r1,#0x4003
+        0x000000e8:    680b        .h      LDR      r3,[r1,#0]
+        0x000000ea:    f0430304    C...    ORR      r3,r3,#4
+        0x000000ee:    600b        .`      STR      r3,[r1,#0]
+        0x000000f0:    f2480114    H...    MOV      r1,#0x8014
+        0x000000f4:    f2c40103    ....    MOVT     r1,#0x4003
+        0x000000f8:    2349        I#      MOVS     r3,#0x49
+        0x000000fa:    600b        .`      STR      r3,[r1,#0]
+        0x000000fc:    9903        ..      LDR      r1,[sp,#0xc]
+        0x000000fe:    23fa        .#      MOVS     r3,#0xfa
+        0x00000100:    4359        YC      MULS     r1,r3,r1
+        0x00000102:    0a09        ..      LSRS     r1,r1,#8
+        0x00000104:    f2480318    H...    MOV      r3,#0x8018
+        0x00000108:    f2c40303    ....    MOVT     r3,#0x4003
+        0x0000010c:    6019        .`      STR      r1,[r3,#0]
+        0x0000010e:    f248011c    H...    MOV      r1,#0x801c
+        0x00000112:    f2c40103    ....    MOVT     r1,#0x4003
+        0x00000116:    2328        (#      MOVS     r3,#0x28
+        0x00000118:    600b        .`      STR      r3,[r1,#0]
+        0x0000011a:    f2480120    H. .    MOV      r1,#0x8020
+        0x0000011e:    f2c40103    ....    MOVT     r1,#0x4003
+        0x00000122:    f44f737a    O.zs    MOV      r3,#0x3e8
+        0x00000126:    600b        .`      STR      r3,[r1,#0]
+        0x00000128:    9900        ..      LDR      r1,[sp,#0]
+        0x0000012a:    9102        ..      STR      r1,[sp,#8]
+        0x0000012c:    e7ff        ..      B        {pc}+0x2 ; 0x12e
+        0x0000012e:    f2400000    @...    MOVW     r0,#:LOWER16: SystemCoreClock
+        0x00000132:    f2c00000    ....    MOVT     r0,#:UPPER16: SystemCoreClock
+        0x00000136:    6801        .h      LDR      r1,[r0,#0]
+        0x00000138:    f2400000    @...    MOVW     r0,#:LOWER16: .L.str.1
+        0x0000013c:    f2c00000    ....    MOVT     r0,#:UPPER16: .L.str.1
+        0x00000140:    f7fffffe    ....    BL       printf
+        0x00000144:    9902        ..      LDR      r1,[sp,#8]
+        0x00000146:    29fa        .)      CMP      r1,#0xfa
+        0x00000148:    d109        ..      BNE      {pc}+0x16 ; 0x15e
+        0x0000014a:    e7ff        ..      B        {pc}+0x2 ; 0x14c
+        0x0000014c:    f24f0084    O...    MOV      r0,#0xf084
+        0x00000150:    f2c4000f    ....    MOVT     r0,#0x400f
+        0x00000154:    6801        .h      LDR      r1,[r0,#0]
+        0x00000156:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x0000015a:    6001        .`      STR      r1,[r0,#0]
+        0x0000015c:    e7ff        ..      B        {pc}+0x2 ; 0x15e
+        0x0000015e:    9802        ..      LDR      r0,[sp,#8]
+        0x00000160:    f5b07ffa    ....    CMP      r0,#0x1f4
+        0x00000164:    d109        ..      BNE      {pc}+0x16 ; 0x17a
+        0x00000166:    e7ff        ..      B        {pc}+0x2 ; 0x168
+        0x00000168:    f24f0088    O...    MOV      r0,#0xf088
+        0x0000016c:    f2c4000f    ....    MOVT     r0,#0x400f
+        0x00000170:    6801        .h      LDR      r1,[r0,#0]
+        0x00000172:    f4416180    A..a    ORR      r1,r1,#0x400
+        0x00000176:    6001        .`      STR      r1,[r0,#0]
+        0x00000178:    e008        ..      B        {pc}+0x14 ; 0x18c
+        0x0000017a:    9802        ..      LDR      r0,[sp,#8]
+        0x0000017c:    f5b07f7a    ..z.    CMP      r0,#0x3e8
+        0x00000180:    d103        ..      BNE      {pc}+0xa ; 0x18a
+        0x00000182:    e7ff        ..      B        {pc}+0x2 ; 0x184
+        0x00000184:    2000        .       MOVS     r0,#0
+        0x00000186:    9002        ..      STR      r0,[sp,#8]
         0x00000188:    e7ff        ..      B        {pc}+0x2 ; 0x18a
-        0x0000018a:    2000        .       MOVS     r0,#0
-        0x0000018c:    9001        ..      STR      r0,[sp,#4]
-        0x0000018e:    e7ff        ..      B        {pc}+0x2 ; 0x190
-        0x00000190:    e7ff        ..      B        {pc}+0x2 ; 0x192
-        0x00000192:    9801        ..      LDR      r0,[sp,#4]
-        0x00000194:    3001        .0      ADDS     r0,#1
-        0x00000196:    9001        ..      STR      r0,[sp,#4]
-        0x00000198:    e7cc        ..      B        {pc}-0x64 ; 0x134
+        0x0000018a:    e7ff        ..      B        {pc}+0x2 ; 0x18c
+        0x0000018c:    9802        ..      LDR      r0,[sp,#8]
+        0x0000018e:    3001        .0      ADDS     r0,#1
+        0x00000190:    9002        ..      STR      r0,[sp,#8]
+        0x00000192:    e7cc        ..      B        {pc}-0x64 ; 0x12e
 
 ** Section #33 '.rel.text.main' (SHT_REL)
-    Size   : 56 bytes (alignment 4)
-    Symbol table #56 '.symtab'
-    7 relocations applied to section #32 '.text.main'
+    Size   : 80 bytes (alignment 4)
+    Symbol table #54 '.symtab'
+    10 relocations applied to section #32 '.text.main'
 
 
 ** Section #34 '.ARM.exidx.text.main' (SHT_ARM_EXIDX) [SHF_ALLOC + SHF_LINK_ORDER]
@@ -726,7 +736,7 @@
 
 ** Section #35 '.rel.ARM.exidx.text.main' (SHT_REL)
     Size   : 8 bytes (alignment 4)
-    Symbol table #56 '.symtab'
+    Symbol table #54 '.symtab'
     1 relocations applied to section #34 '.ARM.exidx.text.main'
 
 
@@ -740,94 +750,84 @@
     Address: 0x00000000
 
 
-** Section #38 '.data.Dshot_last_command' (SHT_PROGBITS) [SHF_ALLOC + SHF_WRITE]
-    Size   : 2 bytes (alignment 2)
+** Section #38 '.rodata.str1.1' (SHT_PROGBITS) [SHF_ALLOC + SHF_MERGE + SHF_STRINGS]
+    Size   : 38 bytes
     Address: 0x00000000
 
 
-** Section #39 '.rodata.str1.1' (SHT_PROGBITS) [SHF_ALLOC + SHF_MERGE + SHF_STRINGS]
-    Size   : 22 bytes
-    Address: 0x00000000
-
-
-** Section #40 '.bss.__stdout' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
+** Section #39 '.bss.__stdout' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
     Size   : 4 bytes (alignment 4)
     Address: 0x00000000
 
 
-** Section #41 '.bss.__stdin' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
+** Section #40 '.bss.__stdin' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
     Size   : 4 bytes (alignment 4)
     Address: 0x00000000
 
 
-** Section #42 '.bss.Dshot_command_buffer' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
-    Size   : 256 bytes
-    Address: 0x00000000
+** Section #41 '.debug_str' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
+    Size   : 2943 bytes
 
 
-** Section #43 '.debug_str' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
-    Size   : 2803 bytes
+** Section #42 '.debug_abbrev' (SHT_PROGBITS)
+    Size   : 429 bytes
 
 
-** Section #44 '.debug_abbrev' (SHT_PROGBITS)
-    Size   : 405 bytes
+** Section #43 '.debug_info' (SHT_PROGBITS)
+    Size   : 3394 bytes
 
 
-** Section #45 '.debug_info' (SHT_PROGBITS)
-    Size   : 3024 bytes
+** Section #44 '.rel.debug_info' (SHT_REL)
+    Size   : 2464 bytes (alignment 4)
+    Symbol table #54 '.symtab'
+    308 relocations applied to section #43 '.debug_info'
 
 
-** Section #46 '.rel.debug_info' (SHT_REL)
-    Size   : 2264 bytes (alignment 4)
-    Symbol table #56 '.symtab'
-    283 relocations applied to section #45 '.debug_info'
-
-
-** Section #47 '.debug_ranges' (SHT_PROGBITS)
+** Section #45 '.debug_ranges' (SHT_PROGBITS)
     Size   : 88 bytes
 
 
-** Section #48 '.rel.debug_ranges' (SHT_REL)
+** Section #46 '.rel.debug_ranges' (SHT_REL)
     Size   : 160 bytes (alignment 4)
-    Symbol table #56 '.symtab'
-    20 relocations applied to section #47 '.debug_ranges'
+    Symbol table #54 '.symtab'
+    20 relocations applied to section #45 '.debug_ranges'
 
 
-** Section #49 '.comment' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
+** Section #47 '.comment' (SHT_PROGBITS) [SHF_MERGE + SHF_STRINGS]
     Size   : 56 bytes
 
 
-** Section #50 '.note.GNU-stack' (SHT_PROGBITS)
+** Section #48 '.note.GNU-stack' (SHT_PROGBITS)
     Size   : 0 bytes
 
 
-** Section #51 '.ARM.attributes' (SHT_ARM_ATTRIBUTES)
+** Section #49 '.ARM.attributes' (SHT_ARM_ATTRIBUTES)
     Size   : 88 bytes
 
 
-** Section #52 '.debug_frame' (SHT_PROGBITS)
+** Section #50 '.debug_frame' (SHT_PROGBITS)
     Size   : 236 bytes (alignment 4)
 
 
-** Section #53 '.rel.debug_frame' (SHT_REL)
+** Section #51 '.rel.debug_frame' (SHT_REL)
     Size   : 160 bytes (alignment 4)
-    Symbol table #56 '.symtab'
-    20 relocations applied to section #52 '.debug_frame'
+    Symbol table #54 '.symtab'
+    20 relocations applied to section #50 '.debug_frame'
 
 
-** Section #54 '.debug_line' (SHT_PROGBITS)
-    Size   : 1186 bytes
+** Section #52 '.debug_line' (SHT_PROGBITS)
+    Size   : 1222 bytes
 
 
-** Section #55 '.rel.debug_line' (SHT_REL)
+** Section #53 '.rel.debug_line' (SHT_REL)
     Size   : 80 bytes (alignment 4)
-    Symbol table #56 '.symtab'
-    10 relocations applied to section #54 '.debug_line'
+    Symbol table #54 '.symtab'
+    10 relocations applied to section #52 '.debug_line'
 
 
-** Section #56 '.symtab' (SHT_SYMTAB)
-    Size   : 5008 bytes (alignment 4)
+** Section #54 '.symtab' (SHT_SYMTAB)
+    Size   : 5408 bytes (alignment 4)
     String table #1 '.strtab'
-    Last local symbol no. 291
+    Last local symbol no. 318
 
 

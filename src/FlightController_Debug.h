@@ -149,7 +149,7 @@ LPUART4_IRQHandler(void)
 s32 
 fputc(s32 byte, FILE *f)
 {
-    while(!(LPUART4->STAT & LPUART_STAT_TDRE_MASK) && !(LPUART4->STAT & LPUART_STAT_TC_MASK));
+    while(!(LPUART4->STAT & LPUART_STAT_TDRE_MASK) && !(LPUART4->STAT & LPUART_STAT_TC_MASK ));
     LPUART4->DATA = 0xFFU & byte;
     
     return byte;
