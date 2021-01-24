@@ -119,19 +119,36 @@ void SystemCoreClockUpdate (void)
 	uint16_t Divider    ;
 	uint8_t  tmpC7 =   0;
     
+    // ********************************************************************************
+    // QUERY THE CLOCKS FOR MCG THEN QUERY CONFIGURATION TO DETERMINE OUT CLOCK
+    // ********************************************************************************
+    
+    // QUERY CLOCK: if (FLL or PLL) is selected
 	if ((MCG->C1 & MCG_C1_CLKS_MASK)          == 0x00U)
 	{
-		// Output of FLL or PLL is selected
+		//NOTE(MIGUEL): Output of FLL or PLL is selected as the clock source
+        
+        
+        // QUERY CLOCK: if PLL set as the source clock for the MCG
 		if ((MCG->C6 & MCG_C6_PLLS_MASK)      == 0x00U) 
 		{
-			// FLL is selected
+            //NOTE(MIGUEL): PLL is not selected as the clock source [FLL is selected]
+            
+            // Check if the external reference clock is selected for the FLL
 			if ((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U) 
 			{
-				// External reference clock is selected
+				// NOTE(MIGUEL): External reference clock is selected
+                
+                // ********************************************************************************
+                // QUERY THE OSCILLATOR THAS IS BEING USED TO DETERMINE BASE FREQUENCY 
+                // ********************************************************************************
+                
+                // Check which oscillator is selected FLL external reference clock
 				switch (MCG->C7 & MCG_C7_OSCSEL_MASK) 
 				{
+                    // NOTE(MIGUEL): XTAL = CRYSTAL
 					case 0x00U:
-					MCGOUTClock = CPU_XTAL_CLK_HZ; // System oscillator drives MCG clock
+					MCGOUTClock = CPU_XTAL_CLK_HZ   ; // System oscillator drives MCG clock
 					break;
 					
 					case 0x01U:
@@ -145,10 +162,18 @@ void SystemCoreClockUpdate (void)
 					break;
 				}
 				
-				tmpC7 = MCG->C7;
+				tmpC7 = MCG->C7; // Store the value that represent the current selected oscillator for the FLL external reference clock
 				
+                // ********************************************************************************
+                // QUERY SELECTED FREQUENCY RANGE AND CALC DIVIDE FACTOR 
+                // ********************************************************************************
+                
+                // Check that the frequency range for the crystal is not set to low and that oscillator clock 1 is not selected
 				if (((MCG->C2 & MCG_C2_RANGE_MASK) != 0x00U) && ((tmpC7 & MCG_C7_OSCSEL_MASK) != 0x01U))
 				{
+                    // NOTE(MIGUEL): Frequency range is High of Very High | 32k RTC clock or oscillator Clock1 is selected
+                    
+                    // Query the selected division factor for the FLL external clock - this factor must result in a frequency between 31.25 kHz to 39.0625 kHz
 					switch (MCG->C1 & MCG_C1_FRDIV_MASK) 
 					{
 						case 0x38U:
@@ -166,7 +191,8 @@ void SystemCoreClockUpdate (void)
 				} 
 				else 
 				{
-					// ((MCG->C2 & MCG_C2_RANGE_MASK) != 0x00U)
+                    // NOTE(MIGUEL): Frequency range is Low | Selected oscillator clock not known nor relevant
+                    
 					Divider = (uint16_t)(1LU << ((MCG->C1 & MCG_C1_FRDIV_MASK) >> MCG_C1_FRDIV_SHIFT));
 				}
 				
@@ -174,39 +200,45 @@ void SystemCoreClockUpdate (void)
 			} 
 			else 
 			{ 
-				// (!((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U))
+                // NOTE(MIGUEL): Slow Internal Reference clock is selected
+                
 				MCGOUTClock = CPU_INT_SLOW_CLK_HZ; // The slow internal reference clock is selected
-			} // (!((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U))
+			}
 			
+            
+            // ********************************************************************************
+            // QUERY SELECTED FREQUENCY RANGE AND CALC DIVIDE FACTOR 
+            // ********************************************************************************
+            
 			// Select correct multiplier to calculate the MCG output clock
 			switch (MCG->C4 & (MCG_C4_DMX32_MASK | MCG_C4_DRST_DRS_MASK)) 
 			{
 				case 0x00U:
 				MCGOUTClock *= 640U;
 				break;
+                
+				case 0x80U:
+				MCGOUTClock *= 732U;
+				break;
 				
 				case 0x20U:
 				MCGOUTClock *= 1280U;
 				break;
 				
+				case 0xA0U:
+				MCGOUTClock *= 1464U;
+				break;
+                
 				case 0x40U:
 				MCGOUTClock *= 1920U;
 				break;
 				
-				case 0x60U:
-				MCGOUTClock *= 2560U;
-				break;
-				
-				case 0x80U:
-				MCGOUTClock *= 732U;
-				break;
-				
-				case 0xA0U:
-				MCGOUTClock *= 1464U;
-				break;
-				
 				case 0xC0U:
 				MCGOUTClock *= 2197U;
+				break;
+                
+                case 0x60U:
+				MCGOUTClock *= 2560U;
 				break;
 				
 				case 0xE0U:
@@ -217,38 +249,49 @@ void SystemCoreClockUpdate (void)
 				MCGOUTClock *= 640U;
 				break;
 			}
-		} 
+		} // END OF FLL SECTION
 		else 
 		{
-			// (!((MCG->C6 & MCG_C6_PLLS_MASK) == 0x00U))
 			// PLL is selected
+            
 			Divider      = (((uint16_t) MCG->C5 & MCG_C5_PRDIV_MASK) + 0x01U);
 			MCGOUTClock  =   (uint32_t)(CPU_XTAL_CLK_HZ / Divider)           ; // Calculate the PLL reference clock
 			Divider      = (((uint16_t) MCG->C6 & MCG_C6_VDIV_MASK) + 16U)   ;
-			MCGOUTClock *= Divider; // Calculate the VCO output clock
-			MCGOUTClock /= 2U     ; // Calculate the MCG output clock
-		} // (!((MCG->C6 & MCG_C6_PLLS_MASK) == 0x00U))
-	}
+			MCGOUTClock *=    Divider; // Calculate the VCO output clock
+			MCGOUTClock /=    2U     ; // Calculate the MCG output clock
+		} // END OF PLL SECTION
+        
+	} // END OF FLL/PLL SECTION
+    
+    // QUERY CLOCK: if Internal referece Clock is selected
 	else if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x40U)
 	{
-		// Internal reference clock is selected
+        // NOTE(MIGUEL): Internal reference clock is selected
+        
+        // Check if Slow Internal reference clock is selected
 		if ((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U) 
 		{
-			MCGOUTClock = CPU_INT_SLOW_CLK_HZ; // Slow internal reference clock selected
-		}
+            // NOTE(MIGUEL): SLOW internal reference clock selected
+            
+			MCGOUTClock = CPU_INT_SLOW_CLK_HZ;
+		} // END OF SLOW IRC SECTION
 		else
-		{ // (!((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U))
+		{
+            // NOTE(MIGUEL): FAST internal reference clock selected
+            
 			Divider     = (uint16_t)(0x01LU << ((MCG->SC & MCG_SC_FCRDIV_MASK) >> MCG_SC_FCRDIV_SHIFT));
 			MCGOUTClock = (uint32_t)(CPU_INT_FAST_CLK_HZ / Divider); // Fast internal reference clock selected
-		} // (!((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U))
-	} 
+		} // END OF FAST IRC SECTION
+	} // END OF INTERNAL REFERENCE CLOCK(Fast/Slow) SECTION
+    
+    // QUERY CLOCK: if External referance clock is selected
 	else if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U)
 	{
 		// External reference clock is selected
 		switch (MCG->C7 & MCG_C7_OSCSEL_MASK)
 		{
 			case 0x00U:
-			MCGOUTClock = CPU_XTAL_CLK_HZ;   // System oscillator drives MCG clock
+			MCGOUTClock = CPU_XTAL_CLK_HZ   ; // System oscillator drives MCG clock
 			break;
 			
 			case 0x01U:
@@ -263,10 +306,11 @@ void SystemCoreClockUpdate (void)
 		}
 	}
 	else 
-	{ // (!((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U))
-		// Reserved value
+	{
+        // NOTE(MIGUEL): Unknown clock value ... Reserved Value
+        
 		return;
-	} // (!((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U))
+	}
 	
 	SystemCoreClock = (MCGOUTClock / (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDIV1_OUTDIV1_SHIFT)));
 	

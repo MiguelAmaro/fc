@@ -73,8 +73,9 @@ SET Compiler_Macros=^
  -D%Build%
 
 SET Include_Directories=^
+ -I../RTE/Device/MK82FN256VLL15^
  -I../RTE/_FlightController_debug^
- -I../RTE/Board_Support/MKV31F512VLL12^
+ -I../RTE/Device/Board_Support/MK82FN256VLL15^
  -IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/DSP/Include^
  -IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include^
  -IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/DSP/PrivateInclude^

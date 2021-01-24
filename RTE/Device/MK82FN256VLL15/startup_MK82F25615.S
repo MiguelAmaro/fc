@@ -17,67 +17,67 @@
 /*****************************************************************************/
     .syntax unified
     .arch armv7-m
-    .eabi_attribute Tag_ABI_align_preserved, 1 /*8-byte alignment */
+    .eabi_attribute Tag_ABI_align_preserved, 1              /* 8-byte alignment    */
 
     .section .isr_vector, "a"
     .align 2
     .globl __Vectors
 __Vectors:
-    .long   Image$$ARM_LIB_STACK$$ZI$$Limit                 /* Top of Stack */
-    .long   Reset_Handler                                   /* Reset Handler */
-    .long   NMI_Handler                                     /* NMI Handler*/
-    .long   HardFault_Handler                               /* Hard Fault Handler*/
-    .long   MemManage_Handler                               /* MPU Fault Handler*/
-    .long   BusFault_Handler                                /* Bus Fault Handler*/
-    .long   UsageFault_Handler                              /* Usage Fault Handler*/
-    .long   0                                               /* Reserved*/
-    .long   0                                               /* Reserved*/
-    .long   0                                               /* Reserved*/
-    .long   0                                               /* Reserved*/
-    .long   SVC_Handler                                     /* SVCall Handler*/
+    .long   Image$$ARM_LIB_STACK$$ZI$$Limit                 /* Top of Stack         */
+    .long   Reset_Handler                                   /* Reset Handler        */
+    .long   NMI_Handler                                     /* NMI Handler          */
+    .long   HardFault_Handler                               /* Hard Fault Handler   */
+    .long   MemManage_Handler                               /* MPU Fault Handler    */
+    .long   BusFault_Handler                                /* Bus Fault Handler    */
+    .long   UsageFault_Handler                              /* Usage Fault Handler  */
+    .long   0                                               /* Reserved             */
+    .long   0                                               /* Reserved             */
+    .long   0                                               /* Reserved             */
+    .long   0                                               /* Reserved             */
+    .long   SVC_Handler                                     /* SVCall Handler       */
     .long   DebugMon_Handler                                /* Debug Monitor Handler*/
-    .long   0                                               /* Reserved*/
-    .long   PendSV_Handler                                  /* PendSV Handler*/
-    .long   SysTick_Handler                                 /* SysTick Handler*/
+    .long   0                                               /* Reserved             */
+    .long   PendSV_Handler                                  /* PendSV Handler       */
+    .long   SysTick_Handler                                 /* SysTick Handler      */
 
                                                             /* External Interrupts*/
-    .long   DMA0_DMA16_IRQHandler                           /* DMA channel 0,16 transfer complete*/
-    .long   DMA1_DMA17_IRQHandler                           /* DMA channel 1,17 transfer complete*/
-    .long   DMA2_DMA18_IRQHandler                           /* DMA channel 2,18 transfer complete*/
-    .long   DMA3_DMA19_IRQHandler                           /* DMA channel 3,19 transfer complete*/
-    .long   DMA4_DMA20_IRQHandler                           /* DMA channel 4,20 transfer complete*/
-    .long   DMA5_DMA21_IRQHandler                           /* DMA channel 5,21 transfer complete*/
-    .long   DMA6_DMA22_IRQHandler                           /* DMA channel 6,22 transfer complete*/
-    .long   DMA7_DMA23_IRQHandler                           /* DMA channel 7,23 transfer complete*/
-    .long   DMA8_DMA24_IRQHandler                           /* DMA channel 8,24 transfer complete*/
-    .long   DMA9_DMA25_IRQHandler                           /* DMA channel 9,25 transfer complete*/
+    .long   DMA0_DMA16_IRQHandler                           /* DMA channel  0,16 transfer complete*/
+    .long   DMA1_DMA17_IRQHandler                           /* DMA channel  1,17 transfer complete*/
+    .long   DMA2_DMA18_IRQHandler                           /* DMA channel  2,18 transfer complete*/
+    .long   DMA3_DMA19_IRQHandler                           /* DMA channel  3,19 transfer complete*/
+    .long   DMA4_DMA20_IRQHandler                           /* DMA channel  4,20 transfer complete*/
+    .long   DMA5_DMA21_IRQHandler                           /* DMA channel  5,21 transfer complete*/
+    .long   DMA6_DMA22_IRQHandler                           /* DMA channel  6,22 transfer complete*/
+    .long   DMA7_DMA23_IRQHandler                           /* DMA channel  7,23 transfer complete*/
+    .long   DMA8_DMA24_IRQHandler                           /* DMA channel  8,24 transfer complete*/
+    .long   DMA9_DMA25_IRQHandler                           /* DMA channel  9,25 transfer complete*/
     .long   DMA10_DMA26_IRQHandler                          /* DMA channel 10,26 transfer complete*/
     .long   DMA11_DMA27_IRQHandler                          /* DMA channel 11,27 transfer complete*/
     .long   DMA12_DMA28_IRQHandler                          /* DMA channel 12,28 transfer complete*/
     .long   DMA13_DMA29_IRQHandler                          /* DMA channel 13,29 transfer complete*/
     .long   DMA14_DMA30_IRQHandler                          /* DMA channel 14,30 transfer complete*/
     .long   DMA15_DMA31_IRQHandler                          /* DMA channel 15,31 transfer complete*/
-    .long   DMA_Error_IRQHandler                            /* DMA channel 0 - 31 error*/
-    .long   MCM_IRQHandler                                  /* MCM normal interrupt*/
-    .long   FTFA_IRQHandler                                 /* FTFA command complete*/
-    .long   Read_Collision_IRQHandler                       /* FTFA read collision*/
+    .long   DMA_Error_IRQHandler                            /* DMA channel 0 - 31 error           */
+    .long   MCM_IRQHandler                                  /* MCM normal interrupt               */
+    .long   FTFA_IRQHandler                                 /* FTFA command complete              */
+    .long   Read_Collision_IRQHandler                       /* FTFA read collision                */
     .long   LVD_LVW_IRQHandler                              /* PMC controller low-voltage detect, low-voltage warning*/
-    .long   LLWU_IRQHandler                                 /* Low leakage wakeup unit*/
+    .long   LLWU_IRQHandler                                 /* Low leakage wakeup unit                  */
     .long   WDOG_EWM_IRQHandler                             /* Single interrupt vector for  WDOG and EWM*/
-    .long   TRNG0_IRQHandler                                /* True randon number generator*/
-    .long   I2C0_IRQHandler                                 /* Inter-integrated circuit 0*/
-    .long   I2C1_IRQHandler                                 /* Inter-integrated circuit 1*/
+    .long   TRNG0_IRQHandler                                /* True randon number generator */
+    .long   I2C0_IRQHandler                                 /* Inter-integrated circuit 0   */
+    .long   I2C1_IRQHandler                                 /* Inter-integrated circuit 1   */
     .long   SPI0_IRQHandler                                 /* Serial peripheral Interface 0*/
     .long   SPI1_IRQHandler                                 /* Serial peripheral Interface 1*/
     .long   I2S0_Tx_IRQHandler                              /* Integrated interchip sound 0 transmit interrupt*/
-    .long   I2S0_Rx_IRQHandler                              /* Integrated interchip sound 0 receive interrupt*/
+    .long   I2S0_Rx_IRQHandler                              /* Integrated interchip sound 0 receive interrupt */
     .long   LPUART0_IRQHandler                              /* LPUART0 receive/transmit/error interrupt*/
     .long   LPUART1_IRQHandler                              /* LPUART1 receive/transmit/error interrupt*/
     .long   LPUART2_IRQHandler                              /* LPUART2 receive/transmit/error interrupt*/
     .long   LPUART3_IRQHandler                              /* LPUART3 receive/transmit/error interrupt*/
     .long   LPUART4_IRQHandler                              /* LPUART4 receive/transmit/error interrupt*/
-    .long   Reserved51_IRQHandler                           /* Reserved interrupt*/
-    .long   Reserved52_IRQHandler                           /* Reserved interrupt*/
+    .long   Reserved51_IRQHandler                           /* Reserved interrupt      */
+    .long   Reserved52_IRQHandler                           /* Reserved interrupt      */
     .long   EMVSIM0_IRQHandler                              /* EMVSIM0 common interrupt*/
     .long   EMVSIM1_IRQHandler                              /* EMVSIM1 common interrupt*/
     .long   ADC0_IRQHandler                                 /* Analog-to-digital converter 0*/
