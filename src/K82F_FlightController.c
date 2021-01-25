@@ -141,6 +141,71 @@ main(void)
         }
         
         
+        
+        
+        
+        // Enable DMAMUX
+        
+        SIM->SCGC6 = SIM_SCGC6_DMAMUX_MASK;
+        DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_TRIG  ( 0); /// No periodic tirggering
+        DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_SOURCE(21); /// FTM0CH1
+        DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_ENBL  ( 1);
+        
+        //printf()
+        // ****************************************
+        // DMA SETUP - pg. 539
+        // ****************************************
+        
+        SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
+        // TODO(MIGUEL): WHY IS FTM BROKEN AFTER CONFIGURING DMA????
+        // TODO(MIGUEL): Config Control Reg
+        //DMA0->CR;
+        //DMA0->CERQ |= DMA_CERQ_CERQ(0); /// 0 = ch! Disable Hardware DMA Requests
+        //DMA0->SERQ = DMA_SERQ_SERQ(0); /// 0 = ch! Enable Hardware DMA Requests
+        // TODO(MIGUEL): Config Priority Reg
+        //DMA0->DCHPRI0;
+        // TODO(MIGUEL): Enable Error Interrupts
+        DMA0->SEEI = DMA_SEEI_SEEI(0); // NOTE(MIGUEL): Might be useful for debuging
+        
+        /// Transfer Control Descriptor
+        DMA0->TCD[0].CSR |= DMA_CSR_DREQ_MASK;
+        DMA0->TCD[0].CSR &= ~(DMA_CSR_ESG_MASK | DMA_CSR_START_MASK | DMA_CSR_ACTIVE_MASK | DMA_CSR_DONE_MASK); // Disable Scatter Gather
+        // NOTE(MIGUEL): Only doing 1 Major Iteration so Current Iter and Begin Iter is set to 1
+        DMA0->TCD[0].CITER_ELINKNO = DMA0->TCD[0].BITER_ELINKNO = 1; /// Set Current and Beining Majorloop counter/Iterator value
+        DMA0->TCD[0].NBYTES_MLNO   = DMA_NBYTES_MLNO_NBYTES(16);      /// Total number of bytes to transfer on each minor loop
+        
+        ///TEST DMA CONFIG
+        /// Settings for reading from the source
+        DMA0->TCD[0].SADDR = DMA_SADDR_SADDR((u32)&dma_test_src); /// source address
+        DMA0->TCD[0].SOFF  = DMA_SOFF_SOFF (1); /// the offset(in bytes) to add to src address after each read of the source
+        DMA0->TCD[0].ATTR  = DMA_ATTR_SSIZE(0); /// number of bits to fetch on each read (0 = 8bits)
+        DMA0->TCD[0].SLAST = -16;               /// offset(in bytes) to add to the src address after the major loop completes - can use this to reset src address to initial value 
+        
+        /// Settings for writting to the destination
+        DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&dma_test_dest); /// destination address (u32)&(FTM0->CONTROLS[2].CnV)
+        DMA0->TCD[0].DOFF  = DMA_DOFF_DOFF (4); /// the offset(in bytes) to add to the dest address after each write to the destination
+        DMA0->TCD[0].ATTR  = DMA_ATTR_DSIZE(2); /// number of bits to store on each write (0 = 16bits)
+        DMA0->TCD[0].DLAST_SGA = -16;           /// offset to add to the dest address after the major loop completes - use this to reset dest address to initial value 
+        //DMA0->TCD[0].CSR  |= DMA_CSR_INTMAJOR_MASK; /// Interupt on major loop completion
+        
+        // NOTE(MIGUEL): Same priority level as LPUART4 
+        NVIC_SetPriority    (DMA_Error_IRQn, 2); // 0, 1, 2, or 3
+        NVIC_ClearPendingIRQ(DMA_Error_IRQn   ); 
+        NVIC_EnableIRQ      (DMA_Error_IRQn   );
+        
+        // Verify Source addres is correct
+        printf("DMA source address: 0x%p \n\r", &global_Dshot_command_buffer);
+        printf("DMA source address: %#2x \n\r",   DMA0->TCD[0].SADDR);
+        printf("DMA dest   address: 0x%p \n\r", &(FTM0->CONTROLS[2].CnV));
+        printf("DMA dest   address: %#2x \n\r",   DMA0->TCD[0].DADDR);
+        
+        
+        // TODO(MIGUEL): Enable Hardware Service Requests
+        
+        // TODO(MIGUEL): Requset channel service
+        // NOTE(MIGUEL): FTM probably has hardware dma signal capabilities
+        
+        
         // TODO(MIGUEL): Calc correct value for DSHOT_CLOCK
         // ****************************************
         // FLEXTIMER SETUP [FTM0 | Ch1 DMA | Ch2 PULSE] - pg.1442
@@ -155,7 +220,7 @@ main(void)
         // FLEXTIMER0 SETUP
         // NOTE(MIGUEL): COMBINE config not needed
         // NOTE(MIGUEL): COMBINE config not needed
-        /*
+        
         FTM0->MODE |= FTM_MODE_WPDIS_MASK;
         FTM0->CONF  = FTM_CONF_BDMMODE_MASK; // BDM field to 0x11
         FTM0->FMS   = 0x00; 
@@ -165,81 +230,29 @@ main(void)
         // NOTE(MIGUEL): What should DSHOT_CLOCK be defineed as
         printf("FTM0 modulo: %d \n\n\r", mod);
         FTM0->MOD   = (mod - 1);
-        FTM0->SC    = FTM_SC_TOIE(1) | FTM_SC_CLKS(1) | FTM_SC_PS(0);
         
         // CHANNEL SETUP
         // DMA trigger
         // NOTE(MIGUEL): Maybe confige should be more explicit [DECAPEN=0,COMBINE=0,CPWMS=0,MSNB=0]
-        FTM0->CONTROLS[1].CnSC = (FTM_CnSC_DMA_MASK | FTM_CnSC_ELSB_MASK |  FTM_CnSC_CHIE_MASK) & ~FTM_CnSC_ELSB_MASK;
+        FTM0->CONTROLS[1].CnSC = (FTM_CnSC_MSB_MASK | FTM_CnSC_ELSB_MASK | FTM_CnSC_CHIE_MASK | FTM_CnSC_DMA_MASK) & ~FTM_CnSC_ELSA_MASK;
         FTM0->CONTROLS[1].CnV  = 1000; //((mod * 210) >> 8); // (x >> 8) = (x / 2^8)
         // Packet pulse
-        FTM0->CONTROLS[2].CnSC = ( TPM_CnSC_MSB_MASK | FTM_CnSC_ELSB_MASK | FTM_CnSC_CHIE_MASK) & ~FTM_CnSC_ELSA_MASK;
+        FTM0->CONTROLS[2].CnSC = (FTM_CnSC_MSB_MASK | FTM_CnSC_ELSB_MASK) & ~FTM_CnSC_ELSA_MASK;
         // NOTE(MIGUEL): 16bit Counter - Max Counter 65536
         FTM0->CONTROLS[2].CnV  = 2000; /// Controls Pulse width - is DMA destination
-        */
         
-        // ****************************************
-        // DMA SETUP - pg. 539
-        // ****************************************
-        
-        SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
-        // TODO(MIGUEL): WHY IS FTM BROKEN AFTER CONFIGURING DMA????
-        // TODO(MIGUEL): Config Control Reg
-        //DMA0->CR;
-        DMA0->CERQ |= DMA_CERQ_CERQ(0)   ; /// Disable Hardware DMA Requests
-        //DMA0->SERQ |= DMA_SERQ_SERQ0(1); /// Enable Hardware DMA Requests
-        // TODO(MIGUEL): Config Priority Reg
-        //DMA0->DCHPRI0;
-        // TODO(MIGUEL): Enable Error Interrupts
-        DMA0->SEEI = DMA_SEEI_SEEI(0); // NOTE(MIGUEL): Might be useful for debuging
-        
-        /// Transfer Control Descriptor
-        DMA0->TCD[0].CSR &= ~DMA_CSR_ESG_MASK; // Disable Scatter Gather
-        // NOTE(MIGUEL): Only doing 1 Major Iteration so Current Iter and Begin Iter is set to 1
-        DMA0->TCD[0].CITER_ELINKNO = DMA0->TCD[0].BITER_ELINKNO = 1; /// Set Current and Beining Majorloop counter/Iterator value
-        DMA0->TCD[0].NBYTES_MLNO   = DMA_NBYTES_MLNO_NBYTES(16);      /// Total number of bytes to transfer on each minor loop
-        
-        ///TEST DMA CONFIG
-        /// Settings for reading from the source
-        DMA0->TCD[0].SADDR = DMA_SADDR_SADDR((u32)&dma_test_src); /// source address
-        DMA0->TCD[0].SOFF  = DMA_SOFF_SOFF (1);         /// the offset(in bytes) to add to src address after each read of the source
-        DMA0->TCD[0].ATTR  = DMA_ATTR_SSIZE(0);         /// number of bits to fetch on each read (0 = 8bits)
-        DMA0->TCD[0].SLAST = -16;                        /// offset(in bytes) to add to the src address after the major loop completes - can use this to reset src address to initial value 
-        
-        /// Settings for writting to the destination
-        DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&dma_test_dest); /// destination address (u32)&(FTM0->CONTROLS[2].CnV)
-        DMA0->TCD[0].DOFF  = DMA_DOFF_DOFF (4);     /// the offset(in bytes) to add to the dest address after each write to the destination
-        DMA0->TCD[0].ATTR  = DMA_ATTR_DSIZE(2);     /// number of bits to store on each write (0 = 16bits)
-        DMA0->TCD[0].DLAST_SGA = -16;               /// offset to add to the dest address after the major loop completes - use this to reset dest address to initial value 
-        DMA0->TCD[0].CSR  |= DMA_CSR_INTMAJOR_MASK; /// Interupt on major loop completion
         
         // NOTE(MIGUEL): Same priority level as LPUART4 
-        NVIC_SetPriority    (DMA_Error_IRQn, 2); // 0, 1, 2, or 3
-        NVIC_ClearPendingIRQ(DMA_Error_IRQn   ); 
-        NVIC_EnableIRQ      (DMA_Error_IRQn   );
-        
-        // Verify Source addres is correct
-        printf("DMA source address: 0x%p \n\r", &global_Dshot_command_buffer);
-        printf("DMA source address: %#2x \n\r",   DMA0->TCD[0].SADDR);
-        printf("DMA dest   address: 0x%p \n\r", &(FTM0->CONTROLS[2].CnV));
-        printf("DMA dest   address: %#2x \n\r",   DMA0->TCD[0].DADDR);
-        
-        // Enable DMAMUX
-        /*
-        SIM->SCGC6 = SIM_SCGC6_DMAMUX_MASK;
-        DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_SOURCE(21); /// FTM0CH1
-        DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_ENBL  ( 1);
-        DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_TRIG  ( 0); /// No periodic tirggering
-        */
-        
-        // TODO(MIGUEL): Enable Hardware Service Requests
-        
-        // TODO(MIGUEL): Requset channel service
-        // NOTE(MIGUEL): FTM probably has hardware dma signal capabilities
+        NVIC_SetPriority    (FTM0_IRQn, 2); // 0, 1, 2, or 3
+        NVIC_ClearPendingIRQ(FTM0_IRQn   ); 
+        NVIC_EnableIRQ      (FTM0_IRQn   );
         
         
         //------------------ START TIMER ---------------------
+        FTM0->SC    = FTM_SC_TOIE(0) | FTM_SC_CLKS(1) | FTM_SC_PS(0);
+        
         // DMA should kick of the timer? NO
+        
     }
     
     
@@ -298,7 +311,11 @@ main(void)
             GPIOC->PCOR |= LED_BLUE;
             
             /// DMA TESTING
-            DMA0->SSRT |= DMA_SSRT_SSRT(0); // Set Start bit in TCD control status register
+            
+            DMA0->SERQ = DMA_SERQ_SERQ(0); /// 0 = ch! Enable Hardware DMA Requests
+            
+            // NOTE(MIGUEL): the 0 !!!!means channel 0!!!! not bit 0
+            //DMA0->SSRT |= DMA_SSRT_SSRT(0); //Set Start bit in TCD control status register
             printf("HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
             printf("VLD: %#2X \n\r", DMA0->ES  & DMA_ES_VLD_MASK);
             printf("ECX: %#2X \n\r", DMA0->ES  & DMA_ES_ECX_MASK);
@@ -318,24 +335,36 @@ main(void)
             //printf("Dshot Buffer recieve test: %#2X \n\r", global_Dshot_dma_recieve_test);
             
             
-            dma_test_src[0] = counter;
+            dma_test_src[0] =   0x01;
+            dma_test_src[1] =   0x20;
+            dma_test_src[2] =  0x400;
+            dma_test_src[3] = 0x8000;
+            
             // BASE CASE DMA TESTING
-            printf("DMA src  value is: %#2X \n\r", dma_test_src[0]);
+            printf("DMA src  value is: %#2X \n\r", dma_test_src [0]);
             printf("DMA dest value is: %#2X \n\r", dma_test_dest[0]);
+            printf("DMA dest value is: %#2X \n\r", dma_test_dest[1]);
+            printf("DMA dest value is: %#2X \n\r", dma_test_dest[2]);
+            printf("DMA dest value is: %#2X \n\r", dma_test_dest[3]);
             
             /// TIMER TESTING
-            /*
-            printf("FTM0 CH2 counter should be: %#2X \n\r", global_Dshot_command_buffer[0]);
-            printf("FTM0 CH2 conuter is       : %#2X \n\r", FTM0->CONTROLS[2].CnV);
-            printf("FzTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
+            
+            //printf("FTM0 CH2 counter should be: %#2X \n\r", global_Dshot_command_buffer[0]);
+            //printf("FTM0 CH2 conuter is       : %#2X \n\r", FTM0->CONTROLS[2].CnV);
+            printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
             printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
-*/
+            
             printf("\n\n\r");
         }
         else if (counter == 1000000)
         {
+            /// STOP DMA
+            DMA0->CERQ |= DMA_CERQ_CERQ(0); /// 0 = ch! Disable Hardware DMA Requests
+            
             /// TOGGLE LED OFF
             GPIOC->PSOR |= LED_BLUE;
+            GPIOC->PSOR |= LED_RED;
+            GPIOC->PSOR |= LED_GREEN;
             counter = 0;
         }
         counter++;
@@ -346,6 +375,9 @@ void
 DMA_Error_IRQHandler(void)
 {
     GPIOC->PCOR |= LED_GREEN;
+    
+    // TODO(MIGUEL): Disable DMA so this doesn't block
+    
     printf("HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
     printf("VLD: %#2X \n\r", DMA0->ES  & DMA_ES_VLD_MASK);
     printf("ECX: %#2X \n\r", DMA0->ES  & DMA_ES_ECX_MASK);
@@ -367,7 +399,9 @@ DMA_Error_IRQHandler(void)
 void
 FTM0_IRQHandler(void)
 {
-    GPIOC->PCOR |= LED_RED;
+    // NOTE(MIGUEL): software dma request from here not a feasable solution. main loop gets blocked
+    //DMA0->SSRT |= DMA_SSRT_SSRT(0); //Set Start bit in TCD control status register
+    //GPIOC->PCOR |= LED_RED;
     
     return;
 }
