@@ -11,4 +11,4 @@ K82F_FlightController.o: ..\src\K82F_FlightController.c \
   ..\src\LAL.h ..\src\FlightController_System.h \
   ..\src\FlightController_Debug.h \
   C:\Keil_v5\ARM\ARMCLANG\bin\..\include\stdio.h ..\src\RingBuffer.h \
-  ..\src\FlightController_OnboardLEDs.h
+  ..\src\FlightController_Motor.h ..\src\FlightController_OnboardLEDs.h
