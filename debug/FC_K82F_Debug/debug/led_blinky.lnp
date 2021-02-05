@@ -1,9 +1,0 @@
---cpu=Cortex-M4.fp.sp
-"debug\k82f_flightcontroller.o"
-"debug\ringbuffer.o"
-"debug\startup_mk82f25615.o"
-"debug\system_mk82f25615.o"
---library_type=microlib --diag_suppress 6314 --strict --scatter "MK82FN256xxx15_flash.scf"
---remove --keep=*(.FlashConfig) --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
---info sizes --info totals --info unused --info veneers
---list ".\output\led_blinky.map" -o debug\led_blinky.out

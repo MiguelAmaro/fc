@@ -1,4 +1,0 @@
-Info : Listening on port 6666 for tcl connections
-Info : Listening on port 4444 for telnet connections
-Error: unable to open CMSIS-DAP device 0xd28:0x204
-

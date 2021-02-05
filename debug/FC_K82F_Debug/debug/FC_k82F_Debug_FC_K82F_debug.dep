@@ -1,48 +1,0 @@
-Dependencies for Project 'FC_k82F_Debug', Target 'FC_K82F_debug': (DO NOT MODIFY !)
-CompilerVersion: 6140000::V6.14::ARMCLANG
-F (..\..\src\K82F_FlightController.c)(0x600E1CAC)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -D__MICROLIB -gdwarf-3 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I . -fno-common  -fdata-sections  -ffreestanding  -fno-builtin  -mthumb-I./RTE/_FC_K82F_debug-IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0/Device/Include-D__UVISION_VERSION="531" -D_RTE_ -DCPU_MK82FN256VLL15 -D_RTE_ -DDEBUG -DCPU_MK82FN256VLL15 -DFRDM_K82F -DFREEDOM -DSERIAL_PORT_TYPE_UART="1"-o debug/k82f_flightcontroller.o -MD)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\MK82F25615.h)(0x5F14935C)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8FA412)
-I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5ED6B4A4)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8FA412)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E83D9B2)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8FA412)
-I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x5E0D6BAC)
-I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x5E0D6BD8)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\system_MK82F25615.h)(0x5F14935C)
-I (..\..\src\LAL.h)(0x5FFD1C45)
-I (..\..\src\FlightController_System.h)(0x600B7870)
-I (..\..\src\FlightController_Debug.h)(0x600B780B)
-I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x6004BB1C)
-I (..\..\src\RingBuffer.h)(0x6004B99D)
-I (..\..\src\FlightController_OnboardLEDs.h)(0x6006457E)
-F (..\..\src\LAL.h)(0x5FFD1C45)()
-F (..\..\src\RingBuffer.c)(0x6004CD2F)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -D__MICROLIB -gdwarf-3 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I . -fno-common  -fdata-sections  -ffreestanding  -fno-builtin  -mthumb-I./RTE/_FC_K82F_debug-IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0/Device/Include-D__UVISION_VERSION="531" -D_RTE_ -DCPU_MK82FN256VLL15 -D_RTE_ -DDEBUG -DCPU_MK82FN256VLL15 -DFRDM_K82F -DFREEDOM -DSERIAL_PORT_TYPE_UART="1"-o debug/ringbuffer.o -MD)
-I (..\..\src\RingBuffer.h)(0x6004B99D)
-I (..\..\src\LAL.h)(0x5FFD1C45)
-I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5ED6B4A4)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\MK82F25615.h)(0x5F14935C)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8FA412)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8FA412)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E83D9B2)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8FA412)
-I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x5E0D6BAC)
-I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x5E0D6BD8)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\system_MK82F25615.h)(0x5F14935C)
-F (..\..\src\RingBuffer.h)(0x6004B99D)()
-F (..\..\src\FlightController_Debug.h)(0x600B780B)()
-F (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\arm\startup_MK82F25615.S)(0x5F14935C)(--target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -masm=gnu -c-gdwarf-3 -D__MICROLIB -D__EVAL-I./RTE/_FC_K82F_debug-IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0/Device/Include-D__UVISION_VERSION=531 -D_RTE_ -DCPU_MK82FN256VLL15 -D_RTE_ -DDEBUG -D__STARTUP_INITIALIZE_NONCACHEDATA-o debug/startup_mk82f25615.o)
-F (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\system_MK82F25615.c)(0x5F14935C)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -D__MICROLIB -gdwarf-3 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I . -fno-common  -fdata-sections  -ffreestanding  -fno-builtin  -mthumb-I./RTE/_FC_K82F_debug-IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0-IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/MK82F25615_DFP/12.2.0/Device/Include-D__UVISION_VERSION="531" -D_RTE_ -DCPU_MK82FN256VLL15 -D_RTE_ -DDEBUG -DCPU_MK82FN256VLL15 -DFRDM_K82F -DFREEDOM -DSERIAL_PORT_TYPE_UART="1"-o debug/system_mk82f25615.o -MD)
-I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5ED6B4A4)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\fsl_device_registers.h)(0x5F14935C)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\MK82F25615.h)(0x5F14935C)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8FA412)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8FA412)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E83D9B2)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8FA412)
-I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x5E0D6BAC)
-I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x5E0D6BD8)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\system_MK82F25615.h)(0x5F14935C)
-I (C:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\MK82F25615_DFP\12.2.0\MK82F25615_features.h)(0x5F14935C)
-F (RTE\Device\MK82FN256VLL15\MK82FN256xxx15_flash.scf)(0x5F14935C)()
-F (RTE\Device\MK82FN256VLL15\MK82FN256xxx15_ram.scf)(0x5F14935C)()
