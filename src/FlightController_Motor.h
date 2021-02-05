@@ -8,18 +8,26 @@
 #define DSHOT_CMD_BUFFER_SIZE (16 + 1)
 
 //------------------ SETUP PACKET ---------------------
+#define DSHOT_BAUD           (600000)
 #define DSHOT_0_TIMING  (u32)(0.38 * 35)
 #define DSHOT_1_TIMING  (u32)(0.75 * 35)
-#define DSHOT_CLOCK          (600000)
 
-global volatile u16  global_Dshot_command_buffer[DSHOT_CMD_BUFFER_SIZE];
+global volatile u16  global_Dshot_command_buffer[DSHOT_CMD_BUFFER_SIZE] = { 0 };
 global volatile u16  global_Dshot_dma_recieve_test;
 //global u16 Dshot_last_command = 48;
 
 global volatile u32 dma_test_dest[4] = { 0 }; 
 global volatile u32 dma_test_src [4] = { 0 };
 
-global volatile u32 global_mod = (u32)((BUS_CLOCK) / DSHOT_CLOCK );
+global volatile u32 global_mod = (u32)((BUS_CLOCK) / DSHOT_BAUD );
+
+typedef enum
+{
+    bits_8  = 0,
+    bits_16 = 1,
+    bits_32 = 2
+} dma_size;
+
 
 void
 Motor_init(void)
@@ -66,62 +74,43 @@ dma irq w/ printf for controled log on maj loop completion
     DMA0->TCD[0].CSR |= DMA_CSR_DREQ_MASK; // Disable after 
     DMA0->TCD[0].CSR &= ~(DMA_CSR_ESG_MASK | DMA_CSR_START_MASK | DMA_CSR_ACTIVE_MASK | DMA_CSR_DONE_MASK); // Disable Scatter Gather
     // NOTE(MIGUEL): Only doing 1 Major Iteration so Current Iter and Begin Iter is set to 1
-    DMA0->TCD[0].CITER_ELINKNO = DMA0->TCD[0].BITER_ELINKNO = 16; /// Set Current and Beining Majorloop counter/Iterator value
+    DMA0->TCD[0].CITER_ELINKNO = DMA0->TCD[0].BITER_ELINKNO = 17; /// Set Current and Beining Majorloop counter/Iterator value
     DMA0->TCD[0].NBYTES_MLNO   = DMA_NBYTES_MLNO_NBYTES(2);       /// Total number of bytes to transfer on each minor loop
-    
-    
-    typedef enum
-    {
-        bits_8  = 0,
-        bits_16 = 1,
-        bits_32 = 2
-    } dma_size;
-    
-    
-    dma_test_src[0] = 0x0001;
-    dma_test_src[1] = 0x0002;
-    dma_test_src[2] = 0x0004;
-    dma_test_src[3] = 0x0008;
-    
     
     ///TEST DMA CONFIG
     /// Settings for reading from the source
     DMA0->TCD[0].SADDR = DMA_SADDR_SADDR((u32)&global_Dshot_command_buffer); /// source address
     DMA0->TCD[0].SOFF  = DMA_SOFF_SOFF (1);      /// the offset(in bytes) to add to src address after each read of the source
     DMA0->TCD[0].ATTR  = DMA_ATTR_SSIZE(bits_8); /// number of bits to fetch on each read (0 = 8bits)
-    DMA0->TCD[0].SLAST = -32;                    /// offset(in bytes) to add to the src address after the major loop completes - can use this to reset src address to initial value 
+    DMA0->TCD[0].SLAST = -34;                    /// offset(in bytes) to add to the src address after the major loop completes - can use this to reset src address to initial value 
     
     /// Settings for writting to the destination
-#ifdef dma_test
     //DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&global_Dshot_dma_recieve_test); /// destination address
     DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&(FTM0->CONTROLS[2].CnV)); /// destination address
-#else
-    DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&(FTM0->CONTROLS[2].CnV)); /// destination address
-#endif
-    DMA0->TCD[0].DOFF  = DMA_DOFF_DOFF (0); /// the offset(in bytes) to add to the dest address after each write to the destination
-    DMA0->TCD[0].ATTR  = DMA_ATTR_DSIZE(bits_16); /// number of bits to store on each write (0 = 16bits)
+    DMA0->TCD[0].DOFF  = DMA_DOFF_DOFF  (0); /// the offset(in bytes) to add to the dest address after each write to the destination
+    DMA0->TCD[0].ATTR      = DMA_ATTR_DSIZE(bits_16); /// number of bits to store on each write (0 = 16bits)
     DMA0->TCD[0].DLAST_SGA = 0;             /// offset to add to the dest address after the major loop completes - use this to reset dest address to initial value 
-    //DMA0->TCD[0].CSR  |= DMA_CSR_INTMAJOR_MASK; /// Interupt on major loop completion
-    
+    DMA0->TCD[0].CSR  |= DMA_CSR_DREQ_MASK; /// Auto clear Interupt Flag on major loop completion
+    DMA0->TCD[0].CSR  |= DMA_CSR_INTMAJOR_MASK; /// Interupt on major loop completion
     
     // NOTE(MIGUEL): Same priority level as LPUART4 
     NVIC_SetPriority    (DMA_Error_IRQn, 2); // 0, 1, 2, or 3
     NVIC_ClearPendingIRQ(DMA_Error_IRQn   ); 
     NVIC_EnableIRQ      (DMA_Error_IRQn   );
+    /*
     
     
+    */
     // NOTE(MIGUEL): Same priority level as LPUART4 
     NVIC_SetPriority    (DMA0_DMA16_IRQn, 2); // 0, 1, 2, or 3
     NVIC_ClearPendingIRQ(DMA0_DMA16_IRQn   ); 
     NVIC_EnableIRQ      (DMA0_DMA16_IRQn   );
-    
     
     // Verify Source addres is correct
     printf("DMA source address: 0x%p \n\r", &global_Dshot_command_buffer);
     printf("DMA source address: %#2x \n\r",   DMA0->TCD[0].SADDR        );
     printf("DMA dest   address: 0x%p \n\r", &(FTM0->CONTROLS[2].CnV)    );
     printf("DMA dest   address: %#2x \n\r",   DMA0->TCD[0].DADDR        );
-    
     
     // TODO(MIGUEL): Enable Hardware Service Requests
     
@@ -132,54 +121,41 @@ dma irq w/ printf for controled log on maj loop completion
     // TODO(MIGUEL): Calc correct value for DSHOT_CLOCK
     // ****************************************
     // FLEXTIMER SETUP [FTM0 | Ch1 DMA | Ch2 PULSE] - pg.1442
-    // ****************************************
+    // ************************************* ***
     
     SIM->SCGC6 |= SIM_SCGC6_FTM0_MASK ;
     SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
     
     PORTC->PCR[3] = PORT_PCR_MUX(4); /// FTM0CH2
-    printf("FLL eXTernAL oscillator %#2X \n\r", (MCG->C7 & MCG_C7_OSCSEL_MASK));
-    printf("global_mod: %d \n\r", global_mod);
-    // FLEXTIMER0 SETUP
-    // NOTE(MIGUEL): COMBINE config not needed
-    // NOTE(MIGUEL): COMBINE config not needed
     
-    FTM0->MODE |= FTM_MODE_WPDIS_MASK;
+    // FLEX TIMER 0 SETUP
+    FTM0->MODE |= FTM_MODE_WPDIS_MASK  ;
     FTM0->CONF  = FTM_CONF_BDMMODE_MASK; // BDM field to 0x11
-    FTM0->FMS   = 0x00; 
-    // NOTE(MIGUEL): what is the correct polarity?
+    FTM0->FMS   = 0x00 ; 
     FTM0->SC    = 0x00U; /// Active-low
     FTM0->CNT   = 0x00U; /// Initial conter value
-    // NOTE(MIGUEL): What should DSHOT_CLOCK be defineed as
-    printf("FTM0 modulo: %d \n\n\r", global_mod);
     FTM0->MOD   = (global_mod - 1);
     
     // CHANNEL SETUP
-    // DMA trigger
+    // DMA TRIGGER
     // NOTE(MIGUEL): Maybe confige should be more explicit [DECAPEN=0,COMBINE=0,CPWMS=0,MSNB=0]
-#ifdef dma_test
-    FTM0->CONTROLS[1].CnSC = (FTM_CnSC_MSB_MASK | FTM_CnSC_ELSB_MASK) & ~FTM_CnSC_ELSA_MASK;
-    FTM0->CONTROLS[1].CnV  = ((global_mod * 100) >> 8); // (x >> 8) = (x / 2^8)
-#else
-    FTM0->CONTROLS[1].CnSC = (FTM_CnSC_MSB_MASK | FTM_CnSC_ELSB_MASK | FTM_CnSC_CHIE_MASK | FTM_CnSC_DMA_MASK) & ~FTM_CnSC_ELSA_MASK;
-    FTM0->CONTROLS[1].CnV  = ((global_mod * 100) >> 8); // (x >> 8) = (x / 2^8)
-#endif
-    // Packet pulse
+    FTM0->CONTROLS[1].CnSC = (FTM_CnSC_MSB_MASK  | FTM_CnSC_ELSB_MASK | 
+                              FTM_CnSC_CHIE_MASK | FTM_CnSC_DMA_MASK) & ~FTM_CnSC_ELSA_MASK;
+    FTM0->CONTROLS[1].CnV  = ((global_mod * 200) >> 8); // NOTE(MIGUEL): (x >> 8) = (x / 2^8)
+    
+    // PACKET BIT PULSE
     FTM0->CONTROLS[2].CnSC = (FTM_CnSC_MSB_MASK | FTM_CnSC_ELSB_MASK) & ~FTM_CnSC_ELSA_MASK;
-    // NOTE(MIGUEL): 16bit Counter - Max Counter 65536
     FTM0->CONTROLS[2].CnV  = 0; /// Controls Pulse width - is DMA destination
     
-    /*
+    
     // NOTE(MIGUEL): Same priority level as LPUART4 
     NVIC_SetPriority    (FTM0_IRQn, 3); // 0, 1, 2, or 3
     NVIC_ClearPendingIRQ(FTM0_IRQn   ); 
     NVIC_EnableIRQ      (FTM0_IRQn   );
-    */
+    
     
     //------------------ START TIMER ---------------------
     FTM0->SC    = FTM_SC_TOIE(0) | FTM_SC_CLKS(1) | FTM_SC_PS(0);
-    
-    // DMA should kick of the timer? NO
     
     return;
 }
@@ -206,27 +182,8 @@ Motor_display_dma_status_errors(void)
 }
 
 void
-Motor_log_ftm_status(void)
+Motor_arm_esc(void)
 {
-    printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
-    printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
-    
-    printf("\n\n\r");
-    
-    return;
-}
-
-void
-Motor_log_dma_buffers(void)
-{
-    local_persist u32 packet_bit_counter = 0;
-    
-    // DSHOT DMA TESTING
-    printf("packet bit - %d \n\r", packet_bit_counter);
-    printf("Dshot Buffer[0] is: %#2X \n\r", global_Dshot_command_buffer[packet_bit_counter++]);
-    printf("Dshot FTM counter: %#2X \n\r" , (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
-    //printf("Dshot Buffer recieve test: %#2X \n\r", global_Dshot_dma_recieve_test);
-    if(packet_bit_counter == 16) { packet_bit_counter = 0; }
     
     return;
 }
@@ -234,6 +191,10 @@ Motor_log_dma_buffers(void)
 void
 Motor_dshot_packet_send()
 {
+    /// RESET TIMER
+    FTM0->SC   = FTM_SC_TOIE(0) | FTM_SC_CLKS(0) | FTM_SC_PS(0);
+    FTM0->SC   = FTM_SC_TOIE(0) | FTM_SC_CLKS(1) | FTM_SC_PS(0);
+    
     DMA0->SERQ = DMA_SERQ_SERQ(0); /// 0 = ch! Enable Hardware DMA Requests
     
     return;
@@ -247,9 +208,9 @@ Motor_dshot_packet_create(u32 throttle)
     volatile u8  checksum = 0;
     
     // FRAME THE PACKET
-    packet = 1000 << 1;
+    packet = (u16)(throttle << 1);
     
-    volatile u16 temp_packet = packet;
+    u16 temp_packet = packet;
     
     // Checksum
     for(u32 i = 0; i < 3; i++)
@@ -262,22 +223,22 @@ Motor_dshot_packet_create(u32 throttle)
     
     packet = (u16)(packet << 4) | checksum;
     
-    // TRANSFORM PACKET DATA & FILL CMD BUFFER
     // NOTE(MIGUEL): Is this correctlly represented in memory?
     // TODO(MIGUEL): CALCULATE CORRECT PACKET VALUES 
+    // TRANSFORM PACKET DATA & FILL CMD BUFFER
     for(u32 i = 0; i < DSHOT_CMD_BUFFER_SIZE; i++)
     {
         if((1 << i) & packet)
         {
             //printf("global_mod value: %d * %d  = %d \n\r", global_mod, DSHOT_1_TIMING, global_mod * DSHOT_1_TIMING);
-            global_Dshot_command_buffer[16 - i] = (u8)((DSHOT_1_TIMING)); // pack buffer MSB first (expression >> 8 ) = (expression / 2^8)
+            global_Dshot_command_buffer[15 - i] = (u8)((DSHOT_1_TIMING)); // pack buffer MSB first (expression >> 8 ) = (expression / 2^8)
             //global_Dshot_command_buffer[16U - i] = (u8)('A' + (16 - i));
         }
         else
         {
             //printf("global_mod value: %d \n\r", global_mod);
             
-            global_Dshot_command_buffer[16 - i] = (u8)((DSHOT_0_TIMING)) ; // pack buffer MSB first  (expression >> 8 ) = (expression / 2^8)
+            global_Dshot_command_buffer[15 - i] = (u8)((DSHOT_0_TIMING)) ; // pack buffer MSB first  (expression >> 8 ) = (expression / 2^8)
             //global_Dshot_command_buffer[16U - i] = (u8)('A' + (16 - i));
         }
         //%#2X
@@ -289,12 +250,27 @@ Motor_dshot_packet_create(u32 throttle)
 
 
 void
+FTM0_IRQHandler(void)
+{
+    printf("%#2X \n\r", (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
+    FTM0->CONTROLS[2].CnSC &= ~FTM_CnSC_CHF_MASK;
+    // NOTE(MIGUEL): software dma request from here not a feasable solution. main loop gets blocked
+    //DMA0->SSRT |= DMA_SSRT_SSRT(0); //Set Start bit in TCD control status register
+    //GPIOC->PCOR |= LED_RED;
+    
+    return;
+}
+
+
+void
 DMA0_DMA16_IRQHandler(void)
 {
+    // TODO(MIGUEL): Figure out how to eliminate this interrupt 
     //NVIC_DisableIRQ      (DMA0_DMA16_IRQn   );
-    DMA0->CINT |= DMA_CINT_CINT(0); //Set Start bit in TCD control status register
-    DMA0->CERQ |= DMA_CERQ_CERQ(0); /// 0 = ch! Disable Hardware DMA Requests
-    FTM0->CONTROLS[2].CnV  = 0;
+    // NOTE(MIGUEL): Are these usefull
+    DMA0->CINT |= DMA_CINT_CINT(0); //Clear interrupt bit in TCD control status register
+    //DMA0->CERQ |= DMA_CERQ_CERQ(0); /// 0 = ch! Disable Hardware DMA Requests
+    //FTM0->CONTROLS[2].CnV  = 0;
     
     //printf("DMA Major loop complete \n\r");
     //printf("\n\r");
@@ -309,32 +285,50 @@ DMA_Error_IRQHandler(void)
     
     // TODO(MIGUEL): Disable DMA so this doesn't block
     
-    printf("HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
-    printf("VLD: %#2X \n\r", DMA0->ES  & DMA_ES_VLD_MASK);
-    printf("ECX: %#2X \n\r", DMA0->ES  & DMA_ES_ECX_MASK);
-    printf("GPE: %#2X \n\r", DMA0->ES  & DMA_ES_GPE_MASK);
-    printf("CPE: %#2X \n\r", DMA0->ES  & DMA_ES_CPE_MASK);
-    printf("SAE: %#2X \n\r", DMA0->ES  & DMA_ES_SAE_MASK);
-    printf("SOE: %#2X \n\r", DMA0->ES  & DMA_ES_SOE_MASK);
-    printf("DAE: %#2X \n\r", DMA0->ES  & DMA_ES_DAE_MASK);
-    printf("DOE: %#2X \n\r", DMA0->ES  & DMA_ES_DOE_MASK);
-    printf("NCE: %#2X \n\r", DMA0->ES  & DMA_ES_NCE_MASK);
-    printf("SGE: %#2X \n\r", DMA0->ES  & DMA_ES_SGE_MASK);
-    printf("SBE: %#2X \n\r", DMA0->ES  & DMA_ES_SBE_MASK);
-    printf("DBE: %#2X \n\r", DMA0->ES  & DMA_ES_DBE_MASK);
+    printf(    "HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
+    printf(    "VLD: %#2X \n\r", DMA0->ES  & DMA_ES_VLD_MASK  );
+    printf(    "ECX: %#2X \n\r", DMA0->ES  & DMA_ES_ECX_MASK  );
+    printf(    "GPE: %#2X \n\r", DMA0->ES  & DMA_ES_GPE_MASK  );
+    printf(    "CPE: %#2X \n\r", DMA0->ES  & DMA_ES_CPE_MASK  );
+    printf(    "SAE: %#2X \n\r", DMA0->ES  & DMA_ES_SAE_MASK  );
+    printf(    "SOE: %#2X \n\r", DMA0->ES  & DMA_ES_SOE_MASK  );
+    printf(    "DAE: %#2X \n\r", DMA0->ES  & DMA_ES_DAE_MASK  );
+    printf(    "DOE: %#2X \n\r", DMA0->ES  & DMA_ES_DOE_MASK  );
+    printf(    "NCE: %#2X \n\r", DMA0->ES  & DMA_ES_NCE_MASK  );
+    printf(    "SGE: %#2X \n\r", DMA0->ES  & DMA_ES_SGE_MASK  );
+    printf(    "SBE: %#2X \n\r", DMA0->ES  & DMA_ES_SBE_MASK  );
+    printf(    "DBE: %#2X \n\r", DMA0->ES  & DMA_ES_DBE_MASK  );
     printf("DMACH0E: %#2X \n\r", DMA0->ERR & DMA_ERR_ERR0_MASK);
+    
+    return;
+}
+
+void
+Motor_log_ftm_status(void)
+{
+    printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
+    printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
+    
+    printf("\n\n\r");
     
     return;
 }
 
 
 void
-FTM0_IRQHandler(void)
+Motor_log_dma_buffers(void)
 {
-    printf("Dshot Buffer recieve test: %#2X \n\r", (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
-    // NOTE(MIGUEL): software dma request from here not a feasable solution. main loop gets blocked
-    //DMA0->SSRT |= DMA_SSRT_SSRT(0); //Set Start bit in TCD control status register
-    //GPIOC->PCOR |= LED_RED;
+    local_persist volatile u32 packet_bit_counter = 0;
+    
+    //SOURCE
+    printf("Dshot CMD Buffer[%2d]: %#2X \n\r",
+           packet_bit_counter, 
+           global_Dshot_command_buffer[packet_bit_counter++]);
+    
+    //DESTINATION
+    printf("Dshot FTM counter   : %#2X \n\r" , (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
+    
+    packet_bit_counter *= (u32)(packet_bit_counter < 17);
     
     return;
 }

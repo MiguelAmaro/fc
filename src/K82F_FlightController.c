@@ -19,7 +19,7 @@ main(void)
     
     Debug_init_uart(115200);
     OBLEDs_init();
-    Motor_init();
+    Motor_init ();
     
     printf("Core Frequency: %d \n\n\r", SystemCoreClock);
     
@@ -133,28 +133,69 @@ main(void)
     printf("Core Frequency: %d \n\n\r", SystemCoreClock);
     printf("Bus  Frequency: %d \n\n\r" ,  (SystemCoreClock * (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDIV1_OUTDIV1_SHIFT)) ) /  (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV2_MASK) >> SIM_CLKDIV1_OUTDIV2_SHIFT)));
     
-    printf("\n\n\r");
-    readonly u32 counter_max = 10000;
-    u32 counter = 0;
+    for(u32 i = 0; i < 17; i++)
+        Motor_log_dma_buffers();
+    //ARM MOTORS
+    //Motor_dshot_packet_create(1000);
+    //Motor_dshot_packet_send();
     
+    printf("\n\n\r");
+    readonly u32 counter_max = 2000/5.3;
+    u32 counter = 0;
+    u32 led_counter = 0;
+    u32 is_armed = 0;
+    u32 sp_data = 0;
     while(RUNNING)
     {
+        if(!RingBuffer_Empty(&receiveQueue))
+        {
+            sp_data = (u32)RingBuffer_Dequeue_Byte(&receiveQueue);
+        }
         //printf("Core Frequency: %d \n\n\r", SystemCoreClock);
         if(counter == counter_max/2)
         {
-            /// TOGGLE LED ON
-            GPIOC->PCOR |= LED_BLUE;
+            if(led_counter == 100/2)
+            {
+                /// TOGGLE LED ON
+                GPIOC->PCOR |= LED_BLUE;
+                
+                //Motor_log_dma_buffers();
+                //for(u32 i = 0; i < 17; i++)
+                //Motor_log_dma_buffers();
+            }
+            printf("RC: %d\n", (u32)sp_data);
             
-            /// DMA TESTING
-            Motor_dshot_packet_create(1000);
-            Motor_dshot_packet_send();
+            if(led_counter < 1 && !is_armed)
+            {
+                Motor_dshot_packet_create(48);
+                Motor_dshot_packet_send();
+            }
+            else if(led_counter < 2 && !is_armed)
+            {
+                Motor_dshot_packet_create(0);
+                Motor_dshot_packet_send();
+            }
+            else
+            {
+                is_armed = 1;
+                //Motor_dshot_packet_create(48 + ( ( sp_data/255 ) * 2000 ));
+                Motor_dshot_packet_create(48 + sp_data);
+                Motor_dshot_packet_send();
+            }
+            
         }
         else if (counter == counter_max)
         {
-            /// TOGGLE LED OFF
-            GPIOC->PSOR |= LED_BLUE;
-            GPIOC->PSOR |= LED_RED;
-            GPIOC->PSOR |= LED_GREEN;
+            //Motor_dshot_packet_send();
+            if(led_counter == 100)
+            {
+                /// TOGGLE LED OFF
+                GPIOC->PSOR |= LED_BLUE;
+                GPIOC->PSOR |= LED_RED;
+                GPIOC->PSOR |= LED_GREEN;
+                led_counter = 0;
+            }
+            led_counter++;
             counter = 0;
         }
         counter++;

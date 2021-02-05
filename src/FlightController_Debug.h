@@ -14,11 +14,11 @@
 // ****************************************
 // UART SETUP - DEBUGGING
 // ****************************************
-#define DEBUG_SERIAL_RX           (0x4000) /// PTC14
-#define DEBUG_SERIAL_TX           (0x8000) /// PTC15
-#define LPUART_OVERSAMPLE_RATIO   (16)
-#define MUX_LPUART4_TX_RX         (3U)
-#define LPUART_CLOCK_SOURCE      (48e6)  ///48MHz IRC is selected
+#define DEBUG_SERIAL_RX         (0x4000) /// PTC14
+#define DEBUG_SERIAL_TX         (0x8000) /// PTC15
+#define LPUART_OVERSAMPLE_RATIO (16)
+#define MUX_LPUART4_TX_RX       (3U)
+#define LPUART_CLOCK_SOURCE     (48e6)  ///48MHz IRC is selected
 
 internal RingBuffer transmitQueue, receiveQueue;
 
@@ -100,8 +100,7 @@ Debug_init_uart(u32 baud_rate)
 void 
 LPUART4_IRQHandler(void) 
 {
-    u8 receivedChar;
-    
+    volatile u8 receivedChar;
     
     if (LPUART4->STAT & (LPUART_STAT_OR_MASK | LPUART_STAT_NF_MASK | 
                          LPUART_STAT_FE_MASK | LPUART_STAT_PF_MASK)) 
