@@ -64,7 +64,7 @@ dma irq w/ printf for controled log on maj loop completion
     // TODO(MIGUEL): Config Control Reg
     //DMA0->CR;
     //DMA0->CERQ |= DMA_CERQ_CERQ(0); /// 0 = ch! Disable Hardware DMA Requests
-    //DMA0->SERQ = DMA_SERQ_SERQ(0); /// 0 = ch! Enable Hardware DMA Requests
+    //DMA0->SERQ  = DMA_SERQ_SERQ(0); /// 0 = ch! Enable Hardware DMA Requests
     // TODO(MIGUEL): Config Priority Reg
     //DMA0->DCHPRI0;
     // TODO(MIGUEL): Enable Error Interrupts
@@ -86,11 +86,11 @@ dma irq w/ printf for controled log on maj loop completion
     
     /// Settings for writting to the destination
     //DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&global_Dshot_dma_recieve_test); /// destination address
-    DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&(FTM0->CONTROLS[2].CnV)); /// destination address
-    DMA0->TCD[0].DOFF  = DMA_DOFF_DOFF  (0); /// the offset(in bytes) to add to the dest address after each write to the destination
+    DMA0->TCD[0].DADDR     = DMA_DADDR_DADDR((u32)&(FTM0->CONTROLS[2].CnV)); /// destination address
+    DMA0->TCD[0].DOFF      = DMA_DOFF_DOFF  (0); /// the offset(in bytes) to add to the dest address after each write to the destination
     DMA0->TCD[0].ATTR      = DMA_ATTR_DSIZE(bits_16); /// number of bits to store on each write (0 = 16bits)
     DMA0->TCD[0].DLAST_SGA = 0;             /// offset to add to the dest address after the major loop completes - use this to reset dest address to initial value 
-    DMA0->TCD[0].CSR  |= DMA_CSR_DREQ_MASK; /// Auto clear Interupt Flag on major loop completion
+    DMA0->TCD[0].CSR  |= DMA_CSR_DREQ_MASK    ; /// Auto clear Interupt Flag on major loop completion
     DMA0->TCD[0].CSR  |= DMA_CSR_INTMAJOR_MASK; /// Interupt on major loop completion
     
     // NOTE(MIGUEL): Same priority level as LPUART4 
@@ -163,33 +163,31 @@ dma irq w/ printf for controled log on maj loop completion
 void 
 Motor_display_dma_status_errors(void)
 {
-    printf("HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
-    printf("VLD: %#2X \n\r", DMA0->ES  & DMA_ES_VLD_MASK);
-    printf("ECX: %#2X \n\r", DMA0->ES  & DMA_ES_ECX_MASK);
-    printf("GPE: %#2X \n\r", DMA0->ES  & DMA_ES_GPE_MASK);
-    printf("CPE: %#2X \n\r", DMA0->ES  & DMA_ES_CPE_MASK);
-    printf("SAE: %#2X \n\r", DMA0->ES  & DMA_ES_SAE_MASK);
-    printf("SOE: %#2X \n\r", DMA0->ES  & DMA_ES_SOE_MASK);
-    printf("DAE: %#2X \n\r", DMA0->ES  & DMA_ES_DAE_MASK);
-    printf("DOE: %#2X \n\r", DMA0->ES  & DMA_ES_DOE_MASK);
-    printf("NCE: %#2X \n\r", DMA0->ES  & DMA_ES_NCE_MASK);
-    printf("SGE: %#2X \n\r", DMA0->ES  & DMA_ES_SGE_MASK);
-    printf("SBE: %#2X \n\r", DMA0->ES  & DMA_ES_SBE_MASK);
-    printf("DBE: %#2X \n\r", DMA0->ES  & DMA_ES_DBE_MASK);
+    printf("HRS: %#2X \n\r"    , DMA0->HRS & DMA_HRS_HRS0_MASK);
+    printf("VLD: %#2X \n\r"    , DMA0->ES  & DMA_ES_VLD_MASK);
+    printf("ECX: %#2X \n\r"    , DMA0->ES  & DMA_ES_ECX_MASK);
+    printf("GPE: %#2X \n\r"    , DMA0->ES  & DMA_ES_GPE_MASK);
+    printf("CPE: %#2X \n\r"    , DMA0->ES  & DMA_ES_CPE_MASK);
+    printf("SAE: %#2X \n\r"    , DMA0->ES  & DMA_ES_SAE_MASK);
+    printf("SOE: %#2X \n\r"    , DMA0->ES  & DMA_ES_SOE_MASK);
+    printf("DAE: %#2X \n\r"    , DMA0->ES  & DMA_ES_DAE_MASK);
+    printf("DOE: %#2X \n\r"    , DMA0->ES  & DMA_ES_DOE_MASK);
+    printf("NCE: %#2X \n\r"    , DMA0->ES  & DMA_ES_NCE_MASK);
+    printf("SGE: %#2X \n\r"    , DMA0->ES  & DMA_ES_SGE_MASK);
+    printf("SBE: %#2X \n\r"    , DMA0->ES  & DMA_ES_SBE_MASK);
+    printf("DBE: %#2X \n\r"    , DMA0->ES  & DMA_ES_DBE_MASK);
     printf("DMACH0E: %#2X \n\r", DMA0->ERR & DMA_ERR_ERR0_MASK);
     
     return;
 }
 
-void
-Motor_arm_esc(void)
+void Motor_arm_esc(void)
 {
     
     return;
 }
 
-void
-Motor_dshot_packet_send()
+void Motor_dshot_packet_send()
 {
     /// RESET TIMER
     FTM0->SC   = FTM_SC_TOIE(0) | FTM_SC_CLKS(0) | FTM_SC_PS(0);
@@ -201,8 +199,7 @@ Motor_dshot_packet_send()
 }
 
 
-void
-Motor_dshot_packet_create(u32 throttle)
+void Motor_dshot_packet_create(u32 throttle)
 {
     volatile u16 packet   = 0;
     volatile u8  checksum = 0;

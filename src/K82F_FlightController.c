@@ -12,7 +12,6 @@
 // TODO(MIGUEL): CREATE A PIN MUTUAL EXCLUSION SYSTEM
 // TODO(MIGUEL): CHANGE SYSTEM FREQUENCY
 
-
 int 
 main(void) 
 {
@@ -141,10 +140,10 @@ main(void)
     
     printf("\n\n\r");
     readonly u32 counter_max = 2000/5.3;
-    u32 counter = 0;
+    u32 counter     = 0;
     u32 led_counter = 0;
-    u32 is_armed = 0;
-    u32 sp_data = 0;
+    u32 is_armed    = 0;
+    u32 sp_data     = 0;
     while(RUNNING)
     {
         if(!RingBuffer_Empty(&receiveQueue))
@@ -163,7 +162,7 @@ main(void)
                 //for(u32 i = 0; i < 17; i++)
                 //Motor_log_dma_buffers();
             }
-            printf("RC: %d\n", (u32)sp_data);
+            printf("RC: %d\n\r", (u32)sp_data);
             
             if(led_counter < 1 && !is_armed)
             {
