@@ -27,18 +27,29 @@ Section Cross References
     K82F_FlightController.o(.ARM.exidx.text.fputc) refers to K82F_FlightController.o(.text.fputc) for [Anonymous Symbol]
     K82F_FlightController.o(.ARM.exidx.text.fgetc) refers to K82F_FlightController.o(.text.fgetc) for [Anonymous Symbol]
     K82F_FlightController.o(.ARM.exidx.text.OBLEDs_init) refers to K82F_FlightController.o(.text.OBLEDs_init) for [Anonymous Symbol]
-    K82F_FlightController.o(.text.I2C_debug_info) refers to K82F_FlightController.o(.rodata.str1.1) for .L.str
-    K82F_FlightController.o(.text.I2C_debug_info) refers to printfa.o(i.__0printf) for printf
-    K82F_FlightController.o(.ARM.exidx.text.I2C_debug_info) refers to K82F_FlightController.o(.text.I2C_debug_info) for [Anonymous Symbol]
+    K82F_FlightController.o(.ARM.exidx.text.I2C_init) refers to K82F_FlightController.o(.text.I2C_init) for [Anonymous Symbol]
+    K82F_FlightController.o(.text.I2C_read_byte) refers to K82F_FlightController.o(.rodata.str1.1) for .L.str
+    K82F_FlightController.o(.text.I2C_read_byte) refers to printfa.o(i.__0printf) for printf
     K82F_FlightController.o(.ARM.exidx.text.I2C_read_byte) refers to K82F_FlightController.o(.text.I2C_read_byte) for [Anonymous Symbol]
+    K82F_FlightController.o(.ARM.exidx.text.I2C_read_nbytes) refers to K82F_FlightController.o(.text.I2C_read_nbytes) for [Anonymous Symbol]
     K82F_FlightController.o(.ARM.exidx.text.I2C_write_byte) refers to K82F_FlightController.o(.text.I2C_write_byte) for [Anonymous Symbol]
+    K82F_FlightController.o(.text.I2C_debug_log_status) refers to K82F_FlightController.o(.rodata.str1.1) for .L.str.5
+    K82F_FlightController.o(.text.I2C_debug_log_status) refers to printfa.o(i.__0printf) for printf
+    K82F_FlightController.o(.ARM.exidx.text.I2C_debug_log_status) refers to K82F_FlightController.o(.text.I2C_debug_log_status) for [Anonymous Symbol]
+    K82F_FlightController.o(.text.Ecompass_init) refers to K82F_FlightController.o(.text.I2C_read_byte) for I2C_read_byte
+    K82F_FlightController.o(.text.Ecompass_init) refers to K82F_FlightController.o(.rodata.str1.1) for .L.str.16
+    K82F_FlightController.o(.text.Ecompass_init) refers to printfa.o(i.__0printf) for printf
+    K82F_FlightController.o(.text.Ecompass_init) refers to K82F_FlightController.o(.text.I2C_debug_log_status) for I2C_debug_log_status
+    K82F_FlightController.o(.ARM.exidx.text.Ecompass_init) refers to K82F_FlightController.o(.text.Ecompass_init) for [Anonymous Symbol]
     K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.text.Debug_init_uart) for Debug_init_uart
     K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.text.OBLEDs_init) for OBLEDs_init
     K82F_FlightController.o(.text.main) refers to system_MK82F25615.o(.data.SystemCoreClock) for SystemCoreClock
-    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.rodata.str1.1) for .L.str.11
+    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.rodata.str1.1) for .L.str.18
     K82F_FlightController.o(.text.main) refers to printfa.o(i.__0printf) for printf
-    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.text.I2C_debug_info) for I2C_debug_info
-    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.text.I2C_read_byte) for I2C_read_byte
+    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.text.I2C_init) for I2C_init
+    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.text.Ecompass_init) for Ecompass_init
+    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.bss.g_mag_buffer) for g_mag_buffer
+    K82F_FlightController.o(.text.main) refers to K82F_FlightController.o(.bss.g_acc_buffer) for g_acc_buffer
     K82F_FlightController.o(.ARM.exidx.text.main) refers to K82F_FlightController.o(.text.main) for [Anonymous Symbol]
     RingBuffer.o(.ARM.exidx.text.RingBuffer_Init) refers to RingBuffer.o(.text.RingBuffer_Init) for [Anonymous Symbol]
     RingBuffer.o(.ARM.exidx.text.RingBuffer_Full) refers to RingBuffer.o(.text.RingBuffer_Full) for [Anonymous Symbol]
@@ -150,10 +161,14 @@ Removing Unused input sections from the image.
     Removing K82F_FlightController.o(.text.fgetc), (42 bytes).
     Removing K82F_FlightController.o(.ARM.exidx.text.fgetc), (8 bytes).
     Removing K82F_FlightController.o(.ARM.exidx.text.OBLEDs_init), (8 bytes).
-    Removing K82F_FlightController.o(.ARM.exidx.text.I2C_debug_info), (8 bytes).
+    Removing K82F_FlightController.o(.ARM.exidx.text.I2C_init), (8 bytes).
     Removing K82F_FlightController.o(.ARM.exidx.text.I2C_read_byte), (8 bytes).
+    Removing K82F_FlightController.o(.text.I2C_read_nbytes), (450 bytes).
+    Removing K82F_FlightController.o(.ARM.exidx.text.I2C_read_nbytes), (8 bytes).
     Removing K82F_FlightController.o(.text.I2C_write_byte), (222 bytes).
     Removing K82F_FlightController.o(.ARM.exidx.text.I2C_write_byte), (8 bytes).
+    Removing K82F_FlightController.o(.ARM.exidx.text.I2C_debug_log_status), (8 bytes).
+    Removing K82F_FlightController.o(.ARM.exidx.text.Ecompass_init), (8 bytes).
     Removing K82F_FlightController.o(.ARM.exidx.text.main), (8 bytes).
     Removing K82F_FlightController.o(.bss.__stdin), (4 bytes).
     Removing RingBuffer.o(.text), (0 bytes).
@@ -168,7 +183,7 @@ Removing Unused input sections from the image.
     Removing system_MK82F25615.o(.text.SystemCoreClockUpdate), (814 bytes).
     Removing system_MK82F25615.o(.ARM.exidx.text.SystemCoreClockUpdate), (8 bytes).
 
-27 unused section(s) (total 1242 bytes) removed from the image.
+31 unused section(s) (total 1716 bytes) removed from the image.
 
 ==============================================================================
 
@@ -240,55 +255,69 @@ Image Symbol Table
     .text                                    0x00000adc   Section        0  llshl.o(.text)
     .text                                    0x00000afa   Section        0  llsshr.o(.text)
     [Anonymous Symbol]                       0x00000b20   Section        0  K82F_FlightController.o(.text.Debug_init_uart)
-    [Anonymous Symbol]                       0x00000c70   Section        0  K82F_FlightController.o(.text.I2C_debug_info)
-    [Anonymous Symbol]                       0x00000d94   Section        0  K82F_FlightController.o(.text.I2C_read_byte)
-    [Anonymous Symbol]                       0x00000f14   Section        0  K82F_FlightController.o(.text.LPUART4_IRQHandler)
-    [Anonymous Symbol]                       0x00000ff8   Section        0  K82F_FlightController.o(.text.OBLEDs_init)
-    [Anonymous Symbol]                       0x0000106c   Section        0  RingBuffer.o(.text.RingBuffer_Dequeue_Byte)
-    [Anonymous Symbol]                       0x000010e0   Section        0  RingBuffer.o(.text.RingBuffer_Empty)
-    [Anonymous Symbol]                       0x000010f4   Section        0  RingBuffer.o(.text.RingBuffer_Enqueue_Byte)
-    [Anonymous Symbol]                       0x0000115c   Section        0  RingBuffer.o(.text.RingBuffer_Full)
-    [Anonymous Symbol]                       0x00001174   Section        0  RingBuffer.o(.text.RingBuffer_Init)
-    [Anonymous Symbol]                       0x000011b0   Section        0  system_MK82F25615.o(.text.SystemInit)
-    [Anonymous Symbol]                       0x000011ec   Section        0  system_MK82F25615.o(.text.SystemInitHook)
-    __NVIC_ClearPendingIRQ                   0x000011f1   Thumb Code    52  K82F_FlightController.o(.text.__NVIC_ClearPendingIRQ)
-    [Anonymous Symbol]                       0x000011f0   Section        0  K82F_FlightController.o(.text.__NVIC_ClearPendingIRQ)
-    __NVIC_EnableIRQ                         0x00001225   Thumb Code    52  K82F_FlightController.o(.text.__NVIC_EnableIRQ)
-    [Anonymous Symbol]                       0x00001224   Section        0  K82F_FlightController.o(.text.__NVIC_EnableIRQ)
-    __NVIC_SetPriority                       0x00001259   Thumb Code    68  K82F_FlightController.o(.text.__NVIC_SetPriority)
-    [Anonymous Symbol]                       0x00001258   Section        0  K82F_FlightController.o(.text.__NVIC_SetPriority)
-    [Anonymous Symbol]                       0x0000129c   Section        0  K82F_FlightController.o(.text.fputc)
-    [Anonymous Symbol]                       0x000012f4   Section        0  K82F_FlightController.o(.text.main)
-    i.__0printf                              0x00001548   Section        0  printfa.o(i.__0printf)
-    i.__scatterload_copy                     0x00001568   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x00001576   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x00001578   Section       14  handlers.o(i.__scatterload_zeroinit)
-    _fp_digits                               0x00001589   Thumb Code   366  printfa.o(i._fp_digits)
-    i._fp_digits                             0x00001588   Section        0  printfa.o(i._fp_digits)
-    _printf_core                             0x0000170d   Thumb Code  1744  printfa.o(i._printf_core)
-    i._printf_core                           0x0000170c   Section        0  printfa.o(i._printf_core)
-    _printf_post_padding                     0x00001de9   Thumb Code    36  printfa.o(i._printf_post_padding)
-    i._printf_post_padding                   0x00001de8   Section        0  printfa.o(i._printf_post_padding)
-    _printf_pre_padding                      0x00001e0d   Thumb Code    46  printfa.o(i._printf_pre_padding)
-    i._printf_pre_padding                    0x00001e0c   Section        0  printfa.o(i._printf_pre_padding)
-    .L.str.11                                0x00001e3a   Data          23  K82F_FlightController.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x00001e3a   Section        0  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.10                                0x00001e4d   Data           4  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.9                                 0x00001e51   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.8                                 0x00001e71   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.3                                 0x00001e91   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.4                                 0x00001eb1   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.1                                 0x00001ed1   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.6                                 0x00001ef1   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str                                   0x00001f11   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.2                                 0x00001f31   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.5                                 0x00001f51   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.12                                0x00001f71   Data          24  K82F_FlightController.o(.rodata.str1.1)
-    .L.str.7                                 0x00001f89   Data          32  K82F_FlightController.o(.rodata.str1.1)
-    receiveQueue                             0x20000008   Data         262  K82F_FlightController.o(.bss.receiveQueue)
-    [Anonymous Symbol]                       0x20000008   Section        0  K82F_FlightController.o(.bss.receiveQueue)
-    transmitQueue                            0x2000010e   Data         262  K82F_FlightController.o(.bss.transmitQueue)
-    [Anonymous Symbol]                       0x2000010e   Section        0  K82F_FlightController.o(.bss.transmitQueue)
+    [Anonymous Symbol]                       0x00000c70   Section        0  K82F_FlightController.o(.text.Ecompass_init)
+    [Anonymous Symbol]                       0x00000cbc   Section        0  K82F_FlightController.o(.text.I2C_debug_log_status)
+    [Anonymous Symbol]                       0x00000de0   Section        0  K82F_FlightController.o(.text.I2C_init)
+    [Anonymous Symbol]                       0x00000e58   Section        0  K82F_FlightController.o(.text.I2C_read_byte)
+    [Anonymous Symbol]                       0x000010e0   Section        0  K82F_FlightController.o(.text.LPUART4_IRQHandler)
+    [Anonymous Symbol]                       0x000011c4   Section        0  K82F_FlightController.o(.text.OBLEDs_init)
+    [Anonymous Symbol]                       0x00001238   Section        0  RingBuffer.o(.text.RingBuffer_Dequeue_Byte)
+    [Anonymous Symbol]                       0x000012ac   Section        0  RingBuffer.o(.text.RingBuffer_Empty)
+    [Anonymous Symbol]                       0x000012c0   Section        0  RingBuffer.o(.text.RingBuffer_Enqueue_Byte)
+    [Anonymous Symbol]                       0x00001328   Section        0  RingBuffer.o(.text.RingBuffer_Full)
+    [Anonymous Symbol]                       0x00001340   Section        0  RingBuffer.o(.text.RingBuffer_Init)
+    [Anonymous Symbol]                       0x0000137c   Section        0  system_MK82F25615.o(.text.SystemInit)
+    [Anonymous Symbol]                       0x000013b8   Section        0  system_MK82F25615.o(.text.SystemInitHook)
+    __NVIC_ClearPendingIRQ                   0x000013bd   Thumb Code    52  K82F_FlightController.o(.text.__NVIC_ClearPendingIRQ)
+    [Anonymous Symbol]                       0x000013bc   Section        0  K82F_FlightController.o(.text.__NVIC_ClearPendingIRQ)
+    __NVIC_EnableIRQ                         0x000013f1   Thumb Code    52  K82F_FlightController.o(.text.__NVIC_EnableIRQ)
+    [Anonymous Symbol]                       0x000013f0   Section        0  K82F_FlightController.o(.text.__NVIC_EnableIRQ)
+    __NVIC_SetPriority                       0x00001425   Thumb Code    68  K82F_FlightController.o(.text.__NVIC_SetPriority)
+    [Anonymous Symbol]                       0x00001424   Section        0  K82F_FlightController.o(.text.__NVIC_SetPriority)
+    [Anonymous Symbol]                       0x00001468   Section        0  K82F_FlightController.o(.text.fputc)
+    [Anonymous Symbol]                       0x000014c0   Section        0  K82F_FlightController.o(.text.main)
+    i.__0printf                              0x00001744   Section        0  printfa.o(i.__0printf)
+    i.__scatterload_copy                     0x00001764   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x00001772   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x00001774   Section       14  handlers.o(i.__scatterload_zeroinit)
+    _fp_digits                               0x00001785   Thumb Code   366  printfa.o(i._fp_digits)
+    i._fp_digits                             0x00001784   Section        0  printfa.o(i._fp_digits)
+    _printf_core                             0x00001909   Thumb Code  1744  printfa.o(i._printf_core)
+    i._printf_core                           0x00001908   Section        0  printfa.o(i._printf_core)
+    _printf_post_padding                     0x00001fe5   Thumb Code    36  printfa.o(i._printf_post_padding)
+    i._printf_post_padding                   0x00001fe4   Section        0  printfa.o(i._printf_post_padding)
+    _printf_pre_padding                      0x00002009   Thumb Code    46  printfa.o(i._printf_pre_padding)
+    i._printf_pre_padding                    0x00002008   Section        0  printfa.o(i._printf_pre_padding)
+    .L.str.18                                0x00002036   Data          23  K82F_FlightController.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x00002036   Section        0  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.15                                0x00002049   Data           4  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.1                                 0x0000204d   Data          29  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.2                                 0x0000206a   Data          29  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.3                                 0x00002087   Data          29  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.4                                 0x000020a4   Data          29  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.14                                0x000020c1   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.13                                0x000020e1   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.8                                 0x00002101   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.9                                 0x00002121   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.6                                 0x00002141   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.11                                0x00002161   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.5                                 0x00002181   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.7                                 0x000021a1   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.10                                0x000021c1   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.12                                0x000021e1   Data          32  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.17                                0x00002201   Data          12  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.22                                0x0000220d   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.19                                0x0000221a   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.23                                0x00002227   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.20                                0x00002234   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.24                                0x00002241   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.21                                0x0000224e   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    .L.str                                   0x0000225b   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    .L.str.16                                0x00002268   Data          13  K82F_FlightController.o(.rodata.str1.1)
+    receiveQueue                             0x20000018   Data         262  K82F_FlightController.o(.bss.receiveQueue)
+    [Anonymous Symbol]                       0x20000018   Section        0  K82F_FlightController.o(.bss.receiveQueue)
+    transmitQueue                            0x2000011e   Data         262  K82F_FlightController.o(.bss.transmitQueue)
+    [Anonymous Symbol]                       0x2000011e   Section        0  K82F_FlightController.o(.bss.transmitQueue)
     VTOR                                     0xe000ed08   Number         0  startup_MK82F25615.o ABSOLUTE
 
     Global Symbols
@@ -486,31 +515,35 @@ Image Symbol Table
     __aeabi_lasr                             0x00000afb   Thumb Code    36  llsshr.o(.text)
     _ll_sshift_r                             0x00000afb   Thumb Code     0  llsshr.o(.text)
     Debug_init_uart                          0x00000b21   Thumb Code   336  K82F_FlightController.o(.text.Debug_init_uart)
-    I2C_debug_info                           0x00000c71   Thumb Code   290  K82F_FlightController.o(.text.I2C_debug_info)
-    I2C_read_byte                            0x00000d95   Thumb Code   382  K82F_FlightController.o(.text.I2C_read_byte)
-    LPUART4_IRQHandler                       0x00000f15   Thumb Code   228  K82F_FlightController.o(.text.LPUART4_IRQHandler)
-    OBLEDs_init                              0x00000ff9   Thumb Code   116  K82F_FlightController.o(.text.OBLEDs_init)
-    RingBuffer_Dequeue_Byte                  0x0000106d   Thumb Code   114  RingBuffer.o(.text.RingBuffer_Dequeue_Byte)
-    RingBuffer_Empty                         0x000010e1   Thumb Code    20  RingBuffer.o(.text.RingBuffer_Empty)
-    RingBuffer_Enqueue_Byte                  0x000010f5   Thumb Code   102  RingBuffer.o(.text.RingBuffer_Enqueue_Byte)
-    RingBuffer_Full                          0x0000115d   Thumb Code    24  RingBuffer.o(.text.RingBuffer_Full)
-    RingBuffer_Init                          0x00001175   Thumb Code    58  RingBuffer.o(.text.RingBuffer_Init)
-    SystemInit                               0x000011b1   Thumb Code    58  system_MK82F25615.o(.text.SystemInit)
-    SystemInitHook                           0x000011ed   Thumb Code     2  system_MK82F25615.o(.text.SystemInitHook)
-    fputc                                    0x0000129d   Thumb Code    86  K82F_FlightController.o(.text.fputc)
-    main                                     0x000012f5   Thumb Code   594  K82F_FlightController.o(.text.main)
-    __0printf                                0x00001549   Thumb Code    22  printfa.o(i.__0printf)
-    __1printf                                0x00001549   Thumb Code     0  printfa.o(i.__0printf)
-    __2printf                                0x00001549   Thumb Code     0  printfa.o(i.__0printf)
-    __c89printf                              0x00001549   Thumb Code     0  printfa.o(i.__0printf)
-    printf                                   0x00001549   Thumb Code     0  printfa.o(i.__0printf)
-    __scatterload_copy                       0x00001569   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x00001577   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x00001579   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    Region$$Table$$Base                      0x00001fac   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00001fcc   Number         0  anon$$obj.o(Region$$Table)
+    Ecompass_init                            0x00000c71   Thumb Code    74  K82F_FlightController.o(.text.Ecompass_init)
+    I2C_debug_log_status                     0x00000cbd   Thumb Code   290  K82F_FlightController.o(.text.I2C_debug_log_status)
+    I2C_init                                 0x00000de1   Thumb Code   118  K82F_FlightController.o(.text.I2C_init)
+    I2C_read_byte                            0x00000e59   Thumb Code   646  K82F_FlightController.o(.text.I2C_read_byte)
+    LPUART4_IRQHandler                       0x000010e1   Thumb Code   228  K82F_FlightController.o(.text.LPUART4_IRQHandler)
+    OBLEDs_init                              0x000011c5   Thumb Code   116  K82F_FlightController.o(.text.OBLEDs_init)
+    RingBuffer_Dequeue_Byte                  0x00001239   Thumb Code   114  RingBuffer.o(.text.RingBuffer_Dequeue_Byte)
+    RingBuffer_Empty                         0x000012ad   Thumb Code    20  RingBuffer.o(.text.RingBuffer_Empty)
+    RingBuffer_Enqueue_Byte                  0x000012c1   Thumb Code   102  RingBuffer.o(.text.RingBuffer_Enqueue_Byte)
+    RingBuffer_Full                          0x00001329   Thumb Code    24  RingBuffer.o(.text.RingBuffer_Full)
+    RingBuffer_Init                          0x00001341   Thumb Code    58  RingBuffer.o(.text.RingBuffer_Init)
+    SystemInit                               0x0000137d   Thumb Code    58  system_MK82F25615.o(.text.SystemInit)
+    SystemInitHook                           0x000013b9   Thumb Code     2  system_MK82F25615.o(.text.SystemInitHook)
+    fputc                                    0x00001469   Thumb Code    86  K82F_FlightController.o(.text.fputc)
+    main                                     0x000014c1   Thumb Code   644  K82F_FlightController.o(.text.main)
+    __0printf                                0x00001745   Thumb Code    22  printfa.o(i.__0printf)
+    __1printf                                0x00001745   Thumb Code     0  printfa.o(i.__0printf)
+    __2printf                                0x00001745   Thumb Code     0  printfa.o(i.__0printf)
+    __c89printf                              0x00001745   Thumb Code     0  printfa.o(i.__0printf)
+    printf                                   0x00001745   Thumb Code     0  printfa.o(i.__0printf)
+    __scatterload_copy                       0x00001765   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x00001773   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x00001775   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    Region$$Table$$Base                      0x00002278   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00002298   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_MK82F25615.o(.data.SystemCoreClock)
     __stdout                                 0x20000004   Data           4  K82F_FlightController.o(.bss.__stdout)
+    g_acc_buffer                             0x20000008   Data           8  K82F_FlightController.o(.bss.g_acc_buffer)
+    g_mag_buffer                             0x20000010   Data           8  K82F_FlightController.o(.bss.g_mag_buffer)
     Image$$ARM_LIB_STACK$$ZI$$Limit          0x20030000   Number         0  anon$$obj.o ABSOLUTE
 
 
@@ -521,13 +554,13 @@ Memory Map of the image
 
   Image Entry point : 0x00000411
 
-  Load Region LR_m_text (Base: 0x00000000, Size: 0x00001fd0, Max: 0x00040000, ABSOLUTE)
+  Load Region LR_m_text (Base: 0x00000000, Size: 0x0000229c, Max: 0x00040000, ABSOLUTE)
 
     Execution Region VECTOR_ROM (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x000003c0, Max: 0x000003c0, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x00000000   0x000003c0   Data   RO           57    .isr_vector         startup_MK82F25615.o
+    0x00000000   0x00000000   0x000003c0   Data   RO           65    .isr_vector         startup_MK82F25615.o
 
 
     Execution Region ER_m_bootloader_config (Exec base: 0x000003c0, Load base: 0x000003c0, Size: 0x00000000, Max: 0x00000040, ABSOLUTE, FIXED)
@@ -539,102 +572,107 @@ Memory Map of the image
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000400   0x00000400   0x00000010   Data   RO           58    .FlashConfig        startup_MK82F25615.o
+    0x00000400   0x00000400   0x00000010   Data   RO           66    .FlashConfig        startup_MK82F25615.o
 
 
-    Execution Region ER_m_text (Exec base: 0x00000410, Load base: 0x00000410, Size: 0x00001bbc, Max: 0x0003fbf0, ABSOLUTE)
+    Execution Region ER_m_text (Exec base: 0x00000410, Load base: 0x00000410, Size: 0x00001e88, Max: 0x0003fbf0, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000410   0x00000410   0x00000000   Code   RO           77  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x00000410   0x00000410   0x00000004   Code   RO          114    .ARM.Collect$$$$00000003  mc_w.l(entry4.o)
-    0x00000414   0x00000414   0x00000004   Code   RO          117    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x00000418   0x00000418   0x00000000   Code   RO          119    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x00000418   0x00000418   0x00000000   Code   RO          121    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x00000418   0x00000418   0x00000008   Code   RO          122    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x00000420   0x00000420   0x00000000   Code   RO          124    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x00000420   0x00000420   0x00000000   Code   RO          126    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x00000420   0x00000420   0x00000004   Code   RO          115    .ARM.Collect$$$$00002714  mc_w.l(entry4.o)
-    0x00000424   0x00000424   0x00000164   Code   RO           56    .text               startup_MK82F25615.o
-    0x00000588   0x00000588   0x000000de   Code   RO          108    .text               mf_w.l(ddiv.o)
-    0x00000666   0x00000666   0x0000001a   Code   RO          110    .text               mf_w.l(dfltui.o)
-    0x00000680   0x00000680   0x0000003e   Code   RO          112    .text               mf_w.l(dfixi.o)
-    0x000006be   0x000006be   0x0000002c   Code   RO          128    .text               mc_w.l(uidiv.o)
-    0x000006ea   0x000006ea   0x00000062   Code   RO          130    .text               mc_w.l(uldiv.o)
-    0x0000074c   0x0000074c   0x00000020   Code   RO          132    .text               mc_w.l(llushr.o)
-    0x0000076c   0x0000076c   0x00000000   Code   RO          134    .text               mc_w.l(iusefp.o)
-    0x0000076c   0x0000076c   0x000000ba   Code   RO          135    .text               mf_w.l(depilogue.o)
-    0x00000826   0x00000826   0x0000014e   Code   RO          137    .text               mf_w.l(dadd.o)
-    0x00000974   0x00000974   0x000000e4   Code   RO          139    .text               mf_w.l(dmul.o)
-    0x00000a58   0x00000a58   0x00000030   Code   RO          141    .text               mf_w.l(dfixul.o)
-    0x00000a88   0x00000a88   0x00000030   Code   RO          143    .text               mf_w.l(cdrcmple.o)
-    0x00000ab8   0x00000ab8   0x00000024   Code   RO          145    .text               mc_w.l(init.o)
-    0x00000adc   0x00000adc   0x0000001e   Code   RO          147    .text               mc_w.l(llshl.o)
-    0x00000afa   0x00000afa   0x00000024   Code   RO          149    .text               mc_w.l(llsshr.o)
+    0x00000410   0x00000410   0x00000000   Code   RO           85  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x00000410   0x00000410   0x00000004   Code   RO          122    .ARM.Collect$$$$00000003  mc_w.l(entry4.o)
+    0x00000414   0x00000414   0x00000004   Code   RO          125    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x00000418   0x00000418   0x00000000   Code   RO          127    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x00000418   0x00000418   0x00000000   Code   RO          129    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x00000418   0x00000418   0x00000008   Code   RO          130    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x00000420   0x00000420   0x00000000   Code   RO          132    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x00000420   0x00000420   0x00000000   Code   RO          134    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x00000420   0x00000420   0x00000004   Code   RO          123    .ARM.Collect$$$$00002714  mc_w.l(entry4.o)
+    0x00000424   0x00000424   0x00000164   Code   RO           64    .text               startup_MK82F25615.o
+    0x00000588   0x00000588   0x000000de   Code   RO          116    .text               mf_w.l(ddiv.o)
+    0x00000666   0x00000666   0x0000001a   Code   RO          118    .text               mf_w.l(dfltui.o)
+    0x00000680   0x00000680   0x0000003e   Code   RO          120    .text               mf_w.l(dfixi.o)
+    0x000006be   0x000006be   0x0000002c   Code   RO          136    .text               mc_w.l(uidiv.o)
+    0x000006ea   0x000006ea   0x00000062   Code   RO          138    .text               mc_w.l(uldiv.o)
+    0x0000074c   0x0000074c   0x00000020   Code   RO          140    .text               mc_w.l(llushr.o)
+    0x0000076c   0x0000076c   0x00000000   Code   RO          142    .text               mc_w.l(iusefp.o)
+    0x0000076c   0x0000076c   0x000000ba   Code   RO          143    .text               mf_w.l(depilogue.o)
+    0x00000826   0x00000826   0x0000014e   Code   RO          145    .text               mf_w.l(dadd.o)
+    0x00000974   0x00000974   0x000000e4   Code   RO          147    .text               mf_w.l(dmul.o)
+    0x00000a58   0x00000a58   0x00000030   Code   RO          149    .text               mf_w.l(dfixul.o)
+    0x00000a88   0x00000a88   0x00000030   Code   RO          151    .text               mf_w.l(cdrcmple.o)
+    0x00000ab8   0x00000ab8   0x00000024   Code   RO          153    .text               mc_w.l(init.o)
+    0x00000adc   0x00000adc   0x0000001e   Code   RO          155    .text               mc_w.l(llshl.o)
+    0x00000afa   0x00000afa   0x00000024   Code   RO          157    .text               mc_w.l(llsshr.o)
     0x00000b1e   0x00000b1e   0x00000002   PAD
     0x00000b20   0x00000b20   0x00000150   Code   RO            4    .text.Debug_init_uart  K82F_FlightController.o
-    0x00000c70   0x00000c70   0x00000122   Code   RO           20    .text.I2C_debug_info  K82F_FlightController.o
-    0x00000d92   0x00000d92   0x00000002   PAD
-    0x00000d94   0x00000d94   0x0000017e   Code   RO           22    .text.I2C_read_byte  K82F_FlightController.o
-    0x00000f12   0x00000f12   0x00000002   PAD
-    0x00000f14   0x00000f14   0x000000e4   Code   RO           12    .text.LPUART4_IRQHandler  K82F_FlightController.o
-    0x00000ff8   0x00000ff8   0x00000074   Code   RO           18    .text.OBLEDs_init   K82F_FlightController.o
-    0x0000106c   0x0000106c   0x00000072   Code   RO           48    .text.RingBuffer_Dequeue_Byte  RingBuffer.o
+    0x00000c70   0x00000c70   0x0000004a   Code   RO           30    .text.Ecompass_init  K82F_FlightController.o
+    0x00000cba   0x00000cba   0x00000002   PAD
+    0x00000cbc   0x00000cbc   0x00000122   Code   RO           28    .text.I2C_debug_log_status  K82F_FlightController.o
+    0x00000dde   0x00000dde   0x00000002   PAD
+    0x00000de0   0x00000de0   0x00000076   Code   RO           20    .text.I2C_init      K82F_FlightController.o
+    0x00000e56   0x00000e56   0x00000002   PAD
+    0x00000e58   0x00000e58   0x00000286   Code   RO           22    .text.I2C_read_byte  K82F_FlightController.o
     0x000010de   0x000010de   0x00000002   PAD
-    0x000010e0   0x000010e0   0x00000014   Code   RO           44    .text.RingBuffer_Empty  RingBuffer.o
-    0x000010f4   0x000010f4   0x00000066   Code   RO           46    .text.RingBuffer_Enqueue_Byte  RingBuffer.o
-    0x0000115a   0x0000115a   0x00000002   PAD
-    0x0000115c   0x0000115c   0x00000018   Code   RO           42    .text.RingBuffer_Full  RingBuffer.o
-    0x00001174   0x00001174   0x0000003a   Code   RO           40    .text.RingBuffer_Init  RingBuffer.o
-    0x000011ae   0x000011ae   0x00000002   PAD
-    0x000011b0   0x000011b0   0x0000003a   Code   RO           64    .text.SystemInit    system_MK82F25615.o
-    0x000011ea   0x000011ea   0x00000002   PAD
-    0x000011ec   0x000011ec   0x00000002   Code   RO           66    .text.SystemInitHook  system_MK82F25615.o
-    0x000011ee   0x000011ee   0x00000002   PAD
-    0x000011f0   0x000011f0   0x00000034   Code   RO            8    .text.__NVIC_ClearPendingIRQ  K82F_FlightController.o
-    0x00001224   0x00001224   0x00000034   Code   RO           10    .text.__NVIC_EnableIRQ  K82F_FlightController.o
-    0x00001258   0x00001258   0x00000044   Code   RO            6    .text.__NVIC_SetPriority  K82F_FlightController.o
-    0x0000129c   0x0000129c   0x00000056   Code   RO           14    .text.fputc         K82F_FlightController.o
-    0x000012f2   0x000012f2   0x00000002   PAD
-    0x000012f4   0x000012f4   0x00000252   Code   RO           26    .text.main          K82F_FlightController.o
-    0x00001546   0x00001546   0x00000002   PAD
-    0x00001548   0x00001548   0x00000020   Code   RO           81    i.__0printf         mc_w.l(printfa.o)
-    0x00001568   0x00001568   0x0000000e   Code   RO          153    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x00001576   0x00001576   0x00000002   Code   RO          154    i.__scatterload_null  mc_w.l(handlers.o)
-    0x00001578   0x00001578   0x0000000e   Code   RO          155    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x00001586   0x00001586   0x00000002   PAD
-    0x00001588   0x00001588   0x00000184   Code   RO           88    i._fp_digits        mc_w.l(printfa.o)
-    0x0000170c   0x0000170c   0x000006dc   Code   RO           89    i._printf_core      mc_w.l(printfa.o)
-    0x00001de8   0x00001de8   0x00000024   Code   RO           90    i._printf_post_padding  mc_w.l(printfa.o)
-    0x00001e0c   0x00001e0c   0x0000002e   Code   RO           91    i._printf_pre_padding  mc_w.l(printfa.o)
-    0x00001e3a   0x00001e3a   0x0000016f   Data   RO           30    .rodata.str1.1      K82F_FlightController.o
-    0x00001fa9   0x00001fa9   0x00000003   PAD
-    0x00001fac   0x00001fac   0x00000020   Data   RO          152    Region$$Table       anon$$obj.o
+    0x000010e0   0x000010e0   0x000000e4   Code   RO           12    .text.LPUART4_IRQHandler  K82F_FlightController.o
+    0x000011c4   0x000011c4   0x00000074   Code   RO           18    .text.OBLEDs_init   K82F_FlightController.o
+    0x00001238   0x00001238   0x00000072   Code   RO           56    .text.RingBuffer_Dequeue_Byte  RingBuffer.o
+    0x000012aa   0x000012aa   0x00000002   PAD
+    0x000012ac   0x000012ac   0x00000014   Code   RO           52    .text.RingBuffer_Empty  RingBuffer.o
+    0x000012c0   0x000012c0   0x00000066   Code   RO           54    .text.RingBuffer_Enqueue_Byte  RingBuffer.o
+    0x00001326   0x00001326   0x00000002   PAD
+    0x00001328   0x00001328   0x00000018   Code   RO           50    .text.RingBuffer_Full  RingBuffer.o
+    0x00001340   0x00001340   0x0000003a   Code   RO           48    .text.RingBuffer_Init  RingBuffer.o
+    0x0000137a   0x0000137a   0x00000002   PAD
+    0x0000137c   0x0000137c   0x0000003a   Code   RO           72    .text.SystemInit    system_MK82F25615.o
+    0x000013b6   0x000013b6   0x00000002   PAD
+    0x000013b8   0x000013b8   0x00000002   Code   RO           74    .text.SystemInitHook  system_MK82F25615.o
+    0x000013ba   0x000013ba   0x00000002   PAD
+    0x000013bc   0x000013bc   0x00000034   Code   RO            8    .text.__NVIC_ClearPendingIRQ  K82F_FlightController.o
+    0x000013f0   0x000013f0   0x00000034   Code   RO           10    .text.__NVIC_EnableIRQ  K82F_FlightController.o
+    0x00001424   0x00001424   0x00000044   Code   RO            6    .text.__NVIC_SetPriority  K82F_FlightController.o
+    0x00001468   0x00001468   0x00000056   Code   RO           14    .text.fputc         K82F_FlightController.o
+    0x000014be   0x000014be   0x00000002   PAD
+    0x000014c0   0x000014c0   0x00000284   Code   RO           32    .text.main          K82F_FlightController.o
+    0x00001744   0x00001744   0x00000020   Code   RO           89    i.__0printf         mc_w.l(printfa.o)
+    0x00001764   0x00001764   0x0000000e   Code   RO          161    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x00001772   0x00001772   0x00000002   Code   RO          162    i.__scatterload_null  mc_w.l(handlers.o)
+    0x00001774   0x00001774   0x0000000e   Code   RO          163    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x00001782   0x00001782   0x00000002   PAD
+    0x00001784   0x00001784   0x00000184   Code   RO           96    i._fp_digits        mc_w.l(printfa.o)
+    0x00001908   0x00001908   0x000006dc   Code   RO           97    i._printf_core      mc_w.l(printfa.o)
+    0x00001fe4   0x00001fe4   0x00000024   Code   RO           98    i._printf_post_padding  mc_w.l(printfa.o)
+    0x00002008   0x00002008   0x0000002e   Code   RO           99    i._printf_pre_padding  mc_w.l(printfa.o)
+    0x00002036   0x00002036   0x0000023f   Data   RO           36    .rodata.str1.1      K82F_FlightController.o
+    0x00002275   0x00002275   0x00000003   PAD
+    0x00002278   0x00002278   0x00000020   Data   RO          160    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_m_data (Exec base: 0x1fff0000, Load base: 0x00001fcc, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_m_data (Exec base: 0x1fff0000, Load base: 0x00002298, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region RW_m_data_2 (Exec base: 0x20000000, Load base: 0x00001fcc, Size: 0x00000214, Max: 0x0002f800, ABSOLUTE)
+    Execution Region RW_m_data_2 (Exec base: 0x20000000, Load base: 0x00002298, Size: 0x00000224, Max: 0x0002f800, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x00001fcc   0x00000004   Data   RW           70    .data.SystemCoreClock  system_MK82F25615.o
-    0x20000004        -       0x00000004   Zero   RW           31    .bss.__stdout       K82F_FlightController.o
-    0x20000008        -       0x00000106   Zero   RW           29    .bss.receiveQueue   K82F_FlightController.o
-    0x2000010e        -       0x00000106   Zero   RW           28    .bss.transmitQueue  K82F_FlightController.o
+    0x20000000   0x00002298   0x00000004   Data   RW           78    .data.SystemCoreClock  system_MK82F25615.o
+    0x20000004        -       0x00000004   Zero   RW           39    .bss.__stdout       K82F_FlightController.o
+    0x20000008        -       0x00000008   Zero   RW           38    .bss.g_acc_buffer   K82F_FlightController.o
+    0x20000010        -       0x00000008   Zero   RW           37    .bss.g_mag_buffer   K82F_FlightController.o
+    0x20000018        -       0x00000106   Zero   RW           35    .bss.receiveQueue   K82F_FlightController.o
+    0x2000011e        -       0x00000106   Zero   RW           34    .bss.transmitQueue  K82F_FlightController.o
 
 
-    Execution Region ARM_LIB_HEAP (Exec base: 0x20000214, Load base: 0x00001fd0, Size: 0x00000400, Max: 0x00000400, ABSOLUTE)
+    Execution Region ARM_LIB_HEAP (Exec base: 0x20000224, Load base: 0x0000229c, Size: 0x00000400, Max: 0x00000400, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000214        -       0x00000400   Zero   RW            1    ARM_LIB_HEAP.bss    anon$$obj.o
+    0x20000224        -       0x00000400   Zero   RW            1    ARM_LIB_HEAP.bss    anon$$obj.o
 
 
-    Execution Region ARM_LIB_STACK (Exec base: 0x2002fc00, Load base: 0x00001fd0, Size: 0x00000400, Max: 0x00000400, ABSOLUTE)
+    Execution Region ARM_LIB_STACK (Exec base: 0x2002fc00, Load base: 0x0000229c, Size: 0x00000400, Max: 0x00000400, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -648,15 +686,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      2204          8        367          0        528       9631   K82F_FlightController.o
+      2710          8        575          0        544      10573   K82F_FlightController.o
        318          0          0          0          0       2169   RingBuffer.o
        356        172        976          0          0       1904   startup_MK82F25615.o
         60          0          0          4          0       3591   system_MK82F25615.o
 
     ----------------------------------------------------------------------
-      2956        180       1378          4       2576      17295   Object Totals
+      3464        180       1586          4       2592      18237   Object Totals
          0          0         32          0       2048          0   (incl. Generated)
-        18          0          3          0          0          0   (incl. Padding)
+        20          0          3          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -709,15 +747,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      6698        286       1378          4       2576      18283   Grand Totals
-      6698        286       1378          4       2576      18283   ELF Image Totals
-      6698        286       1378          4          0          0   ROM Totals
+      7206        286       1586          4       2592      19225   Grand Totals
+      7206        286       1586          4       2592      19225   ELF Image Totals
+      7206        286       1586          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 8076 (   7.89kB)
-    Total RW  Size (RW Data + ZI Data)              2580 (   2.52kB)
-    Total ROM Size (Code + RO Data + RW Data)       8080 (   7.89kB)
+    Total RO  Size (Code + RO Data)                 8792 (   8.59kB)
+    Total RW  Size (RW Data + ZI Data)              2596 (   2.54kB)
+    Total ROM Size (Code + RO Data + RW Data)       8796 (   8.59kB)
 
 ==============================================================================
 

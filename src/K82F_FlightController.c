@@ -2,23 +2,10 @@
 #include "LAL.h"
 #include "FlightController_Debug.h"
 #include "FlightController_OnboardLEDs.h"
+#include "FlightController_I2C.h"
 
 #define RUNNING (1)
 #define DASSERT(Expression) if(!(Expression)){GPIOC->PSOR |= LED_RED; *(u32 *)0x00 = 0; }
-
-//~ I2C DEFINITIONS
-#define I2C_MASTER_START    (I2C3->C1 |=  I2C_C1_MST_MASK )
-#define I2C_MASTER_RESTART  (I2C3->C1 |=  I2C_C1_RSTA_MASK)
-#define I2C_MASTER_STOP     (I2C3->C1 &= ~I2C_C1_MST_MASK )
-#define I2C_TRANSMIT_MODE   (I2C3->C1 |=  I2C_C1_TX_MASK  ) 
-#define I2C_RECIEVE_MODE    (I2C3->C1 &= ~I2C_C1_TX_MASK  ) 
-
-#define I2C_WAIT             while((I2C3->S & I2C_S_IICIF_MASK) == 0){} I2C3->S |= I2C_S_IICIF_MASK
-
-#define I2C_NACK            (I2C3->C1 |=  I2C_C1_TXAK_MASK)
-#define I2C_ACK             (I2C3->C1 &= ~I2C_C1_TXAK_MASK)
-#define I2C_PUSH_DATA(data) (I2C3->D   = data   )
-#define I2C_PULL_DATA(data) (data      = I2C3->D)
 
 //~ 0V7670 DEFINITIONS
 #define OV7670_SLAVE_ADDRESS (0x2A)
@@ -49,126 +36,32 @@ typedef struct
     s16 x;
     s16 y;
     s16 z;
+    s16 padding;
 } vec3_s16;
 
 
-// TODO(MIGUEL): Implement some I2C error checking
-void I2C_init(void)
-{
-    SIM->SCGC1 |= SIM_SCGC1_I2C3_MASK;
-    
-    // NOTE(MIGUEL): PTA1 & PTA2 are shared with ECompass
-    PORTA->PCR[ 1] = PORT_PCR_MUX(4); /// SDATA
-    PORTA->PCR[ 2] = PORT_PCR_MUX(4); /// SCLOCK
-    
-    // TODO(MIGUEL): CALCULATE BAUD RATE
-    // NOTE(MIGUEL): BAUD = (I2C MODULE CLK SPEED in HZ) / (MUL * SCL DIVIDER)
-    I2C3->F    |= I2C_F_MULT(3)    ; /// MULTIPILER FACTOR
-    I2C3->F    |= I2C_F_ICR (0)    ; /// CLOCK RATE
-    
-    I2C3->C1   |= I2C_C1_IICEN_MASK; /// ENABLE I2C 
-    I2C3->C1   |= I2C_C1_IICIE_MASK; /// ENABLE INTERRUPTS
-    
-    I2C3->SLTH |= 0X01             ; /// SCLK HIGH TIMEOUT
-    I2C3->SLTL |= 0X01             ; /// SCLK HIGH TIMEOUT
-    
-    I2C3->C2   |= I2C_C2_HDRS_MASK ; /// HIGH DRIVE SELECT
-    
-    return;
-}
-void I2C_debug_info(void)
-{
-    printf("ACK SIGNAL RECIEVED   : %#2X \n\r", I2C3->S   & I2C_S_RXAK_MASK    );
-    printf("INTERRUPT PENDING     : %#2X \n\r", I2C3->S   & I2C_S_IICIF_MASK   );
-    printf("RANGE ADDRESS MATCH   : %#2X \n\r", I2C3->S   & I2C_S_RAM_MASK     );
-    printf("Bus is busy           : %#2X \n\r", I2C3->S   & I2C_S_BUSY_MASK    );
-    printf("ADDRESED AS SLAVE     : %#2X \n\r", I2C3->S   & I2C_S_IAAS_MASK    );
-    printf("BYTE TRANSFER COMPLETE: %#2X \n\r", I2C3->S   & I2C_S_TCF_MASK     );
-    printf("READ WRITE ERRORS     : %#2X \n\r", I2C3->S2  & I2C_S2_ERROR_MASK  );
-    printf("TX or RX Buffers Empty: %#2X \n\r", I2C3->S2  & I2C_S2_EMPTY_MASK  );
-    printf("FLT_STARTF            : %#2X \n\r", I2C3->FLT & I2C_FLT_STARTF_MASK);
-    printf("FLT_STOPF             : %#2X \n\r", I2C3->FLT & I2C_FLT_STOPF_MASK );
-    printf("\n\n\r");
-    
-    
-    return;
-}
-
-u8 I2C_read_byte(u8 device, u8 device_register)
-{
-    u8 data = 0;
-    
-    //I2C3->FLT &= ~I2C_FLT_STARTF_MASK;
-    //I2C3->FLT &= ~I2C_FLT_STOPF_MASK;
-    //I2C3->S   &= ~I2C_S_IICIF_MASK;
-    
-    
-    I2C_TRANSMIT_MODE             ;
-    I2C_MASTER_START              ;
-    
-    I2C_PUSH_DATA(device)         ;
-    I2C_WAIT                      ;
-    
-    I2C_PUSH_DATA(device_register);
-    I2C_WAIT                      ;
-    
-    I2C_MASTER_RESTART            ;
-    I2C_PUSH_DATA(device | 0x1)   ;
-    I2C_WAIT                      ;
-    
-    I2C_NACK                      ;
-    I2C_RECIEVE_MODE              ;
-    
-    /// Dummy read
-    I2C_PULL_DATA(data)           ;
-    I2C_WAIT                      ;
-    
-    I2C_MASTER_STOP               ;
-    I2C_PULL_DATA(data)           ;
-    
-    return data;
-}
-
-u8 I2C_read_nbytes(u8 device, u8 device_register)
-{
-    
-    
-    return;
-}
-
-void I2C_write_byte(u8 device, u8 device_register, u8 data)
-{
-    I2C_TRANSMIT_MODE             ;
-    I2C_MASTER_START              ;
-    
-    I2C_PUSH_DATA(device)         ;
-    I2C_WAIT                      ;
-    
-    I2C_PUSH_DATA(device_register);
-    I2C_WAIT                      ;
-    
-    
-    I2C_PUSH_DATA(data)           ;
-    I2C_WAIT                      ;
-    
-    I2C_MASTER_STOP               ;
-    
-    return;
-}
+vec3_s16 g_mag_buffer;
+vec3_s16 g_acc_buffer;
 
 void Ecompass_init(void *pointer)
 {
-    u8 data;
+    u8 data = 0;
     
     /// Check the Who Am I register
     // NOTE(MIGUEL): Should I check for I2C error
-    I2C_read_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_WHOAMI_VAL);
+    data = I2C_read_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_WHOAMI_VAL);
+    
     
     if(data != FXOS8700CQ_WHOAMI_VAL)
     {
-        printf("I2C Error");
+        printf("I2C Error \n\r");
     }
     
+    printf("bye %#2X \n\r", data);
+    
+    I2C_debug_log_status();
+    
+    /*
     //~ Initialize Accelerometer Control Register 1 to zero to put the accelarometer in standby
     
     data = 0x00;
@@ -184,7 +77,7 @@ void Ecompass_init(void *pointer)
     // [4-2]: m_os   = 111: 8x oversampling (for 200Hz) to reduce magnetometer noise
     // [1-0]: m_hms  =  11: select hybrid mode with accel and magnetometer active
     
-    databyte = 0x1F;
+    data = 0x1F;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
     
     // TODO(MIGUEL): I2C Error checking
@@ -199,7 +92,7 @@ void Ecompass_init(void *pointer)
     // [2]  : m_maxmin_rst     =  0:
     // [1-0]: m_rst_cnt        = 00: to enable magnetic reset each cycle
     
-    databyte = 0x20;
+    data = 0x20;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG2, data);
     
     // TODO(MIGUEL): I2C Error checking
@@ -214,7 +107,7 @@ void Ecompass_init(void *pointer)
     // [2]  : reserved
     // [1-0]: fs       = 01 for accelerometer range of +/-4g range with 0.488mg/LSB
     
-    databyte = 0x01;
+    data = 0x01;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_XYZ_DATA_CFG, data);
     
     // TODO(MIGUEL): I2C Error checking
@@ -237,12 +130,27 @@ void Ecompass_init(void *pointer)
 
 void Ecompass_read_raw_data(vec3_s16 *mag_raw_data, vec3_s16 *acc_raw_data)
 {
+    // NOTE(MIGUEL): Do I need a file pointer and whY?
+    u8 buffer[FXOS8700CQ_READ_LEN];
     
+    I2C_read_nbytes(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_STATUS, buffer, FXOS8700CQ_READ_LEN);
     
+    //NOTE(MIGUEL): Why are we starting at index 1?
+    /// 14bit accel data in 16bit words
+    acc_raw_data->x = (u16)(( buffer[ 1] << 8) | buffer[ 2]) >> 2;
+    acc_raw_data->y = (u16)(( buffer[ 3] << 8) | buffer[ 4]) >> 2;
+    acc_raw_data->z = (u16)(( buffer[ 5] << 8) | buffer[ 6]) >> 2;
+    
+    mag_raw_data->x = (u16)(( buffer[ 7] << 8) | buffer[ 8]) >> 2;
+    mag_raw_data->y = (u16)(( buffer[ 9] << 8) | buffer[10]) >> 2;
+    mag_raw_data->z = (u16)(( buffer[11] << 8) | buffer[12]) >> 2;
+    
+    // TODO(MIGUEL): I2C Error checking if read fails
+    */
     return;
 }
-int 
-main(void) 
+
+int main(void) 
 {
     
     Debug_init_uart(115200);
@@ -268,14 +176,15 @@ main(void)
         // PTA1/ I2C3_SDA
         // PTC13
         
-        // Enable PORTA
+        
+        // Enable PORTC
         SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
         
         // Config PTC Pins
         PORTC->PCR[13] = PORT_PCR_MUX ( 1); /// FXOS8700CQ Interrupt
         GPIOC->PDDR   |= GPIO_PDDR_PDD(13);
         
-        Ecompass_init();
+        Ecompass_init((void *)0x00);
     }
     
     // ************ RADIO CONTROL *************
@@ -314,13 +223,12 @@ main(void)
     
     // ************ CAMERA CONTROL *************
     {
-        /*
         // ****************************************
         // FLEXIO SETUP
         // ****************************************
         // TODO(MIGUEL): Check CLOCKOUT with o-scope
         I2C_init();
-
+        
         //~ GATING
         SIM->SCGC2 |= SIM_SCGC2_FLEXIO_MASK;
         SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK ;
@@ -332,7 +240,7 @@ main(void)
         
         // NOTE(MIGUEL): PTB23 Shared with Radio 
         PORTB->PCR[ 0] = PORT_PCR_MUX(7); /// FXIO_DATA__0 - CAM_PCLK
-        PORTB->PCR[ 2] = PORT_PCR_MUX(7); /// FXIO_DATA__2 - CAM_VSYNC
+        PORTB->PCR[ 2] = PORT_PCR_MUX(7); /// FXIxO_DATA__2 - CAM_VSYNC
         PORTB->PCR[ 3] = PORT_PCR_MUX(7); /// FXIO_DATA__3 - CAM_HREF
         PORTB->PCR[10] = PORT_PCR_MUX(7); /// FXIO_DATA__4 - CAM_DATA_0
         PORTB->PCR[11] = PORT_PCR_MUX(7); /// FXIO_DATA__5 - CAM_DATA_1
@@ -352,19 +260,17 @@ main(void)
         GPIOC->PDDR   |= GPIO_PDDR_PDD(9);
         
         SIM->SOPT2    |= SIM_SOPT2_CLKOUTSEL(4); /// MCGIRCLK - I THINK ITS THE SAME AS SYSTEM CLOCK FREQ
-        */
+        
         // ****************************************
         // OV7670 SETUP
         // ****************************************
     }
     
     printf("Core Frequency: %d \n\n\r", SystemCoreClock);
-    
     printf("\n\n\r");
-    u32 counter = 0;
     
-    u8 result = 0;
-    I2C_debug_info();
+    u32 counter = 0;
+    u8  result  = 0;
     
     while(RUNNING)
     {
@@ -375,12 +281,26 @@ main(void)
             GPIOC->PCOR |= LED_GREEN;
             
             //~ I2C TESTING
-            //I2C3->FLT &= ~I2C_FLT_STOPF_MASK;
-            //I2C_write_byte(OV7670_ADDRESS_WRITE, OV7670_REG_PID, 0x1);
-            //result = I2C_read_byte (OV7670_DEVICE_ADDRESS, OV7670_REG_COM7);
-            //I2C_write_byte (OV7670_ADDRESS_WRITE , OV7670_REG_PID, 0x1);
-            //printf("I2C read value: %#2X \n\r", (u32)result);
-            //I2C_debug_info();
+            /*
+            I2C3->FLT &= ~I2C_FLT_STOPF_MASK;
+            I2C_write_byte         (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+            result = I2C_read_byte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
+            I2C_write_byte         (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+            printf("I2C read value: %#2X \n\r", (u32)result);
+            I2C_debug_log_status();
+            */
+            //~ ECOMPASS TESTING
+            //Ecompass_read_raw_data(&g_mag_buffer, &g_acc_buffer);
+            
+            printf("Mag X: %d \n\r", g_mag_buffer.x);
+            printf("Mag Y: %d \n\r", g_mag_buffer.y);
+            printf("Mag Z: %d \n\r", g_mag_buffer.z);
+            
+            printf("ACC X: %d \n\r", g_acc_buffer.x);
+            printf("ACC Y: %d \n\r", g_acc_buffer.y);
+            printf("ACC Z: %d \n\r", g_acc_buffer.z);
+            printf("\n\n\r");
+            
             
         }
         else if (counter == 1000000)
