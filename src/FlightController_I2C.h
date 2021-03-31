@@ -4,6 +4,8 @@
 #define K82F_I2C_H
 
 
+// NOTE(MIGUEL): 
+
 //~ I2C DEFINITIONS
 #define I2C_MASTER_START    (I2C3->C1 |=  I2C_C1_MST_MASK )
 #define I2C_MASTER_RESTART  (I2C3->C1 |=  I2C_C1_RSTA_MASK)
@@ -33,9 +35,23 @@ void I2C_init(void)
     PORTA->PCR[ 2] = PORT_PCR_MUX(4); /// SCLOCK
     
     // TODO(MIGUEL): CALCULATE BAUD RATE
+    // TODO(MIGUEL): MEASURE BAUD RATE IN O-SCOPE
+    // NOTE(MIGUEL): What is the I2c bus speed? 24mhz
+    /*c
+mult    = 2
+    i2c_bus = 20971520
+scldiv  = 96
+baud    = i2c_bus / (mult * scldiv)
+
+// CURRENT MEASUREMENT = 289.44khz
+// FXOS87600CQ BAUD RANGE = 0 - 400khz
+// OV7600      BAUD RANGE = 0 - 
+// ACEPTIPLE   BAUD RANGE = 
+// I2C data device: https://trello.com/c/NcpMu4Qt/30-driver-i2c-ecompass-camera
+*/
     // NOTE(MIGUEL): BAUD = (I2C MODULE CLK SPEED in HZ) / (MUL * SCL DIVIDER)
-    I2C3->F    |= I2C_F_MULT(3)    ; /// MULTIPILER FACTOR
-    I2C3->F    |= I2C_F_ICR (0)    ; /// CLOCK 
+    I2C3->F    |= I2C_F_MULT(0x01) ; /// MULTIPILER FACTOR
+    I2C3->F    |= I2C_F_ICR (0x19) ; /// CLOCK 
     I2C3->C1   |= I2C_C1_IICEN_MASK; /// ENABLE I2C 
     I2C3->C1   |= I2C_C1_IICIE_MASK; /// ENABLE INTERRUPTS
     
@@ -116,6 +132,43 @@ u8 I2C_read_byte(u8 device, u8 device_register)
     I2C_WAIT                      ;
     
     I2C_MASTER_STOP               ;
+    I2C_PULL_DATA(data)           ;
+    
+    return data;
+}
+
+u8 I2C_read_byte_simple(u8 device, u8 device_register)
+{
+    u8 data = 0;
+    
+    /// WRITE TRANSMITION CYCLE
+    /// PHASE 1: SELECT SLAVE
+    I2C_TRANSMIT_MODE             ;
+    I2C_MASTER_START              ;
+    
+    I2C_PUSH_DATA(device)         ;
+    I2C_WAIT                      ;
+    
+    /// PHASE 2: SELECT SLAVE REGISTER
+    I2C_PUSH_DATA(device_register);
+    I2C_WAIT                      ;
+    /// END OF WRITE TRANSMITION CYCLE
+    
+    
+    /// READ TRANSMITION CYCLE
+    /// PHASE 1: IDENTIFY SLAVE
+    I2C_MASTER_RESTART            ;
+    I2C_PUSH_DATA(device | 0x1)   ;
+    I2C_WAIT                      ;
+    
+    /// PHASE 2: RECIEVE SLAVE DATA
+    I2C_RECIEVE_MODE              ;
+    I2C_NACK                      ;
+    
+    I2C_PULL_DATA(data)           ;
+    I2C_WAIT                      ;
+    I2C_MASTER_STOP               ;
+    
     I2C_PULL_DATA(data)           ;
     
     return data;
