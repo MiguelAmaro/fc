@@ -43,6 +43,7 @@ Debug_init_uart(u32 baud_rate)
     
     // Set Uart clock source
     SIM->SOPT2 |= SIM_SOPT2_LPUARTSRC(1)  ;
+    SIM->SOPT2 |= SIM_SOPT2_PLLFLLSEL_MASK;
     SIM->SOPT2 |= SIM_SOPT2_PLLFLLSEL_MASK; // NOTE(MIGUEL): 48MHz IRC is selected - affects CLKOUT pin
     
     // Set TX & RX pins on PORTC

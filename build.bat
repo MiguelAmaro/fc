@@ -289,3 +289,5 @@ REM F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-objcopy.exe %Proje
 ECHO ============================================================
 EXIT /B 0
 
+PAUSE
+
