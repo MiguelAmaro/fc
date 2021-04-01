@@ -4,6 +4,7 @@
 #define FLIGHTCONTROLLER_DEBUG_H
 
 #include "MK82F25615.h"
+#include "FlightController_System.h"
 #include "LAL.h"
 #include <stdio.h>
 #include "RingBuffer.h"
@@ -13,12 +14,11 @@
 // ****************************************
 // UART SETUP - DEBUGGING
 // ****************************************
-#define DEBUG_SERIAL_RX           (0x4000) /// PTC14
-#define DEBUG_SERIAL_TX           (0x8000) /// PTC15
-#define LPUART_OVERSAMPLE_RATIO   (16)
-#define MUX_LPUART4_TX_RX         (3U)
-#define BUS_CLOCK                 (24e6)
-#define SYS_CLOCK                 (48e6)
+#define DEBUG_SERIAL_RX         (0x4000) /// PTC14
+#define DEBUG_SERIAL_TX         (0x8000) /// PTC15
+#define LPUART_OVERSAMPLE_RATIO (16)
+#define MUX_LPUART4_TX_RX       (3U)
+#define LPUART_CLOCK_SOURCE     (48e6)  ///48MHz IRC is selected
 
 internal RingBuffer transmitQueue, receiveQueue;
 
@@ -43,13 +43,13 @@ Debug_init_uart(u32 baud_rate)
     
     // Set Uart clock source
     SIM->SOPT2 |= SIM_SOPT2_LPUARTSRC(1)  ;
-    SIM->SOPT2 |= SIM_SOPT2_PLLFLLSEL_MASK;
+    SIM->SOPT2 |= SIM_SOPT2_PLLFLLSEL_MASK; // NOTE(MIGUEL): 48MHz IRC is selected - affects CLKOUT pin
     
     // Set TX & RX pins on PORTC
     PORTC->PCR[14] = PORT_PCR_MUX(MUX_LPUART4_TX_RX); /// RX
     PORTC->PCR[15] = PORT_PCR_MUX(MUX_LPUART4_TX_RX); /// TX
     
-    u16 baud_modulo = (u16)((SYS_CLOCK)/(baud_rate * LPUART_OVERSAMPLE_RATIO)); 
+    u16 baud_modulo = (u16)((LPUART_CLOCK_SOURCE)/(baud_rate * LPUART_OVERSAMPLE_RATIO)); 
     LPUART4->BAUD  &= ~LPUART_BAUD_SBR_MASK;
     LPUART4->BAUD  |=  LPUART_BAUD_SBR(baud_modulo);
     LPUART4->BAUD  |=  LPUART_BAUD_OSR(LPUART_OVERSAMPLE_RATIO - 1);
@@ -100,8 +100,7 @@ Debug_init_uart(u32 baud_rate)
 void 
 LPUART4_IRQHandler(void) 
 {
-    u8 receivedChar;
-    
+    volatile u8 receivedChar;
     
     if (LPUART4->STAT & (LPUART_STAT_OR_MASK | LPUART_STAT_NF_MASK | 
                          LPUART_STAT_FE_MASK | LPUART_STAT_PF_MASK)) 
