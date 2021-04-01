@@ -86,12 +86,12 @@ dma irq w/ printf for controled log on maj loop completion
     
     /// Settings for writting to the destination
     //DMA0->TCD[0].DADDR = DMA_DADDR_DADDR((u32)&global_Dshot_dma_recieve_test); /// destination address
-    DMA0->TCD[0].DADDR     = DMA_DADDR_DADDR((u32)&(FTM0->CONTROLS[2].CnV)); /// destination address
-    DMA0->TCD[0].DOFF      = DMA_DOFF_DOFF  (0); /// the offset(in bytes) to add to the dest address after each write to the destination
+    DMA0->TCD[0].DADDR     = DMA_DADDR_DADDR((u32)&(FTM0->CONTROLS[2].CnV));     /// destination address
+    DMA0->TCD[0].DOFF      = DMA_DOFF_DOFF  (0);                                 /// the offset(in bytes) to add to the dest address after each write to the destination
     DMA0->TCD[0].ATTR      = DMA_ATTR_DSIZE(bits_16); /// number of bits to store on each write (0 = 16bits)
-    DMA0->TCD[0].DLAST_SGA = 0;             /// offset to add to the dest address after the major loop completes - use this to reset dest address to initial value 
-    DMA0->TCD[0].CSR  |= DMA_CSR_DREQ_MASK    ; /// Auto clear Interupt Flag on major loop completion
-    DMA0->TCD[0].CSR  |= DMA_CSR_INTMAJOR_MASK; /// Interupt on major loop completion
+    DMA0->TCD[0].DLAST_SGA = 0;                       /// offset to add to the dest address after the major loop completes - use this to reset dest address to initial value 
+    DMA0->TCD[0].CSR      |= DMA_CSR_DREQ_MASK    ;  /// Auto clear Interupt Flag on major loop completion
+    DMA0->TCD[0].CSR      |= DMA_CSR_INTMAJOR_MASK;  /// Interupt on major loop completion
     
     // NOTE(MIGUEL): Same priority level as LPUART4 
     NVIC_SetPriority    (DMA_Error_IRQn, 2); // 0, 1, 2, or 3
