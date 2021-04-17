@@ -43,7 +43,9 @@ SET Warnings=^
 -Weverything ^
 -Wno-packed ^
 -Wno-missing-variable-declarations ^
+-Wno-unsequenced ^
 -Wno-missing-prototypes ^
+-Wno-strict-prototypes ^
 -Wno-missing-noreturn ^
 -Wno-sign-conversion ^
 -Wno-nonportable-include-path ^
@@ -73,21 +75,21 @@ SET Compiler_Macros=^
 -D%Build%
 
 SET Include_Directories=^
--I../RTE/Device/MK82FN256VLL15 ^
--I../RTE/_FlightController_debug ^
--I../RTE/Device/Board_Support/MK82FN256VLL15 ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/DSP/Include ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/DSP/PrivateInclude ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP% ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/drivers ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/components/uart ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/components/lists ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/components/serial_manager ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/utilities ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/utilities/str ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/utilities/debug_console ^
--IC:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/Device/Include
+-I..\RTE\Device\MK82FN256VLL15 ^
+-I..\RTE\_FlightController_debug ^
+-I..\RTE\Device\Board_Support\MK82FN256VLL15 ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Include ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\PrivateInclude ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP% ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\drivers ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\components\uart ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\components\lists ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\components\serial_manager ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\utilities ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\utilities\str ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\utilities\debug_console ^
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\Device\Include
 
 
 REM ==================    LINKER(ARMLINK)   ====================

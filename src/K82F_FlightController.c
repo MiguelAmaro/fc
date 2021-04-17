@@ -23,7 +23,7 @@
 #define OV7670_REG_COM8 (0x13)
 
 //#define test_camera
-#define test_ecompass
+//#define test_ecompass
 
 int main(void)
 {
@@ -182,12 +182,12 @@ int main(void)
             
             if (led_counter < 1 && !is_armed)
             {
-                Motor_dshot_packet_create(48);
+                Motor_dshot_packet_create(0);
                 Motor_dshot_packet_send();
             }
             else if (led_counter < 2 && !is_armed)
             {
-                Motor_dshot_packet_create(0);
+                Motor_dshot_packet_create(48);
                 Motor_dshot_packet_send();
             }
             else
