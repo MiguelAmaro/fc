@@ -19,8 +19,6 @@ global volatile u16  global_Dshot_dma_recieve_test;
 global volatile u32 dma_test_dest[4] = { 0 }; 
 global volatile u32 dma_test_src [4] = { 0 };
 
-global volatile u32 global_mod = (u32)((BUS_CLOCK) / DSHOT_BAUD );
-
 typedef enum
 {
     bits_8  = 0,
@@ -58,6 +56,9 @@ How can i can i get insight??
 software dma req for testing 
 dma irq w/ printf for controled log on maj loop completion
 */
+    
+    u32 mod = (u32)(query_bus_clock() / DSHOT_BAUD );
+    
     
     SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
     // TODO(MIGUEL): WHY IS FTM BROKEN AFTER CONFIGURING DMA????
@@ -134,14 +135,14 @@ dma irq w/ printf for controled log on maj loop completion
     FTM0->FMS   = 0x00 ; 
     FTM0->SC    = 0x00U; /// Active-low
     FTM0->CNT   = 0x00U; /// Initial conter value
-    FTM0->MOD   = (global_mod - 1);
+    FTM0->MOD   = (mod - 1);
     
     // CHANNEL SETUP
     // DMA TRIGGER
     // NOTE(MIGUEL): Maybe confige should be more explicit [DECAPEN=0,COMBINE=0,CPWMS=0,MSNB=0]
     FTM0->CONTROLS[1].CnSC = (FTM_CnSC_MSB_MASK  | FTM_CnSC_ELSB_MASK | 
                               FTM_CnSC_CHIE_MASK | FTM_CnSC_DMA_MASK) & ~FTM_CnSC_ELSA_MASK;
-    FTM0->CONTROLS[1].CnV  = ((global_mod * 200) >> 8); // NOTE(MIGUEL): (x >> 8) = (x / 2^8)
+    FTM0->CONTROLS[1].CnV  = ((mod * 200) >> 8); // NOTE(MIGUEL): (x >> 8) = (x / 2^8)
     
     // PACKET BIT PULSE
     FTM0->CONTROLS[2].CnSC = (FTM_CnSC_MSB_MASK | FTM_CnSC_ELSB_MASK) & ~FTM_CnSC_ELSA_MASK;

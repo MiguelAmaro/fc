@@ -23,15 +23,33 @@
 #define OV7670_REG_COM8 (0x13)
 
 //#define test_camera
-//#define test_ecompass
+#define test_ecompass
 
 int main(void)
 {
+    __disable_irq();
+    // NOTE(MIGUEL): set desired clock (state)FLL ENGAGED EXTERNAL(FBE)
+    SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV4(1); //flash clk divider: div by 2
+    SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV2(1); //bus clk divider: div by 2
+    MCG->C7      |= MCG_C7_OSCSEL(2); //IRC48M internal osc
+    MCG->C1      |= MCG_C1_CLKS  (2);   //bypass FLL & use external clk src dircetly
+#if 0
+    // NOTE(MIGUEL): systic
+	SysTick->CTRL |= 0;       //  Disabls SysTick
+    SysTick->LOAD = 48000000L/1;
+	
+	NVIC_SetPriority(SysTick_IRQn, 3); // Set the interrupt priority
+	NVIC_EnableIRQ  (SysTick_IRQn);
+    
+	SysTick->CTRL |= 2;       // Enable the SysTick interrupt
+	SysTick->CTRL |= 5;       // Set the Clock and Enable the down counter
+#endif
+    
     Debug_init_uart(115200);
     OBLEDs_init();
-    Motor_init();
+    //Motor_init();
     
-    printf("Core Frequency: %d \n\n\r", SystemCoreClock);
+    printf("Core Frequency: %d \n\n\r", query_system_clock());
     
     // ************ ECOMPASS CONTROL *************
     {
@@ -40,8 +58,8 @@ int main(void)
         // I2C SETUP
         // ****************************************
         
-        I2C_init();
-        
+        I2C_init(2, 0x11);
+        //I2C_scanner();
         // ****************************************
         // FXOS8700CQ SETUP
         // ****************************************
@@ -56,8 +74,10 @@ int main(void)
         PORTC->PCR[13] = PORT_PCR_MUX(1); /// FXOS8700CQ Interrupt
         GPIOC->PDDR |= GPIO_PDDR_PDD(13);
         GPIOC->PSOR |= GPIO_PSOR_PTSO(13);
-        
+        printf("initing ecompass\n\r");
         Ecompass_init((void *)0x00);
+        printf("initing ecompass done\n\r");
+        
 #endif
     }
     
@@ -98,7 +118,7 @@ int main(void)
     // ************ CAMERA CONTROL *************
     {
 #ifdef test_camera
-        I2C_init();
+        I2C_init(2, 0x11);
         
         // ****************************************
         // FLEXIO SETUP
@@ -144,11 +164,12 @@ int main(void)
 #endif
     }
     
-    printf("Core Frequency: %d \n\n\r", SystemCoreClock);
-    printf("Bus  Frequency: %d \n\n\r", (SystemCoreClock * (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDIV1_OUTDIV1_SHIFT))) / (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV2_MASK) >> SIM_CLKDIV1_OUTDIV2_SHIFT)));
-    
+    printf("Core Frequency: %d \n\n\r", query_system_clock());
+    printf("Bus  Frequency: %d \n\n\r", query_bus_clock() );
+#if 0
     for (u32 i = 0; i < 17; i++)
         Motor_log_dma_buffers();
+#endif
     //ARM MOTORS
     //Motor_dshot_packet_create(1000);
     //Motor_dshot_packet_send();
@@ -160,6 +181,8 @@ int main(void)
     u32 is_armed = 0;
     u32 sp_data = 0; // NOTE(MIGUEL): serial port 
     
+    __enable_irq();
+    // NOTE(MIGUEL): clock speed changed 48Mhz loop speed affected & aswell as some modules
     while (RUNNING)
     {
         if (!RingBuffer_Empty(&receiveQueue))
@@ -172,14 +195,14 @@ int main(void)
             if (led_counter == 100 / 2)
             {
                 /// TOGGLE LED ON
-                GPIOC->PCOR |= LED_BLUE;
+                //GPIOC->PCOR |= LED_BLUE;
                 
                 //Motor_log_dma_buffers();
                 //for(u32 i = 0; i < 17; i++)
                 //Motor_log_dma_buffers();
             }
+#if 0
             printf("RC: %d\n\r", (u32)sp_data);
-            
             if (led_counter < 1 && !is_armed)
             {
                 Motor_dshot_packet_create(0);
@@ -197,21 +220,21 @@ int main(void)
                 Motor_dshot_packet_create(48 + sp_data);
                 Motor_dshot_packet_send();
             }
+#endif
             
             /// TOGGLE LED ON
-            GPIOC->PCOR |= LED_GREEN;
+            //GPIOC->PCOR |= LED_GREEN;
             
             { //- I2C TESTING
-                
 #ifdef test_camera
-                //I2C3->FLT &= ~I2C_FLT_STOPF_MASK;
-                //I2C_write_byte         (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
-                //result = I2C_read_byte_simple (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
-                I2C_write_byte(OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
-                printf("I2C read value: %#2X \n\r", (u32)result);
-#endif
+                //I2C_write_byte            (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                //u8 result = I2C_read_byte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
                 
-                I2C_debug_log_status();
+                //I2C_write_byte(OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                //printf("I2C read value: %#2X \n\r", (u32)result);
+                
+                //I2C_debug_log_status();
+#endif
             } //-
         }
         else if (counter == counter_max)
@@ -221,7 +244,7 @@ int main(void)
             {
                 /// TOGGLE LED OFF
                 GPIOC->PSOR |= LED_BLUE;
-                GPIOC->PSOR |= LED_RED;
+                //GPIOC->PSOR |= LED_RED;
                 GPIOC->PSOR |= LED_GREEN;
                 led_counter = 0;
             }
@@ -231,6 +254,26 @@ int main(void)
         }
         counter++;
     }
+}
+
+b32 systicked = 0;
+void SysTick_Handler(void)
+{
+    if(systicked)
+    {
+        GPIOC->PSOR |= LED_RED;
+        
+#ifdef test_ecompass
+        Ecompass_init((void *)0x00);
+#endif
+        
+    }
+    else
+        GPIOC->PCOR |= LED_RED;
+    
+    systicked = !systicked;
+    
+    return;
 }
 
 void throwaway(void)
@@ -248,3 +291,5 @@ void throwaway(void)
     
     return;
 }
+
+

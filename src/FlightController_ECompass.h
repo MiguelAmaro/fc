@@ -4,8 +4,8 @@
 
 //~ FXOS8700CQ DEFINITIONS
 
-// FXOS8700CQ I2C address // with pins SA0=0, SA1=0 | possible slave addresses 1e(no) 1d(no) 1c(no) 1f
-#define FXOS8700CQ_SLAVE_ADDRESS (0x1C)
+// FXOS8700CQ I2C address // with pins SA0=0, SA1=0 | possible slave addresses 1c(no) 1d(no) || 1e(no) 1f
+#define FXOS8700CQ_SLAVE_ADDRESS (0x38)
 
 // FXOS8700CQ internal register addresses
 #define FXOS8700CQ_STATUS        (0x00)
@@ -37,20 +37,23 @@ void Ecompass_init(void *pointer)
     
     /// Check the Who Am I register
     // NOTE(MIGUEL): Should I check for I2C error
-    data = I2C_read_byte_simple(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_WHOAMI_VAL);
-    
-    printf("byte %#2X \n\r", FXOS8700CQ_SLAVE_ADDRESS);
+    data = I2C_read_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_WHOAMI);
     
     if(data != FXOS8700CQ_WHOAMI_VAL)
     {
-        printf("I2C Error \n\r");
+        printf("I2C Error:  got %#2X but expected  %#2X  \n\r",
+               data,
+               FXOS8700CQ_WHOAMI_VAL);
+        
+        I2C_debug_log_status();
+        
+        return;
     }
-    printf("bye %#2X \n\r", data);
+    
+    printf("byte id correct %#2X \n\r", data);
     
     
-    I2C_debug_log_status();
     
-    /*
     //~ Initialize Accelerometer Control Register 1 to zero to put the accelarometer in standby
     
     data = 0x00;
@@ -112,8 +115,6 @@ void Ecompass_init(void *pointer)
     data = 0x0D;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
     
-    // TODO(MIGUEL): I2C Error checking
-    
     return;
 }
 
@@ -135,7 +136,7 @@ void Ecompass_read_raw_data(vec3_s16 *mag_raw_data, vec3_s16 *acc_raw_data)
     mag_raw_data->z = (u16)(( buffer[11] << 8) | buffer[12]) >> 2;
     
     // TODO(MIGUEL): I2C Error checking if read fails
-    */
+    
     return;
 }
 

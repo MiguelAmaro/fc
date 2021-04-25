@@ -14,7 +14,7 @@ SET Objects= %Project_Name%.o RingBuffer.o startup_%BOARD%.o system_%BOARD%.o
 
 REM ==================         TARGET        ==================
 SET TARGET=arm-arm-none-eabi
-SET DFP=%BOARD%_DFP/12.2.0
+SET DFP=%BOARD%_DFP\12.2.0
 SET MCPU=cortex-m4
 SET MFPU=fpv4-sp-d16
 SET ARCH=armv7-m
