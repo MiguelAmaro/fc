@@ -58,7 +58,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x00;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
-    
+    printf("w done \n\r");
     // TODO(MIGUEL): I2C Error checking
     
     //~ Initialize Magnetometer Control Register 1 according to the comments below
@@ -71,6 +71,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x1F;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
+    printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
     
@@ -86,6 +87,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x20;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG2, data);
+    printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
     
@@ -101,6 +103,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x01;
     I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_XYZ_DATA_CFG, data);
+    printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
     

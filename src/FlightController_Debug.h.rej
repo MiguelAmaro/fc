@@ -1,6 +1,0 @@
-diff a/src/FlightController_Debug.h b/src/FlightController_Debug.h	(rejected hunks)
-@@ -45,4 +45,3 @@
-     SIM->SOPT2 |= SIM_SOPT2_LPUARTSRC(1)  ;
--    SIM->SOPT2 |= SIM_SOPT2_PLLFLLSEL_MASK;
-     SIM->SOPT2 |= SIM_SOPT2_PLLFLLSEL_MASK; // NOTE(MIGUEL): 48MHz IRC is selected - affects CLKOUT pin
-     

@@ -22,7 +22,7 @@
 #define OV7670_REG_COM7 (0x12)
 #define OV7670_REG_COM8 (0x13)
 
-//#define test_camera
+#define test_camera
 #define test_ecompass
 
 int main(void)
@@ -33,7 +33,7 @@ int main(void)
     SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV2(1); //bus clk divider: div by 2
     MCG->C7      |= MCG_C7_OSCSEL(2); //IRC48M internal osc
     MCG->C1      |= MCG_C1_CLKS  (2);   //bypass FLL & use external clk src dircetly
-#if 0
+#if 1
     // NOTE(MIGUEL): systic
 	SysTick->CTRL |= 0;       //  Disabls SysTick
     SysTick->LOAD = 48000000L/1;
@@ -118,8 +118,9 @@ int main(void)
     // ************ CAMERA CONTROL *************
     {
 #ifdef test_camera
+#ifndef test_ecompass
         I2C_init(2, 0x11);
-        
+#endif
         // ****************************************
         // FLEXIO SETUP
         // ****************************************
@@ -227,13 +228,13 @@ int main(void)
             
             { //- I2C TESTING
 #ifdef test_camera
-                //I2C_write_byte            (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
-                //u8 result = I2C_read_byte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
+                I2C_write_byte            (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                u8 result = I2C_read_byte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
                 
-                //I2C_write_byte(OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
-                //printf("I2C read value: %#2X \n\r", (u32)result);
+                I2C_write_byte(OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                printf("I2C read value: %#2X \n\r", (u32)result);
                 
-                //I2C_debug_log_status();
+                I2C_debug_log_status();
 #endif
             } //-
         }
@@ -262,10 +263,6 @@ void SysTick_Handler(void)
     if(systicked)
     {
         GPIOC->PSOR |= LED_RED;
-        
-#ifdef test_ecompass
-        Ecompass_init((void *)0x00);
-#endif
         
     }
     else

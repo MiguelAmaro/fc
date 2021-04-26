@@ -25,7 +25,7 @@ SET Compiler_Common=^
 -c ^
 -std=gnu11 ^
 -O0 ^
--gdwarf-4 ^
+-gdwarf-3 ^
 -mfloat-abi=hard ^
 -mthumb ^
 -fno-rtti ^
@@ -107,6 +107,7 @@ SET Common_Linker_Flags=^
 --scatter "..\RTE\Device\MK82FN256VLL15\MK82FN256xxx15_flash.scf" ^
 --keep=*(.FlashConfig) ^
 --summary_stderr ^
+--bestdebug ^
 --remove ^
 --map ^
 --xref ^
