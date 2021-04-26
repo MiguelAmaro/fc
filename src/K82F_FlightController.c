@@ -1,225 +1,292 @@
 #include "MK82F25615.h"
 #include "LAL.h"
-#include <stdio.h>
-#include "RingBuffer.h"
-//__asm(".global __use_no_semihosting \n\t");
+#include "FlightController_System.h"
+#include "FlightController_Debug.h"
+#include "FlightController_Motor.h"
+#include "FlightController_OnboardLEDs.h"
+#include "FlightController_I2C.h"
+#include "FlightController_ECompass.h"
 
-#define LED_RED   (0x100) /// PTC8
-#define LED_GREEN (0x200) /// PTC9
-#define LED_BLUE  (0x400) /// PTC10
-
-#define MUX_GPIO (0x0100)
-#define PORTC_SIM_SCGC5_MASK (0x800)
 #define RUNNING (1)
-#define GET_UART_BYTE ((u8)LPUART4->DATA & 0xFFU)
+#define DASSERT(Expression) if (!(Expression){ GPIOC->PSOR |= LED_RED; *(u32 *)0x00 = 0; }
 
-#define DASSERT(Expression) if(!(Expression)){GPIOC->PSOR |= LED_RED; *(u32 *)0x00 = 0; }
+// NOTE(MIGUEL): DUE TO PIN SHARING MODULES MUST BE TESTED INDIVIDUALLY
+// TODO(MIGUEL): CREATE A PIN MUTUAL EXCLUSION SYSTEM
+// TODO(MIGUEL): CHANGE SYSTEM FREQUENCY
 
-internal RingBuffer transmitQueue, receiveQueue;
-/*
-struct __FILE
+//~ 0V7670 DEFINITIONS
+#define OV7670_SLAVE_ADDRESS (0x42)
+#define OV7670_REG_VREF (0x03)
+#define OV7670_REG_PID (0x0A)
+#define OV7670_REG_VER (0x0B)
+#define OV7670_REG_COM7 (0x12)
+#define OV7670_REG_COM8 (0x13)
+
+#define test_camera
+#define test_ecompass
+
+int main(void)
 {
-    int handle;
-};
-
-FILE __stdout;  //Use with printf
-FILE __stdin ;  //use with fget/sscanf, or scanfb
-*/
-
-//Retarget the fputc method to use the UART0
-s32 fputc(s32 byte, FILE *f)
-{
-	while(!(LPUART4->STAT & LPUART_STAT_TDRE_MASK) && !(LPUART4->STAT & LPUART_STAT_TC_MASK));
-	LPUART4->DATA |= 0xFFU & byte;
-    
-	return byte;
-}
-
-//Retarget the fgetc method to use the UART0
-s32 fgetc(FILE *f)
-{
-	while(!(LPUART4->STAT & LPUART_STAT_RDRF_MASK));
-    
-	return LPUART4->DATA & 0xFF;
-}
-
-
-void UART0_IRQHandler(void) 
-{
-	u8 receivedChar;
+    __disable_irq();
+    // NOTE(MIGUEL): set desired clock (state)FLL ENGAGED EXTERNAL(FBE)
+    SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV4(1); //flash clk divider: div by 2
+    SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV2(1); //bus clk divider: div by 2
+    MCG->C7      |= MCG_C7_OSCSEL(2); //IRC48M internal osc
+    MCG->C1      |= MCG_C1_CLKS  (2);   //bypass FLL & use external clk src dircetly
+#if 1
+    // NOTE(MIGUEL): systic
+	SysTick->CTRL |= 0;       //  Disabls SysTick
+    SysTick->LOAD = 48000000L/1;
 	
-	if (LPUART4->STAT & (LPUART_STAT_OR_MASK |LPUART_STAT_NF_MASK | 
-                         LPUART_STAT_FE_MASK | LPUART_STAT_PF_MASK)) 
+	NVIC_SetPriority(SysTick_IRQn, 3); // Set the interrupt priority
+	NVIC_EnableIRQ  (SysTick_IRQn);
+    
+	SysTick->CTRL |= 2;       // Enable the SysTick interrupt
+	SysTick->CTRL |= 5;       // Set the Clock and Enable the down counter
+#endif
+    
+    Debug_init_uart(115200);
+    OBLEDs_init();
+    //Motor_init();
+    
+    printf("Core Frequency: %d \n\n\r", query_system_clock());
+    
+    // ************ ECOMPASS CONTROL *************
     {
-        // clear the error flags
-        LPUART4->STAT |= LPUART_STAT_OR_MASK | LPUART_STAT_NF_MASK | LPUART_STAT_FE_MASK | LPUART_STAT_PF_MASK;	
+#ifdef test_ecompass
+        // ****************************************
+        // I2C SETUP
+        // ****************************************
         
-        //DASSERT((LPUART4->DATA & 0xFFU) == 'H');
-        receivedChar = LPUART4->DATA & 0xFFU;
-	}
-    /// CASE: RX DATA REGISTER FULL - BYTE RECIEVED
-	if (LPUART4->STAT & LPUART_STAT_RDRF_MASK)
+        I2C_init(2, 0x11);
+        //I2C_scanner();
+        // ****************************************
+        // FXOS8700CQ SETUP
+        // ****************************************
+        // PTA2/ I2C3_SCL
+        // PTA1/ I2C3_SDA
+        // PTC13
+        
+        // Enable PORTC
+        SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
+        
+        // Config PTC Pins
+        PORTC->PCR[13] = PORT_PCR_MUX(1); /// FXOS8700CQ Interrupt
+        GPIOC->PDDR |= GPIO_PDDR_PDD(13);
+        GPIOC->PSOR |= GPIO_PSOR_PTSO(13);
+        printf("initing ecompass\n\r");
+        Ecompass_init((void *)0x00);
+        printf("initing ecompass done\n\r");
+        
+#endif
+    }
+    
+    // ************ RADIO CONTROL *************
     {
-		receivedChar = LPUART4->DATA & 0xFFU;
-		if (!RingBuffer_Full(&receiveQueue)) 
-        {
-			RingBuffer_Enqueue_Byte(&receiveQueue, receivedChar);
-		} 
-        else 
-        {
-			// error - queue full.
-			// discard character
-		}
-	}
-    /// CASE: TRANSMITTER INTERUPT ENABLED And TX DATA REGISTER EMPTY - BYTE TRANSMITTING
-	if ( (LPUART4->CTRL & LPUART_CTRL_TIE_MASK) &&
-        (LPUART4->STAT & LPUART_STAT_TDRE_MASK) )
-    { 
-        GPIOC->PSOR |= LED_GREEN;
-		if (!RingBuffer_Empty(&transmitQueue)) 
-        {
-			LPUART4->DATA |= 0xFFU & RingBuffer_Dequeue_Byte(&transmitQueue);
-		}
-        else 
-        {
-			// queue is empty so disable transmitter interrupt
-			LPUART4->CTRL &= ~LPUART_CTRL_TIE_MASK;
-		}
-	}
-}
-
-
-int main(void) 
-{
-    // ****************************************
-    // ONBOARD LED SETUP
-    // ****************************************
-    /// SIM PTC
-    SIM->SCGC5 |= PORTC_SIM_SCGC5_MASK;
+        // ****************************************
+        // SPI SETUP
+        // ****************************************
+        /*
+        SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+        SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
+        SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
+        
+        // Config PTB Pins
+        // NOTE(MIGUEL): PTB23 Shared with Camera 
+        PORTB->PCR[ 9] = PORT_PCR_MUX ( 2); /// PCS1
+        PORTB->PCR[23] = PORT_PCR_MUX ( 1); /// IRQ
+        GPIOC->PDDR   |= GPIO_PDDR_PDD(23); /// GPIO
+        
+        // Config PTC Pins
+        PORTC->PCR[0] = PORT_PCR_MUX (1); /// CHIP ENABLE
+        GPIOC->PDDR  |= GPIO_PDDR_PDD(0); /// GPIO
+        
+        // Config PTD Pins
+        PORTC->PCR[5] = PORT_PCR_MUX ( 7); /// SCLOCK
+        PORTC->PCR[6] = PORT_PCR_MUX ( 7); /// SOUT
+        PORTC->PCR[7] = PORT_PCR_MUX ( 7); /// SIN
+        GPIOC->PDDR  |= GPIO_PDDR_PDD(13);
+        */
+        
+        // ****************************************
+        // NRF24L01P SETUP
+        // ****************************************
+        
+    }
+    // NOTE(MIGUEL): MOTOR CODE IN MOTOR BRANCH ALL RELATED CODE IN THIS BRANGH WILL BE DELETED
     
-    /// PORTC configure pins
-    PORTC->PCR[ 8] = MUX_GPIO; /// R
-    PORTC->PCR[ 9] = MUX_GPIO; /// G
-    PORTC->PCR[10] = MUX_GPIO; /// B
+    // ************ CAMERA CONTROL *************
+    {
+#ifdef test_camera
+#ifndef test_ecompass
+        I2C_init(2, 0x11);
+#endif
+        // ****************************************
+        // FLEXIO SETUP
+        // ****************************************
+        // TODO(MIGUEL): Check CLOCKOUT with o-scope
+        
+        //~ GATING
+        SIM->SCGC2 |= SIM_SCGC2_FLEXIO_MASK;
+        //SIM->SCGC7 |= SIM_SCGC7_FLEXBUS_MASK;
+        SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
+        SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+        SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;
+        
+        //~ FLEXIO SETUP
+        FLEXIO0->CTRL |= FLEXIO_CTRL_FLEXEN_MASK;
+        
+        // NOTE(MIGUEL): PTB23 Shared with Radio
+        PORTB->PCR[0] = PORT_PCR_MUX(7);  /// FXIO_DATA__0 - CAM_PCLK
+        PORTB->PCR[2] = PORT_PCR_MUX(7);  /// FXIO_DATA__2 - CAM_VSYNC
+        PORTB->PCR[3] = PORT_PCR_MUX(7);  /// FXIO_DATA__3 - CAM_HREF
+        PORTB->PCR[10] = PORT_PCR_MUX(7); /// FXIO_DATA__4 - CAM_DATA_0
+        PORTB->PCR[11] = PORT_PCR_MUX(7); /// FXIO_DATA__5 - CAM_DATA_1
+        PORTB->PCR[18] = PORT_PCR_MUX(7); /// FXIO_DATA__6 - CAM_DATA_2
+        PORTB->PCR[19] = PORT_PCR_MUX(7); /// FXIO_DATA__7 - CAM_DATA_3
+        PORTB->PCR[20] = PORT_PCR_MUX(7); /// FXIO_DATA__8 - CAM_DATA_4
+        PORTB->PCR[21] = PORT_PCR_MUX(7); /// FXIO_DATA__9 - CAM_DATA_5
+        PORTB->PCR[22] = PORT_PCR_MUX(7); /// FXIO_DATA_10 - CAM_DATA_6
+        PORTB->PCR[23] = PORT_PCR_MUX(7); /// FXIO_DATA_11 - CAM_DATA_7
+        
+        //~ IO & CLOCK SETUP
+        PORTC->PCR[3] = PORT_PCR_MUX(5); /// CLOCKOUT
+        PORTC->PCR[8] = PORT_PCR_MUX(1); /// CAM RESET
+        PORTC->PCR[9] = PORT_PCR_MUX(1); /// POWER DOWN
+        
+        GPIOC->PDDR |= GPIO_PDDR_PDD(8);
+        GPIOC->PDDR |= GPIO_PDDR_PDD(9);
+        
+        SIM->SOPT2 |= SIM_SOPT2_CLKOUTSEL(7); /// MCGIRCLK - I THINK ITS THE SAME AS SYSTEM CLOCK FREQ
+        
+        // ****************************************
+        // OV7670 SETUP
+        // ****************************************
+#endif
+    }
     
-    /// GPIOC configure
-    GPIOC->PDDR |= LED_RED;
-    GPIOC->PDDR |= LED_GREEN;
-    GPIOC->PDDR |= LED_BLUE;
+    printf("Core Frequency: %d \n\n\r", query_system_clock());
+    printf("Bus  Frequency: %d \n\n\r", query_bus_clock() );
+#if 0
+    for (u32 i = 0; i < 17; i++)
+        Motor_log_dma_buffers();
+#endif
+    //ARM MOTORS
+    //Motor_dshot_packet_create(1000);
+    //Motor_dshot_packet_send();
     
-    // TURN OFF LED
-    GPIOC->PSOR |= LED_RED;
-    GPIOC->PSOR |= LED_GREEN;
-    GPIOC->PSOR |= LED_BLUE;
-    
-    // ****************************************
-    // UART SETUP - DEBUGGING
-    // ****************************************
-#define DEBUG_SERIAL_RX           (0x4000) /// PTC14
-#define DEBUG_SERIAL_TX           (0x8000) /// PTC15
-#define LPUART4_SIM_SCGC2_MASK    (0x400000)
-#define UART4_CTRL_TE_MASK        (0x40000)
-#define UART4_CTRL_RE_MASK        (0x80000)
-#define MUX_LPUART4_TX_RX         (0x200)
-#define LPUART_OVERSAMPLE_RATIO    (16)
-#define BUS_CLOCK 			    (24e6)
-#define UART_SRC_CLOCK		    (48e6)
-    
-    
-    u32 baud_rate = 0;
-    volatile u8 temp;
-    // TODO(MIGUEL): Enable PortC
-    // TODO(MIGUEL): Enable Uart4
-    SIM->SCGC5 |= PORTC_SIM_SCGC5_MASK;
-    SIM->SCGC2 |= LPUART4_SIM_SCGC2_MASK;
-    // TODO(MIGUEL): Disable Transmitter and Reciever
-    LPUART4->CTRL |= UART4_CTRL_TE_MASK | UART4_CTRL_RE_MASK;
-    // TODO(MIGUEL): Set Uart clock via SIM_SOPT
-    SIM->SOPT2 |= SIM_SOPT2_LPUARTSRC(1) |  SIM_SOPT2_PLLFLLSEL_MASK;
-    // TODO(MIGUEL): Set TX & RX pin on portc
-    PORTC->PCR[14] = MUX_LPUART4_TX_RX; /// RX
-    PORTC->PCR[15] = MUX_LPUART4_TX_RX; /// TX
-    
-    u16 baud_modulo = (u16)((UART_SRC_CLOCK)/(baud_rate * LPUART_OVERSAMPLE_RATIO)); 
-    LPUART4->BAUD &= ~LPUART_BAUD_SBR_MASK;
-    LPUART4->BAUD &= ~LPUART_BAUD_SBR(baud_modulo);
-    LPUART4->BAUD &= ~LPUART_BAUD_OSR(LPUART_OVERSAMPLE_RATIO - 1);
-    
-    LPUART4->BAUD |= LPUART_BAUD_RXEDGIE(0) | LPUART_BAUD_SBNS(0) | LPUART_BAUD_LBKDIE(0);
-    LPUART4->CTRL |= LPUART_CTRL_LOOPS  (0) | LPUART_CTRL_M   (0) | LPUART_CTRL_PE    (0);
-    
-    LPUART4->CTRL = 
-        LPUART_CTRL_TXINV(0) | 
-        LPUART_CTRL_ORIE (0) | 
-        LPUART_CTRL_NEIE (0) | 
-        LPUART_CTRL_FEIE (0) | 
-        LPUART_CTRL_PEIE (0) ;
-    
-    LPUART4->STAT = LPUART_STAT_OR(1) | LPUART_STAT_NF(1) | LPUART_STAT_FE(1) | LPUART_STAT_PF(1);
-    
-    LPUART4->STAT |= 
-        LPUART_STAT_OR_MASK | LPUART_STAT_NF_MASK | 
-        LPUART_STAT_FE_MASK | LPUART_STAT_PF_MASK ;
-    
-    LPUART4->STAT = LPUART_STAT_MSBF(0) | LPUART_STAT_RXINV(0);
-    
-    RingBuffer_Init(&transmitQueue);
-	RingBuffer_Init(&receiveQueue );
-    
-    NVIC_SetPriority    (LPUART4_IRQn, 2); // 0, 1, 2, or 3
-	NVIC_ClearPendingIRQ(LPUART4_IRQn   ); 
-	NVIC_EnableIRQ      (LPUART4_IRQn   );
-    
-	// Enable receive interrupts but not transmit interrupts yet
-	LPUART4->CTRL |= LPUART_CTRL_RIE(1);
-    
-    
-	// Enable UART receiver and transmitter
-	LPUART4->CTRL |= LPUART_CTRL_RE(1) | LPUART_CTRL_TE(1);	
-	
-	// Clear the UART RDRF flag
-	temp = (u8)LPUART4->DATA & 0xFFU;
-    
-	LPUART4->STAT &= ~LPUART_STAT_RDRF_MASK;
-    
-    // ****************************************
-    // FLEXTIMER SETUP
-    // ****************************************
-    
-    
-    // ****************************************
-    // DMA SETUP
-    // ****************************************
-    
-    
-    // ****************************************
-    // CAMERA SETUP
-    // ****************************************
-    
-    
-    //printf("hello world \n");
-    
+    printf("\n\n\r");
+    readonly u32 counter_max = (u32)(2000 / 5.3);
     u32 counter = 0;
+    u32 led_counter = 0;
+    u32 is_armed = 0;
+    u32 sp_data = 0; // NOTE(MIGUEL): serial port 
     
-    while(RUNNING)
+    __enable_irq();
+    // NOTE(MIGUEL): clock speed changed 48Mhz loop speed affected & aswell as some modules
+    while (RUNNING)
     {
-        //printf("H \n");
-        
-        if(counter == 1000000/4)
+        if (!RingBuffer_Empty(&receiveQueue))
         {
+            sp_data = (u32)RingBuffer_Dequeue_Byte(&receiveQueue);
+        }
+        //printf("Core Frequency: %d \n\n\r", SystemCoreClock);
+        if (counter == counter_max / 2)
+        {
+            if (led_counter == 100 / 2)
+            {
+                /// TOGGLE LED ON
+                //GPIOC->PCOR |= LED_BLUE;
+                
+                //Motor_log_dma_buffers();
+                //for(u32 i = 0; i < 17; i++)
+                //Motor_log_dma_buffers();
+            }
+#if 0
+            printf("RC: %d\n\r", (u32)sp_data);
+            if (led_counter < 1 && !is_armed)
+            {
+                Motor_dshot_packet_create(0);
+                Motor_dshot_packet_send();
+            }
+            else if (led_counter < 2 && !is_armed)
+            {
+                Motor_dshot_packet_create(48);
+                Motor_dshot_packet_send();
+            }
+            else
+            {
+                is_armed = 1;
+                //Motor_dshot_packet_create(48 + ( ( sp_data/255 ) * 2000 ));
+                Motor_dshot_packet_create(48 + sp_data);
+                Motor_dshot_packet_send();
+            }
+#endif
+            
             /// TOGGLE LED ON
-            GPIOC->PSOR |= LED_BLUE;
+            //GPIOC->PCOR |= LED_GREEN;
+            
+            { //- I2C TESTING
+#ifdef test_camera
+                I2C_write_byte            (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                u8 result = I2C_read_byte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
+                
+                I2C_write_byte(OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                printf("I2C read value: %#2X \n\r", (u32)result);
+                
+                I2C_debug_log_status();
+#endif
+            } //-
         }
-        if(counter == 1000000/2)
+        else if (counter == counter_max)
         {
-            /// TOGGLE LED OFF
-            GPIOC->PCOR |= LED_BLUE;
-        }
-        else if (counter == 1000000)
-        {
+            //Motor_dshot_packet_send();
+            if (led_counter == 100)
+            {
+                /// TOGGLE LED OFF
+                GPIOC->PSOR |= LED_BLUE;
+                //GPIOC->PSOR |= LED_RED;
+                GPIOC->PSOR |= LED_GREEN;
+                led_counter = 0;
+            }
+            led_counter++;
+            
             counter = 0;
         }
         counter++;
     }
 }
+
+b32 systicked = 0;
+void SysTick_Handler(void)
+{
+    if(systicked)
+    {
+        GPIOC->PSOR |= LED_RED;
+        
+    }
+    else
+        GPIOC->PCOR |= LED_RED;
+    
+    systicked = !systicked;
+    
+    return;
+}
+
+void throwaway(void)
+{
+    
+    //FTM0->SC    = FTM_SC_TOIE(0) | FTM_SC_CLKS(1) | FTM_SC_PS(0); //START TIMER
+    //FTM0->SC    = FTM_SC_TOIE(0) | FTM_SC_CLKS(0) | FTM_SC_PS(0); //STOP  TIMER
+    // NOTE(MIGUEL): the 0 !!!!means channel 0!!!! not bit 0
+    //DMA0->SSRT |= DMA_SSRT_SSRT(0); //Set Start bit in TCD control status register -starts minor loop
+    //Motor_display_dma_status_errors();
+    
+    /// TIMER TESTING
+    //printf("FTM0 CH2 counter should be: %#2X \n\r", global_Dshot_command_buffer[0]);
+    //printf("FTM0 CH2 conuter is       : %#2X \n\r", FTM0->CONTROLS[2].CnV);
+    
+    return;
+}
+
 
