@@ -1,11 +1,11 @@
 #include "MK82F25615.h"
 #include "LAL.h"
-#include "FlightController_System.h"
-#include "FlightController_Debug.h"
-#include "FlightController_Motor.h"
-#include "FlightController_OnboardLEDs.h"
-#include "FlightController_I2C.h"
-#include "FlightController_ECompass.h"
+#include "fc_system.h"
+#include "fc_debug.h"
+#include "fc_motor.h"
+#include "fc_onboardleds.h"
+#include "fc_i2c.h"
+#include "fc_ecompass.h"
 
 #define RUNNING (1)
 #define DASSERT(Expression) if (!(Expression){ GPIOC->PSOR |= LED_RED; *(u32 *)0x00 = 0; }
@@ -22,8 +22,8 @@
 #define OV7670_REG_COM7 (0x12)
 #define OV7670_REG_COM8 (0x13)
 
-#define test_camera
-#define test_ecompass
+//#define test_camera
+//#define test_ecompass
 
 int main(void)
 {
@@ -33,6 +33,7 @@ int main(void)
     SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV2(1); //bus clk divider: div by 2
     MCG->C7      |= MCG_C7_OSCSEL(2); //IRC48M internal osc
     MCG->C1      |= MCG_C1_CLKS  (2);   //bypass FLL & use external clk src dircetly
+    
 #if 1
     // NOTE(MIGUEL): systic
 	SysTick->CTRL |= 0;       //  Disabls SysTick
@@ -167,7 +168,7 @@ int main(void)
     
     printf("Core Frequency: %d \n\n\r", query_system_clock());
     printf("Bus  Frequency: %d \n\n\r", query_bus_clock() );
-#if 0
+#if 1
     for (u32 i = 0; i < 17; i++)
         Motor_log_dma_buffers();
 #endif
@@ -202,8 +203,8 @@ int main(void)
                 //for(u32 i = 0; i < 17; i++)
                 //Motor_log_dma_buffers();
             }
-#if 0
-            printf("RC: %d\n\r", (u32)sp_data);
+#if 1
+            //printf("RC: %d\n\r", (u32)sp_data);
             if (led_counter < 1 && !is_armed)
             {
                 Motor_dshot_packet_create(0);
@@ -217,9 +218,12 @@ int main(void)
             else
             {
                 is_armed = 1;
-                Motor_dshot_packet_create(48 + ( ( sp_data/255 ) * 2000 ));
+                f32 throttle_normalized = 0.0f + ((f32)sp_data / (f32)255.0f );
+                u16 throttle = (u16)(throttle_normalized * 2000 );
+                Motor_dshot_packet_create(48 + throttle);
                 //Motor_dshot_packet_create(48 + sp_data);
                 Motor_dshot_packet_send();
+                printf("throttle: %d \n\r", throttle);
             }
 #endif
             
@@ -227,7 +231,7 @@ int main(void)
             //GPIOC->PCOR |= LED_GREEN;
             
             { //- I2C TESTING
-#ifdef test_camera
+#ifdef test_cameras
                 I2C_write_byte            (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
                 u8 result = I2C_read_byte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
                 

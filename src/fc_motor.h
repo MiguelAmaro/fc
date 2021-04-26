@@ -3,7 +3,7 @@
 #ifndef FLIGHTCONTROLLER_MOTOR_H
 #define FLIGHTCONTROLLER_MOTOR_H
 
-#include "FlightController_OnboardLEDs.h"
+#include "fc_onboardleds.h"
 
 #define DSHOT_CMD_BUFFER_SIZE (16 + 1)
 
@@ -23,7 +23,7 @@ typedef enum
 {
     bits_8  = 0,
     bits_16 = 1,
-    bits_32 = 2
+    bits_32 = 2 
 } dma_size;
 
 
@@ -56,9 +56,6 @@ How can i can i get insight??
 software dma req for testing 
 dma irq w/ printf for controled log on maj loop completion
 */
-    
-    u32 mod = (u32)(query_bus_clock() / DSHOT_BAUD );
-    
     
     SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
     // TODO(MIGUEL): WHY IS FTM BROKEN AFTER CONFIGURING DMA????
@@ -123,6 +120,8 @@ dma irq w/ printf for controled log on maj loop completion
     // ****************************************
     // FLEXTIMER SETUP [FTM0 | Ch1 DMA | Ch2 PULSE] - pg.1442
     // ************************************* ***
+    
+    u32 mod = (u32)(query_bus_clock() / DSHOT_BAUD );
     
     SIM->SCGC6 |= SIM_SCGC6_FTM0_MASK ;
     SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK;

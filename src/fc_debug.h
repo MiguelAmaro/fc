@@ -4,7 +4,7 @@
 #define FLIGHTCONTROLLER_DEBUG_H
 
 #include "MK82F25615.h"
-#include "FlightController_System.h"
+#include "fc_system.h"
 #include "LAL.h"
 #include <stdio.h>
 #include "RingBuffer.h"

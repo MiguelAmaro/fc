@@ -22,7 +22,7 @@ REM -JLinkScriptFile %Script_File_Path%
 
 ECHO METHOD 2: MSC FUNCTIONALITY( Drag and Drop )
 @ECHO ON
-COPY /b build\K82F_FlightController.bin E:\
+COPY /b build\k82f_fc.bin E:\
 @ECHO OFF
 
 PAUSE

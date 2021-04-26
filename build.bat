@@ -6,10 +6,10 @@ REM *********               DEFINITIONS               **********
 REM ************************************************************
 REM ==================       FILES/BUILD      ==================
 SET Build=CMSIS_CORE
-SET Project_Name=K82F_FlightController
+SET Project_Name=fc
 SET BOARD=MK82F25615
-SET Sources= ..\src\%Project_Name%.c
-SET Objects= %Project_Name%.o RingBuffer.o startup_%BOARD%.o system_%BOARD%.o
+SET Sources= ..\src\k82f_%Project_Name%.c
+SET Objects= k82f_%Project_Name%.o ringbuffer.o startup_%BOARD%.o system_%BOARD%.o
 
 
 REM ==================         TARGET        ==================
@@ -280,15 +280,15 @@ CALL C:\Keil_v5\ARM\ARMCLANG\bin\armlink.exe ^
 --cpu=Cortex-M4.fp.sp ^
 %Objects% %Common_Linker_Flags% ^
 --userlibpath=%Libraries% ^
--o .\%Project_Name%.axf
+-o .\k82f_%Project_Name%.axf
 
 REM CONVERT OUTPUT TO BINARY
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --cpu=Cortex-M4 --bincombined .\%Project_Name%.axf --output=.\%Project_Name%.bin
+CALL C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --cpu=Cortex-M4 --bincombined .\k82f_%Project_Name%.axf --output=.\k82f_%Project_Name%.bin
 
 CALL C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --text -c *.o --output=./
 
 REM CREATE CORRECT DEBUG INFO
-REM F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-objcopy.exe %Project_Name%.axf --update-section ER_RO=main.bin --remove-section=ER_RW  main.gdb.elf
+F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-objcopy.exe k82f_%Project_Name%.axf --update-section ER_RO=main.bin --remove-section=ER_RW  main.gdb.elf
 ECHO ============================================================
 EXIT /B 0
 
