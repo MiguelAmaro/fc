@@ -47,7 +47,7 @@ int main(void)
     
     Debug_init_uart(115200);
     OBLEDs_init();
-    //Motor_init();
+    Motor_init();
     
     printf("Core Frequency: %d \n\n\r", query_system_clock());
     
@@ -217,8 +217,8 @@ int main(void)
             else
             {
                 is_armed = 1;
-                //Motor_dshot_packet_create(48 + ( ( sp_data/255 ) * 2000 ));
-                Motor_dshot_packet_create(48 + sp_data);
+                Motor_dshot_packet_create(48 + ( ( sp_data/255 ) * 2000 ));
+                //Motor_dshot_packet_create(48 + sp_data);
                 Motor_dshot_packet_send();
             }
 #endif
