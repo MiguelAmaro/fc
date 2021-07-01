@@ -16,11 +16,11 @@
 
 //~ 0V7670 DEFINITIONS
 #define OV7670_SLAVE_ADDRESS (0x42)
-#define OV7670_REG_VREF (0x03)
-#define OV7670_REG_PID (0x0A)
-#define OV7670_REG_VER (0x0B)
-#define OV7670_REG_COM7 (0x12)
-#define OV7670_REG_COM8 (0x13)
+#define OV7670_REG_VREF      (0x03)
+#define OV7670_REG_PID       (0x0A)
+#define OV7670_REG_VER       (0x0B)
+#define OV7670_REG_COM7      (0x12)
+#define OV7670_REG_COM8      (0x13)
 
 //#define test_camera
 //#define test_ecompass

@@ -1,0 +1,10 @@
+# FILES
+
+# FILETYPES
+*.map
+*.log
+
+# FOLDERS
+docs/
+build/
+res/

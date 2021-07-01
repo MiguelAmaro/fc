@@ -1,45 +1,38 @@
-@ECHO OFF
-IF NOT EXIST build MKDIR build
+@echo off
+if not exist build mkdir build
 
-REM ************************************************************
-REM *********               DEFINITIONS               **********
-REM ************************************************************
-REM ==================       FILES/BUILD      ==================
-SET Build=CMSIS_CORE
-SET Project_Name=fc
-SET BOARD=MK82F25615
-SET Sources= ..\src\k82f_%Project_Name%.c
-SET Objects= k82f_%Project_Name%.o ringbuffer.o startup_%BOARD%.o system_%BOARD%.o
+rem FILES
+rem ************************************************************
+set PROJECT_NAME=fc
+set BOARD=MK82F25615
+set SOURCES= ..\src\k82f_%PROJECT_NAME%.c
+set OBJECTS= k82f_%PROJECT_NAME%.o ringbuffer.o startup_%BOARD%.o system_%BOARD%.o
 
 
-REM ==================         TARGET        ==================
-SET TARGET=arm-arm-none-eabi
-SET DFP=%BOARD%_DFP\12.2.0
-SET MCPU=cortex-m4
-SET MFPU=fpv4-sp-d16
-SET ARCH=armv7-m
+rem TARGET
+rem ************************************************************
+set TARGET=arm-arm-none-eabi
+set DFP=%BOARD%_DFP\12.2.0
+set MCPU=cortex-m4
+set MFPU=fpv4-sp-d16
+set ARCH=armv7-m
 
 
-REM ==================   COMPILER(ARMCLANG)  ==================
-SET Compiler_Common=^
--c ^
--std=gnu11 ^
--O0 ^
--gdwarf-3 ^
--mfloat-abi=hard ^
--mthumb ^
--fno-rtti ^
--fno-common ^
--fno-builtin ^
--fshort-enums ^
--fshort-wchar ^
--ffreestanding ^
--fdata-sections ^
--funsigned-char ^
--ffunction-sections ^
--MD
+rem BUILD TOOLS
+rem ************************************************************
+set GCC=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-gcc.exe
+set LD=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-ld.exe
+set OBJDUMP=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-objdump.exe
+rem READELF=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-readelf.exe
 
-SET Warnings=^
+set ARMCLANG=C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe
+set ARMLINK=C:\Keil_v5\ARM\ARMCLANG\bin\armlink.exe ^
+set READELF=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-readelf.exe
+
+rem ************************************************************
+rem COMPILER(ARMCLANG) OPTIONS
+rem ************************************************************
+set ARMCLANG_WARNINGS=^
 -Weverything ^
 -Wno-packed ^
 -Wno-missing-variable-declarations ^
@@ -58,9 +51,26 @@ SET Warnings=^
 -Wno-parentheses-equality ^
 -Wno-shadow
 
-SET Compiler_Flags= %Compiler_Common% %Warnings%
+set ARMCLANG_FLAGS=^
+-c ^
+-std=gnu11 ^
+-O0 ^
+-gdwarf-3 ^
+-mfloat-abi=hard ^
+-mthumb ^
+-fno-rtti ^
+-fno-common ^
+-fno-builtin ^
+-fshort-enums ^
+-fshort-wchar ^
+-ffreestanding ^
+-fdata-sections ^
+-funsigned-char ^
+-ffunction-sections ^
+%ARMCLANG_WARNINGS% ^
+-MD
 
-SET Compiler_Macros=^
+set ARMCLANG_MACROS=^
 -D__EVAL ^
 -D__MICROLIB ^
 -D__UVISION_VERSION="531" ^
@@ -71,36 +81,26 @@ SET Compiler_Macros=^
 -DCPU_MK82FN256VLL15 ^
 -DFRDM_K82F ^
 -DFREEDOM ^
--DSERIAL_PORT_TYPE_UART="1" ^
--D%Build%
+-DSERIAL_PORT_TYPE_UART="1"
 
-SET Include_Directories=^
--I..\RTE\Device\MK82FN256VLL15 ^
--I..\RTE\_FlightController_debug ^
--I..\RTE\Device\Board_Support\MK82FN256VLL15 ^
+set ARMCLANG_INCLUDE_DIRS=^
+-I..\src\systems\MK82FN256VLL15 ^
 -IC:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Include ^
 -IC:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\PrivateInclude ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP% ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\drivers ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\components\uart ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\components\lists ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\components\serial_manager ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\utilities ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\utilities\str ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\utilities\debug_console ^
--IC:\Users\mAmaro\AppData\Local\Arm\Packs\NXP\%DFP%\Device\Include
+-IC:\Users\mAmaro\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\PrivateInclude
 
 
-REM ==================    LINKER(ARMLINK)   ====================
-SET Memory_Layout=^
+rem ************************************************************
+rem LINKER(ARMLINK) OPTIONS
+rem ************************************************************
+set MEMORY=^
 --ro-base 0x00000000 ^
 --entry 0x00000000 ^
 --rw-base 0x1FFF8000 ^
 --entry Reset_Handler ^
 --first __Vectors
 
-SET Common_Linker_Flags=^
+set ARMLINK_FLAGS=^
 --library_type=microlib ^
 --diag_suppress 6314 ^
 --strict ^
@@ -119,178 +119,66 @@ SET Common_Linker_Flags=^
 --info veneers ^
 --info summarysizes ^
 --load_addr_map_info ^
---list "..\debug\%Project_Name%.map"
-
-SET Libraries=
+--list "..\debug\%PROJECT_NAME%.map"
 
 
-ECHO ************************************************************
-ECHO **********              START BUILD               **********
-ECHO ************************************************************
-PUSHD build
-ECHO %CD%
-IF %Build%==CMSIS_CORE ( ECHO CMSIS_CORE Build & CALL :Compile_Core & CALL :Link ) ELSE ( ECHO FREESCALE Build & CALL :Compile_Core & CALL :Compile_FSL_Drivers & CALL :Link "pin_mux.o clock_config.o fsl_gpio.o fsl_clock.o fsl_smc.o fsl_assert.o fsl_debug_console.o fsl_common.o serial_manager.o serial_port_uart.o fsl_str.o uart_adapter.o fsl_lpuart.o" )
-POPD
-EXIT /B 0
+rem ************************************************************
+rem START BUILD
+rem ************************************************************
+set path="F:\Dev\Embedded\FlightController_K82F\build";path
 
+pushd build
 
-REM ************************************************************
-REM **********               FUNCTIONS                **********
-REM ************************************************************
-:Compile_Core
-ECHO ==================        COMPILE         ==================
-REM ----------        COMPILE MAIN SOURCE FILE         ----------
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% ^
--mcpu=%MCPU% ^
--mfpu=%MFPU% ^
+echo ==================        COMPILE         ==================
+rem  ============================================================
+call %ARMCLANG% --target=%TARGET% -march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
 -x c ^
-%Compiler_Flags% ^
-%Compiler_Macros% ^
-%Include_Directories% ^
-%Sources%
+%ARMCLANG_FLAGS% ^
+%ARMCLANG_MACROS% ^
+%ARMCLANG_INCLUDE_DIRS% ^
+%SOURCES%
 
-REM -----    COMPILE STARTUP AND SYSTEM ASSEMBLY FILES      -----
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% ^
--mcpu=%MCPU% ^
--mfpu=%MFPU% ^
+call %ARMCLANG% --target=%TARGET% -march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
 -x assembler-with-cpp ^
-%Compiler_Flags% ^
-%Compiler_Macros% ^
-%Include_Directories% ^
-..\RTE\Device\MK82FN256VLL15\startup_MK82F25615.S ^
+%ARMCLANG_FLAGS% ^
+%ARMCLANG_MACROS% ^
+%ARMCLANG_INCLUDE_DIRS% ^
+..\src\systems\MK82FN256VLL15\startup_MK82F25615.S ^
 -x c ^
-..\RTE\Device\MK82FN256VLL15\system_%BOARD%.c
+..\src\systems\MK82FN256VLL15\system_%BOARD%.c
 
-REM ----------       COMPILE OTHER SOURCE FILES        ----------
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe --target=%TARGET% -march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% -x c %Compiler_Flags% %Compiler_Macros% %Include_Directories% ..\src\RingBuffer.c
-
-ECHO ============================================================
-EXIT /B 0
-
-:Compile_FSL_Drivers
-REM ==================        COMPILE         ==================
-REM ----------           COMPILE FSL LIBRARY          ----------
-REM CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
+rem //~COMPILE OTHER SOURCE FILES
+call %ARMCLANG% --target=%TARGET% -march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
 -x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories%
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/drivers/fsl_common.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/drivers/fsl_gpio.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/drivers/fsl_clock.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/drivers/fsl_lpuart.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/drivers/fsl_smc.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/utilities/fsl_assert.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/utilities/str/fsl_str.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/utilities/debug_console/fsl_debug_console.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/components/serial_manager/serial_manager.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/components/serial_manager/serial_port_uart.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-C:/Users/mAmaro/AppData/Local/Arm/Packs/NXP/%DFP%/components/uart/uart_adapter.c
-
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-..\RTE\Device\Board_Support\MK82FN256VLL15\clock_config.c
+%ARMCLANG_FLAGS% ^
+%ARMCLANG_MACROS% ^
+%ARMCLANG_INCLUDE_DIRS% ^
+..\src\RingBuffer.c
 
 
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe ^
---target=%TARGET% ^
--march=%ARCH% -mcpu=%MCPU% -mfpu=%MFPU% ^
--x c ^
-%Compiler_Flags% %Compiler_Macros% %Include_Directories% ^
-..\RTE\Device\Board_Support\MK82FN256VLL15\pin_mux.c
-REM ============================================================
-EXIT /B 0
-
-:Link
-ECHO ==================         LINK           ==================
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\armlink.exe ^
+echo ==================         LINK           ==================
+rem  ============================================================
+call %ARMLINK% ^
 --cpu=Cortex-M4.fp.sp ^
-%Objects% %Common_Linker_Flags% ^
---userlibpath=%Libraries% ^
--o .\k82f_%Project_Name%.axf
+%OBJECTS% %ARMLINK_FLAGS% ^
+--userlibpath=%LIBRARIES% ^
+-o .\k82f_%PROJECT_NAME%.axf
 
-REM CONVERT OUTPUT TO BINARY
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --cpu=Cortex-M4 --bincombined .\k82f_%Project_Name%.axf --output=.\k82f_%Project_Name%.bin
+rem //~CONVERT OUTPUT TO BINARY
+call C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe ^
+--cpu=Cortex-M4 ^
+--bincombined .\k82f_%PROJECT_NAME%.axf ^
+--output=.\k82f_%PROJECT_NAME%.bin
 
-CALL C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --text -c *.o --output=./
+call C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --text -c *.o --output=./
 
-REM CREATE CORRECT DEBUG INFO
-F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-objcopy.exe k82f_%Project_Name%.axf --update-section ER_RO=main.bin --remove-section=ER_RW  main.gdb.elf
-ECHO ============================================================
-EXIT /B 0
+rem //~CREATE CORRECT DEBUG INFO
+F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-objcopy.exe ^
+k82f_%PROJECT_NAME%.axf ^
+--update-section ER_RO=main.bin ^
+--remove-section=ER_RW  main.gdb.elf
 
-PAUSE
+popd
+
+pause
 
