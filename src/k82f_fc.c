@@ -138,9 +138,9 @@ int main(void)
         FLEXIO0->CTRL |= FLEXIO_CTRL_FLEXEN_MASK;
         
         // NOTE(MIGUEL): PTB23 Shared with Radio
-        PORTB->PCR[0] = PORT_PCR_MUX(7);  /// FXIO_DATA__0 - CAM_PCLK
-        PORTB->PCR[2] = PORT_PCR_MUX(7);  /// FXIO_DATA__2 - CAM_VSYNC
-        PORTB->PCR[3] = PORT_PCR_MUX(7);  /// FXIO_DATA__3 - CAM_HREF
+        PORTB->PCR[ 0] = PORT_PCR_MUX(7); /// FXIO_DATA__0 - CAM_PCLK
+        PORTB->PCR[ 2] = PORT_PCR_MUX(7); /// FXIO_DATA__2 - CAM_VSYNC
+        PORTB->PCR[ 3] = PORT_PCR_MUX(7); /// FXIO_DATA__3 - CAM_HREF
         PORTB->PCR[10] = PORT_PCR_MUX(7); /// FXIO_DATA__4 - CAM_DATA_0
         PORTB->PCR[11] = PORT_PCR_MUX(7); /// FXIO_DATA__5 - CAM_DATA_1
         PORTB->PCR[18] = PORT_PCR_MUX(7); /// FXIO_DATA__6 - CAM_DATA_2

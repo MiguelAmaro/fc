@@ -26,6 +26,13 @@ typedef enum
     bits_32 = 2 
 } dma_size;
 
+/*
+@heldfdflakdjfdkljdf
+*/
+
+// NOTE(MIGUEL): 
+// NOTE(MIGUEL): 
+// TODO(MIGUEL): 
 
 void
 Motor_init(void)
