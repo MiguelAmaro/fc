@@ -7,7 +7,7 @@
 #include "fc_system.h"
 #include "LAL.h"
 #include <stdio.h>
-#include "RingBuffer.h"
+#include "ringbuffer.h"
 
 // TODO(MIGUEL): Make this
 

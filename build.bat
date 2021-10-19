@@ -26,7 +26,7 @@ set OBJDUMP=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-objdump.exe
 rem READELF=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-readelf.exe
 
 set ARMCLANG=C:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe
-set ARMLINK=C:\Keil_v5\ARM\ARMCLANG\bin\armlink.exe ^
+set ARMLINK=C:\Keil_v5\ARM\ARMCLANG\bin\armlink.exe
 set READELF=F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-readelf.exe
 
 rem ************************************************************
@@ -104,7 +104,7 @@ set ARMLINK_FLAGS=^
 --library_type=microlib ^
 --diag_suppress 6314 ^
 --strict ^
---scatter "..\RTE\Device\MK82FN256VLL15\MK82FN256xxx15_flash.scf" ^
+--scatter "..\src\systems\MK82FN256VLL15\MK82FN256xxx15_flash.scf" ^
 --keep=*(.FlashConfig) ^
 --summary_stderr ^
 --bestdebug ^
@@ -120,6 +120,8 @@ set ARMLINK_FLAGS=^
 --info summarysizes ^
 --load_addr_map_info ^
 --list "..\debug\%PROJECT_NAME%.map"
+
+set LIBRARIES=
 
 
 rem ************************************************************
@@ -173,10 +175,10 @@ call C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe ^
 call C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --text -c *.o --output=./
 
 rem //~CREATE CORRECT DEBUG INFO
-F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-objcopy.exe ^
-k82f_%PROJECT_NAME%.axf ^
---update-section ER_RO=main.bin ^
---remove-section=ER_RW  main.gdb.elf
+rem F:\Dev_Tools\GNU_Arm_Embedded_Toolchain\bin\arm-none-eabi-objcopy.exe ^
+rem k82f_%PROJECT_NAME%.axf ^
+rem --update-section ER_RO=main.bin ^
+rem --remove-section=ER_RW  main.gdb.elf
 
 popd
 

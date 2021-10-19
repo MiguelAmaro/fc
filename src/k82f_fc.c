@@ -23,7 +23,7 @@
 #define OV7670_REG_COM8      (0x13)
 
 //#define test_camera
-//#define test_ecompass
+#define test_ecompass
 
 int main(void)
 {
@@ -240,6 +240,10 @@ int main(void)
                 
                 I2C_debug_log_status();
 #endif
+#ifdef test_ecompass
+                Ecompass_print_debug_info();
+#endif
+                
             } //-
         }
         else if (counter == counter_max)

@@ -24,11 +24,11 @@ typedef struct
     s16 y;
     s16 z;
     s16 padding;
-} vec3_s16;
+} v3s16;
 
 
-vec3_s16 g_mag_buffer;
-vec3_s16 g_acc_buffer;
+v3s16 g_mag_buffer;
+v3s16 g_acc_buffer;
 
 
 void Ecompass_init(void *pointer)
@@ -121,10 +121,12 @@ void Ecompass_init(void *pointer)
     return;
 }
 
-void Ecompass_read_raw_data(vec3_s16 *mag_raw_data, vec3_s16 *acc_raw_data)
+void Ecompass_read_raw_data(v3s16 *mag_raw_data, v3s16 *acc_raw_data)
 {
     // NOTE(MIGUEL): Do I need a file pointer and whY?
     u8 buffer[FXOS8700CQ_READ_LEN];
+    
+    // TODO(MIGUEL): simd(neon) wink wink
     
     I2C_read_nbytes(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_STATUS, buffer, FXOS8700CQ_READ_LEN);
     
