@@ -13,7 +13,7 @@
 #define MUX_GPIO (0x0100)
 
 void
-OBLEDs_init(void)
+OBLEDs_Init(void)
 {
     // ****************************************
     // ONBOARD LED SETUP

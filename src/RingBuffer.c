@@ -35,7 +35,8 @@ RingBuffer_Enqueue_Byte(RingBuffer *buffer, readonly u8 data)
 {
     u32 masking_state;
     
-    if(!RingBuffer_Full(buffer)){
+    if(!RingBuffer_Full(buffer))
+    {
         buffer->data[buffer->tail++] = data;
         buffer->tail %= RINGBUFFER_CAPACITY;
         masking_state = __get_PRIMASK();

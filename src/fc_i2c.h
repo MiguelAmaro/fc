@@ -40,8 +40,7 @@ i2c_state i2cstate = { 0 };
 #define I2C_CLEAR_START_FLAG     (I2C3->FLT &= ~I2C_FLT_STARTF_MASK)
 #define I2C_CLEAR_STOP_FLAG      (I2C3->FLT &= ~I2C_FLT_STOPF_MASK )
 
-
-void I2C_debug_log_status(void)
+void I2C_DebugLogStatus(void)
 {
     printf("I2C Status vvvv ");
     
@@ -51,8 +50,8 @@ void I2C_debug_log_status(void)
     }
     if(I2C3->S   & I2C_S_IICIF_MASK)
     {
-        printf("interrupt pending(possible reasons): \n\r" 
-               "- One byte transfer, including ACK/NACK bit, completes if FACK is 0. \n\r"
+        /*
+"- One byte transfer, including ACK/NACK bit, completes if FACK is 0. \n\r"
                "  An ACK or NACK is sent on thebus by writing 0 or 1 to TXAK after - \n\r"
                "  this bit is set in receive mode.\n\r"
                
@@ -65,7 +64,8 @@ void I2C_debug_log_status(void)
                "- Arbitration lost \n\r"
                "- In SMBus mode, any timeouts except SCL and SDA high timeouts\n\r"
                "- I2C bus stop or start detection if the SSIE bit in the Input Glitch Filter register is 1\n\r"
-               );
+*/
+        printf("interrupt pending(possible reasons): \n\r");
     }
     if(I2C3->S   & I2C_S_RAM_MASK)
     {
@@ -106,7 +106,7 @@ void I2C_debug_log_status(void)
 }
 
 
-void I2C_release_bus_delay()
+void I2C_ReleaseBusDelay()
 {
     for(u32 cycle = 0; cycle < 10U; cycle++)
     { __NOP(); }
@@ -114,7 +114,7 @@ void I2C_release_bus_delay()
     return;
 }
 
-void I2C_release_bus(void)
+void I2C_ReleaseBus(void)
 {
     printf("releasing bus \n\r");
     
@@ -134,40 +134,40 @@ void I2C_release_bus(void)
     
     
     GPIOA->PCOR |= 0x02; /// GPIO SDA
-    I2C_release_bus_delay();
+    I2C_ReleaseBusDelay();
     
     for(u32 pulse_num = 0; pulse_num < 9; pulse_num++)
     {
         GPIOA->PCOR |= 0x04; /// GPIO SCK
-        I2C_release_bus_delay();
+        I2C_ReleaseBusDelay();
         
         GPIOA->PSOR |= 0x02; /// GPIO SDA
-        I2C_release_bus_delay();
+        I2C_ReleaseBusDelay();
         
         GPIOA->PSOR |= 0x04; /// GPIO SCK
-        I2C_release_bus_delay();
-        I2C_release_bus_delay();
+        I2C_ReleaseBusDelay();
+        I2C_ReleaseBusDelay();
     }
     
     // GEN STOP SIGNAL
     GPIOA->PCOR |= 0x04; /// GPIO SCK
-    I2C_release_bus_delay();
+    I2C_ReleaseBusDelay();
     
     GPIOA->PCOR |= 0x02; /// GPIO SDA
-    I2C_release_bus_delay();
+    I2C_ReleaseBusDelay();
     
     GPIOA->PSOR |= 0x04; /// GPIO SCK
-    I2C_release_bus_delay();
+    I2C_ReleaseBusDelay();
     
     GPIOA->PSOR |= 0x02; /// GPIO SDA
-    I2C_release_bus_delay();
+    I2C_ReleaseBusDelay();
     
     return;
 }
 
-void I2C_init(u32 mult, u32 icr)
+void I2C_Init(u32 mult, u32 icr)
 {
-    I2C_release_bus();
+    I2C_ReleaseBusDelay();
     
     SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
     SIM->SCGC1 |= SIM_SCGC1_I2C3_MASK ;
@@ -237,7 +237,7 @@ void I2C_init(u32 mult, u32 icr)
 }
 
 
-void I2C_busy(void)
+void I2C_Busy(void)
 {
 	// Start Signal
 	g_lock_detect = 0;
@@ -291,7 +291,7 @@ void I2C_busy(void)
     return;
 }
 
-void I2C_wait()
+void I2C_Wait()
 {
     g_lock_detect = 0;
     
@@ -300,7 +300,7 @@ void I2C_wait()
     
     if(g_lock_detect >= 200)
     {
-        I2C_busy();
+        I2C_Busy();
     }
     
     I2C0->S |= I2C_S_IICIF_MASK;
@@ -308,7 +308,7 @@ void I2C_wait()
     return;
 }
 
-void I2C_start()
+void I2C_Start()
 {
     I2C_TRANSMIT_MODE;
     I2C_MASTER_START;
@@ -316,7 +316,7 @@ void I2C_start()
     return;
 }
 
-void I2C_read_setup(u8 device, u8 device_register)
+void I2C_ReadSetup(u8 device, u8 device_register)
 {
     I2C_PUSH_DATA(device);
     I2C_WAIT;
@@ -333,7 +333,7 @@ void I2C_read_setup(u8 device, u8 device_register)
     return;
 }
 
-u8 I2C_repeated_read(u8 is_last_read)
+u8 I2C_RepeatedRead(u8 is_last_read)
 {
     u8  data = 0;
     g_lock_detect = 0;
@@ -354,7 +354,7 @@ u8 I2C_repeated_read(u8 is_last_read)
 }
 
 #if 0
-u8 I2C_read_byte(u8 device, u8 device_register)
+u8 I2C_ReadByte(u8 device, u8 device_register)
 {
     u8 data = 0;
     
@@ -408,7 +408,7 @@ u8 I2C_read_byte(u8 device, u8 device_register)
 #endif
 
 #if 1
-u8 I2C_read_byte(u8 device, u8 device_register)
+u8 I2C_ReadByte(u8 device, u8 device_register)
 {
     u8 data   = 6;
     
@@ -446,7 +446,7 @@ u8 I2C_read_byte(u8 device, u8 device_register)
 }
 #endif
 
-void I2C_read_nbytes(u8 device, u8 device_register, u8* buffer, u32 size)
+void I2C_ReadNBytes(u8 device, u8 device_register, u8* buffer, u32 size)
 {
     u8  dummy      = 0;
     u32 bytes_read = 0;
@@ -487,7 +487,7 @@ void I2C_read_nbytes(u8 device, u8 device_register, u8* buffer, u32 size)
 }
 
 // NOTE(MIGUEL):  Hard crash when using this function after I2C_read_byte
-void I2C_write_byte(u8 device, u8 device_register, u8 data)
+void I2C_WriteByte(u8 device, u8 device_register, u8 data)
 {
     I2C_TRANSMIT_MODE             ;
     I2C_MASTER_START              ;

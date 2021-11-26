@@ -1,10 +1,12 @@
 #include "MK82F25615.h"
 #include "LAL.h"
+
 #include "fc_system.h"
 #include "fc_debug.h"
 #include "fc_motor.h"
 #include "fc_onboardleds.h"
 #include "fc_i2c.h"
+#include "fc_telemtry.h"
 #include "fc_ecompass.h"
 
 #define RUNNING (1)
@@ -14,6 +16,14 @@
 // TODO(MIGUEL): CREATE A PIN MUTUAL EXCLUSION SYSTEM
 // TODO(MIGUEL): CHANGE SYSTEM FREQUENCY
 
+
+u32 g_McuStateIndicator = LED_GREEN;
+
+#define TEST_CAMERA     0
+#define TEST_MOTOR      0
+#define TEST_ECOMPASS   0
+#define ENABLE_MAINLOOP 0
+
 //~ 0V7670 DEFINITIONS
 #define OV7670_SLAVE_ADDRESS (0x42)
 #define OV7670_REG_VREF      (0x03)
@@ -21,9 +31,6 @@
 #define OV7670_REG_VER       (0x0B)
 #define OV7670_REG_COM7      (0x12)
 #define OV7670_REG_COM8      (0x13)
-
-//#define test_camera
-#define test_ecompass
 
 int main(void)
 {
@@ -46,20 +53,20 @@ int main(void)
 	SysTick->CTRL |= 5;       // Set the Clock and Enable the down counter
 #endif
     
-    Debug_init_uart(115200);
-    OBLEDs_init();
-    Motor_init();
+    Debug_InitUart(115200);
+    OBLEDs_Init();
+    Motor_Init();
     
     printf("Core Frequency: %d \n\n\r", query_system_clock());
     
     // ************ ECOMPASS CONTROL *************
     {
-#ifdef test_ecompass
+#if TEST_ECOMPASS
         // ****************************************
         // I2C SETUP
         // ****************************************
         
-        I2C_init(2, 0x11);
+        I2C_Init(2, 0x11);
         //I2C_scanner();
         // ****************************************
         // FXOS8700CQ SETUP
@@ -118,8 +125,8 @@ int main(void)
     
     // ************ CAMERA CONTROL *************
     {
-#ifdef test_camera
-#ifndef test_ecompass
+#if TEST_CAMERA
+#if !TEST_ECOMPASS
         I2C_init(2, 0x11);
 #endif
         // ****************************************
@@ -168,7 +175,7 @@ int main(void)
     
     printf("Core Frequency: %d \n\n\r", query_system_clock());
     printf("Bus  Frequency: %d \n\n\r", query_bus_clock() );
-#if 1
+#if 0
     for (u32 i = 0; i < 17; i++)
         Motor_log_dma_buffers();
 #endif
@@ -177,24 +184,23 @@ int main(void)
     //Motor_dshot_packet_send();
     
     printf("\n\n\r");
-    readonly u32 counter_max = (u32)(2000 / 5.3);
-    u32 counter = 0;
-    u32 led_counter = 0;
-    u32 is_armed = 0;
-    u32 sp_data = 0; // NOTE(MIGUEL): serial port 
+    readonly u32 CounterMax = (u32)(2000 / 5.3);
+    u32 Counter = 0;
+    u32 LedCounter = 0;
+    u32 IsArmed = 0;
+    u32 SPData = 0; // NOTE(MIGUEL): serial port 
     
     __enable_irq();
     // NOTE(MIGUEL): clock speed changed 48Mhz loop speed affected & aswell as some modules
+#if ENABLE_MAINLOOP
     while (RUNNING)
     {
-        if (!RingBuffer_Empty(&receiveQueue))
-        {
-            sp_data = (u32)RingBuffer_Dequeue_Byte(&receiveQueue);
-        }
+        SPData = (u32)RingBuffer_Dequeue_Byte(&receiveQueue);
+        
         //printf("Core Frequency: %d \n\n\r", SystemCoreClock);
-        if (counter == counter_max / 2)
+        if (Counter == CounterMax / 2)
         {
-            if (led_counter == 100 / 2)
+            if (LedCounter == 100 / 2)
             {
                 /// TOGGLE LED ON
                 //GPIOC->PCOR |= LED_BLUE;
@@ -203,80 +209,112 @@ int main(void)
                 //for(u32 i = 0; i < 17; i++)
                 //Motor_log_dma_buffers();
             }
-#if 1
+            
+#if TEST_MOTOR
             //printf("RC: %d\n\r", (u32)sp_data);
-            if (led_counter < 1 && !is_armed)
+            if (LedCounter < 1 && !IsArmed)
             {
-                Motor_dshot_packet_create(0);
-                Motor_dshot_packet_send();
+                Motor_CreateDshotPacket(0);
+                Motor_SendDshotPacket();
             }
-            else if (led_counter < 2 && !is_armed)
+            else if (LedCounter < 2 && !IsArmed)
             {
-                Motor_dshot_packet_create(48);
-                Motor_dshot_packet_send();
+                Motor_CreateDshotPacket(48);
+                Motor_SendDshotPacket();
             }
             else
             {
-                is_armed = 1;
-                f32 throttle_normalized = 0.0f + ((f32)sp_data / (f32)255.0f );
-                u16 throttle = (u16)(throttle_normalized * 2000 );
-                Motor_dshot_packet_create(48 + throttle);
+                IsArmed = 1;
+                f32 ThrottleNormalized = 0.0f + ((f32)SPData / (f32)255.0f );
+                u16 Throttle = (u16)(ThrottleNormalized * 2000 );
+                Motor_CreateDshotPacket(48 + Throttle);
                 //Motor_dshot_packet_create(48 + sp_data);
-                Motor_dshot_packet_send();
-                printf("throttle: %d \n\r", throttle);
+                Motor_SendDshotPacket();
+                printf("throttle: %d \n\r", Throttle);
             }
 #endif
             
             /// TOGGLE LED ON
             //GPIOC->PCOR |= LED_GREEN;
             
-            { //- I2C TESTING
-#ifdef test_cameras
-                I2C_write_byte            (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
-                u8 result = I2C_read_byte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
+            //- I2C TESTING
+            { 
+#if TEST_CAMERA
+                I2C_WriteByte             (OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                u8 Result = I2C_ReadByte (OV7670_SLAVE_ADDRESS, OV7670_REG_COM7);
                 
-                I2C_write_byte(OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
-                printf("I2C read value: %#2X \n\r", (u32)result);
+                I2C_WriteByte(OV7670_SLAVE_ADDRESS, OV7670_REG_PID, 0x1);
+                printf("I2C read value: %#2X \n\r", (u32)Result);
                 
-                I2C_debug_log_status();
-#endif
-#ifdef test_ecompass
-                Ecompass_print_debug_info();
+                I2C_DebugLogStatus();
 #endif
                 
-            } //-
+#if TEST_ECOMPASS
+                //Ecompass_print_debug_info();
+#endif
+                
+            } 
+            //-
         }
-        else if (counter == counter_max)
+        else if (Counter == CounterMax)
         {
             //Motor_dshot_packet_send();
-            if (led_counter == 100)
+            if (LedCounter == 100)
             {
                 /// TOGGLE LED OFF
                 GPIOC->PSOR |= LED_BLUE;
                 //GPIOC->PSOR |= LED_RED;
                 GPIOC->PSOR |= LED_GREEN;
-                led_counter = 0;
+                LedCounter = 0;
             }
-            led_counter++;
+            LedCounter++;
             
-            counter = 0;
+            Counter = 0;
         }
-        counter++;
+        Counter++;
     }
+#else
+    telem_state TelemState = Telem_NoConnection;
+    
+    while(1)
+    {
+        /*
+        switch(TelemState)
+        {
+            case Telem_NoConnection:
+            {
+                
+                Telemetry_HandShaked(Telem_Data, Telem_str8, "hello world", sizeof("hello world"));
+            } break;
+            case Telem_Waiting:
+            {
+                
+                Telemetry_PackageAndSend(Telem_Data, Telem_str8, "hello world", sizeof("hello world"));
+            } break;
+            case Telem_Ack:
+            {
+                
+                Telemetry_PackageAndSend(Telem_Data, Telem_str8, "hello world", sizeof("hello world"));
+            } break;
+        }*/
+    }
+#endif
 }
 
-b32 systicked = 0;
+b32 SysTicked = 0;
 void SysTick_Handler(void)
 {
-    if(systicked)
+    if(SysTicked)
     {
-        GPIOC->PSOR |= LED_RED;
-        
+        GPIOC->PSOR |= g_McuStateIndicator;
     }
     else
-        GPIOC->PCOR |= LED_RED;
+    {
+        GPIOC->PCOR |= g_McuStateIndicator;
+        Telemetry_PackageAndSend(Telem_Data, Telem_str8, "blow me", sizeof("blow me"));
+    }
     
-    systicked = !systicked;
+    SysTicked= !SysTicked;
     
     return;
 }

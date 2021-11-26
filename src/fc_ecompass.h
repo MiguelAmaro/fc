@@ -37,7 +37,7 @@ void Ecompass_init(void *pointer)
     
     /// Check the Who Am I register
     // NOTE(MIGUEL): Should I check for I2C error
-    data = I2C_read_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_WHOAMI);
+    data = I2C_ReadByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_WHOAMI);
     
     if(data != FXOS8700CQ_WHOAMI_VAL)
     {
@@ -45,7 +45,7 @@ void Ecompass_init(void *pointer)
                data,
                FXOS8700CQ_WHOAMI_VAL);
         
-        I2C_debug_log_status();
+        I2C_DebugLogStatus();
         
         return;
     }
@@ -57,7 +57,7 @@ void Ecompass_init(void *pointer)
     //~ Initialize Accelerometer Control Register 1 to zero to put the accelarometer in standby
     
     data = 0x00;
-    I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
+    I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
     printf("w done \n\r");
     // TODO(MIGUEL): I2C Error checking
     
@@ -70,7 +70,7 @@ void Ecompass_init(void *pointer)
     // [1-0]: m_hms  =  11: select hybrid mode with accel and magnetometer active
     
     data = 0x1F;
-    I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
+    I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
     printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
@@ -86,7 +86,7 @@ void Ecompass_init(void *pointer)
     // [1-0]: m_rst_cnt        = 00: to enable magnetic reset each cycle
     
     data = 0x20;
-    I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG2, data);
+    I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG2, data);
     printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
@@ -102,7 +102,7 @@ void Ecompass_init(void *pointer)
     // [1-0]: fs       = 01 for accelerometer range of +/-4g range with 0.488mg/LSB
     
     data = 0x01;
-    I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_XYZ_DATA_CFG, data);
+    I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_XYZ_DATA_CFG, data);
     printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
@@ -116,7 +116,7 @@ void Ecompass_init(void *pointer)
     // [0]  : active    =   1: to take the part out of standby and enable sampling
     
     data = 0x0D;
-    I2C_write_byte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
+    I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
     
     return;
 }
@@ -128,7 +128,7 @@ void Ecompass_read_raw_data(v3s16 *mag_raw_data, v3s16 *acc_raw_data)
     
     // TODO(MIGUEL): simd(neon) wink wink
     
-    I2C_read_nbytes(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_STATUS, buffer, FXOS8700CQ_READ_LEN);
+    I2C_ReadNBytes(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_STATUS, buffer, FXOS8700CQ_READ_LEN);
     
     //NOTE(MIGUEL): Why are we starting at index 1?
     /// 14bit accel data in 16bit words

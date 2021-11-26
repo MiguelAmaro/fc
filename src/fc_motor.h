@@ -7,7 +7,7 @@
 
 #define DSHOT_CMD_BUFFER_SIZE (16 + 1)
 
-//------------------ SETUP PACKET ---------------------
+// ------------------ SETUP PACKET ---------------------
 #define DSHOT_BAUD           (600000)
 #define DSHOT_0_TIMING  (u32)(0.38 * 35)
 #define DSHOT_1_TIMING  (u32)(0.75 * 35)
@@ -35,7 +35,7 @@ typedef enum
 // TODO(MIGUEL): 
 
 void
-Motor_init(void)
+Motor_Init(void)
 {
     // Enable DMAMUX
     // ****************************************
@@ -112,11 +112,12 @@ dma irq w/ printf for controled log on maj loop completion
     NVIC_EnableIRQ      (DMA0_DMA16_IRQn   );
     
     // Verify Source addres is correct
+#if 0
     printf("DMA source address: 0x%p \n\r", &global_Dshot_command_buffer);
     printf("DMA source address: %#2x \n\r",   DMA0->TCD[0].SADDR        );
     printf("DMA dest   address: 0x%p \n\r", &(FTM0->CONTROLS[2].CnV)    );
     printf("DMA dest   address: %#2x \n\r",   DMA0->TCD[0].DADDR        );
-    
+#endif
     // TODO(MIGUEL): Enable Hardware Service Requests
     
     // TODO(MIGUEL): Requset channel service
@@ -168,7 +169,7 @@ dma irq w/ printf for controled log on maj loop completion
 }
 
 void 
-Motor_display_dma_status_errors(void)
+Motor_DisplayDmaStatusErrors(void)
 {
     printf("HRS: %#2X \n\r"    , DMA0->HRS & DMA_HRS_HRS0_MASK);
     printf("VLD: %#2X \n\r"    , DMA0->ES  & DMA_ES_VLD_MASK);
@@ -188,13 +189,13 @@ Motor_display_dma_status_errors(void)
     return;
 }
 
-void Motor_arm_esc(void)
+void Motor_ArmEsc(void)
 {
     
     return;
 }
 
-void Motor_dshot_packet_send()
+void Motor_SendDshotPacket()
 {
     /// RESET TIMER
     FTM0->SC   = FTM_SC_TOIE(0) | FTM_SC_CLKS(0) | FTM_SC_PS(0);
@@ -206,7 +207,7 @@ void Motor_dshot_packet_send()
 }
 
 
-void Motor_dshot_packet_create(u32 throttle)
+void Motor_CreateDshotPacket(u32 throttle)
 {
     volatile u16 packet   = 0;
     volatile u8  checksum = 0;
@@ -308,7 +309,7 @@ DMA_Error_IRQHandler(void)
 }
 
 void
-Motor_log_ftm_status(void)
+Motor_LogFtmStatus(void)
 {
     printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
     printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);

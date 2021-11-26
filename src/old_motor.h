@@ -299,7 +299,7 @@ DMA_Error_IRQHandler(void)
 }
 
 void
-Motor_log_ftm_status(void)
+Motor_LogFtmStatus(void)
 {
     printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
     printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
@@ -311,7 +311,7 @@ Motor_log_ftm_status(void)
 
 
 void
-Motor_log_dma_buffers(void)
+Motor_LogDmaBuffers(void)
 {
     local_persist volatile u32 packet_bit_counter = 0;
     

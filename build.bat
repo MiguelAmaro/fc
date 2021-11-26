@@ -5,7 +5,7 @@ rem FILES
 rem ************************************************************
 set PROJECT_NAME=fc
 set BOARD=MK82F25615
-set SOURCES= ..\src\k82f_%PROJECT_NAME%.c
+set SOURCES= F:\Dev\Embedded\FlightController_K82F\src\k82f_%PROJECT_NAME%.c
 set OBJECTS= k82f_%PROJECT_NAME%.o ringbuffer.o startup_%BOARD%.o system_%BOARD%.o
 
 
@@ -34,6 +34,7 @@ rem COMPILER(ARMCLANG) OPTIONS
 rem ************************************************************
 set ARMCLANG_WARNINGS=^
 -Weverything ^
+-Wno-pedantic ^
 -Wno-packed ^
 -Wno-missing-variable-declarations ^
 -Wno-unsequenced ^
@@ -45,6 +46,7 @@ set ARMCLANG_WARNINGS=^
 -Wno-reserved-id-macro ^
 -Wno-unused-macros ^
 -Wno-unused-parameter ^
+-Wno-unused-variable ^
 -Wno-documentation-unknown-command ^
 -Wno-documentation ^
 -Wno-license-management ^

@@ -22,6 +22,19 @@
 
 internal RingBuffer transmitQueue, receiveQueue;
 
+
+typedef enum
+{
+    ddc_dbg_req        = (1 << 2),
+    ddc_dbg_ack        = (1 << 2) + 1,
+    dcc_mcu_clock_freq = (1 << 3),
+    ddc_dma_dest_addr  = (1 << 4), 
+    ddc_dma_src_addr   = (1 << 5), 
+    ddc_print          = (1 << 6),
+    ddc_print_end      = (1 << 7),
+} debug_code;
+
+
 struct __FILE
 {
     int handle;
@@ -31,7 +44,7 @@ FILE __stdout;  //Use with printf
 FILE __stdin ;  //use with fget/sscanf, or scanfb
 
 void
-Debug_init_uart(u32 baud_rate)
+Debug_InitUart(u32 baud_rate)
 {
     volatile u8 temp;
     
@@ -162,6 +175,24 @@ fgetc(FILE *f)
     while(!(LPUART4->STAT & LPUART_STAT_RDRF_MASK));
     
     return LPUART4->DATA & 0xFF;
+}
+
+void SendDbgInfo(debug_code DbgCode, void *Payload, u32 PayloadByteCount)
+{
+    u8 *Byte = Payload;
+    
+    putc((s32)DbgCode, &__stdout);
+    
+    if(Byte)
+    {
+        for(u32 ByteIndex = 0; ByteIndex < PayloadByteCount; ByteIndex++)
+        {
+            putc((s32)Byte++, &__stdout);
+            
+        }
+    }
+    
+    return;
 }
 
 #endif // FLIGHTCONTROLLER_UART_H
