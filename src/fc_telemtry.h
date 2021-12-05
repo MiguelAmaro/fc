@@ -38,6 +38,7 @@ enum telem_state
 {
     Telem_NoConnection,
     Telem_Waiting,
+    Telem_TransmittingPacket,
 };
 
 
@@ -70,6 +71,36 @@ u32 TelemDataTypeLookUpTable[8] =
 
 
 #define COMM_TERMINATE 0xff
+#define TELEM_STATUS_PING  (1 << 0)
+#define TELEM_STATUS_ACK   (1 << 4)
+
+b32
+Telemetry_Handshake(u32 SPData, volatile u32 *Bloh)
+{
+    b32 HandshakeSuccess = 0;
+    
+    local_persist b32 HandshakeAckSent = 0;
+    
+    if(HandshakeAckSent == 0)
+    {
+        if(SPData == TELEM_STATUS_PING)
+        {
+            *Bloh = LED_BLUE;
+            fputc(SPData          , &__stdout);
+            fputc(TELEM_STATUS_ACK, &__stdout);
+            HandshakeAckSent = 1;
+        }
+    }
+    else
+    {
+        if(SPData == TELEM_STATUS_ACK)
+        {
+            HandshakeSuccess = 1;
+        }
+    }
+    
+    return HandshakeSuccess;
+}
 
 void
 Telemetry_PackageAndSend(telem_type MsgType,
@@ -80,9 +111,9 @@ Telemetry_PackageAndSend(telem_type MsgType,
     u8 Packet[512];
     u32 PacketSize = 0;
     
-    if(MsgCount > 255)
+    if(MsgCount > 256)
     {
-        MsgCount = 255;
+        MsgCount = 256;
     }
     
     u8 *Header = Packet;

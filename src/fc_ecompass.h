@@ -41,16 +41,16 @@ void Ecompass_init(void *pointer)
     
     if(data != FXOS8700CQ_WHOAMI_VAL)
     {
-        printf("I2C Error:  got %#2X but expected  %#2X  \n\r",
-               data,
-               FXOS8700CQ_WHOAMI_VAL);
+        //printf("I2C Error:  got %#2X but expected  %#2X  \n\r",
+        //data,
+        //FXOS8700CQ_WHOAMI_VAL);
         
         I2C_DebugLogStatus();
         
         return;
     }
     
-    printf("byte id correct %#2X \n\r", data);
+    //printf("byte id correct %#2X \n\r", data);
     
     
     
@@ -58,7 +58,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x00;
     I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
-    printf("w done \n\r");
+    //printf("w done \n\r");
     // TODO(MIGUEL): I2C Error checking
     
     //~ Initialize Magnetometer Control Register 1 according to the comments below
@@ -71,7 +71,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x1F;
     I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG1, data);
-    printf("w done \n\r");
+    //printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
     
@@ -87,7 +87,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x20;
     I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_M_CTRL_REG2, data);
-    printf("w done \n\r");
+    //printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
     
@@ -103,7 +103,7 @@ void Ecompass_init(void *pointer)
     
     data = 0x01;
     I2C_WriteByte(FXOS8700CQ_SLAVE_ADDRESS, FXOS8700CQ_XYZ_DATA_CFG, data);
-    printf("w done \n\r");
+    //printf("w done \n\r");
     
     // TODO(MIGUEL): I2C Error checking
     
@@ -151,14 +151,14 @@ void Ecompass_print_debug_info()
     //Ecompass_read_raw_data(&g_mag_buffer, &g_acc_buffer);
     
     
-    printf("Mag X: %d \n\r", g_mag_buffer.x);
-    printf("Mag Y: %d \n\r", g_mag_buffer.y);
-    printf("Mag Z: %d \n\r", g_mag_buffer.z);
+    //printf("Mag X: %d \n\r", g_mag_buffer.x);
+    //printf("Mag Y: %d \n\r", g_mag_buffer.y);
+    //printf("Mag Z: %d \n\r", g_mag_buffer.z);
     
-    printf("ACC X: %d \n\r", g_acc_buffer.x);
-    printf("ACC Y: %d \n\r", g_acc_buffer.y);
-    printf("ACC Z: %d \n\r", g_acc_buffer.z);
-    printf("\n\n\r");
+    //printf("ACC X: %d \n\r", g_acc_buffer.x);
+    //printf("ACC Y: %d \n\r", g_acc_buffer.y);
+    //printf("ACC Z: %d \n\r", g_acc_buffer.z);
+    //printf("\n\n\r");
     
     
     return;

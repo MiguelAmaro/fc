@@ -113,10 +113,10 @@ dma irq w/ printf for controled log on maj loop completion
     
     // Verify Source addres is correct
 #if 0
-    printf("DMA source address: 0x%p \n\r", &global_Dshot_command_buffer);
-    printf("DMA source address: %#2x \n\r",   DMA0->TCD[0].SADDR        );
-    printf("DMA dest   address: 0x%p \n\r", &(FTM0->CONTROLS[2].CnV)    );
-    printf("DMA dest   address: %#2x \n\r",   DMA0->TCD[0].DADDR        );
+    //printf("DMA source address: 0x%p \n\r", &global_Dshot_command_buffer);
+    //printf("DMA source address: %#2x \n\r",   DMA0->TCD[0].SADDR        );
+    //printf("DMA dest   address: 0x%p \n\r", &(FTM0->CONTROLS[2].CnV)    );
+    //printf("DMA dest   address: %#2x \n\r",   DMA0->TCD[0].DADDR        );
 #endif
     // TODO(MIGUEL): Enable Hardware Service Requests
     
@@ -171,7 +171,7 @@ dma irq w/ printf for controled log on maj loop completion
 void 
 Motor_DisplayDmaStatusErrors(void)
 {
-    printf("HRS: %#2X \n\r"    , DMA0->HRS & DMA_HRS_HRS0_MASK);
+    /*printf("HRS: %#2X \n\r"    , DMA0->HRS & DMA_HRS_HRS0_MASK);
     printf("VLD: %#2X \n\r"    , DMA0->ES  & DMA_ES_VLD_MASK);
     printf("ECX: %#2X \n\r"    , DMA0->ES  & DMA_ES_ECX_MASK);
     printf("GPE: %#2X \n\r"    , DMA0->ES  & DMA_ES_GPE_MASK);
@@ -185,7 +185,7 @@ Motor_DisplayDmaStatusErrors(void)
     printf("SBE: %#2X \n\r"    , DMA0->ES  & DMA_ES_SBE_MASK);
     printf("DBE: %#2X \n\r"    , DMA0->ES  & DMA_ES_DBE_MASK);
     printf("DMACH0E: %#2X \n\r", DMA0->ERR & DMA_ERR_ERR0_MASK);
-    
+    */
     return;
 }
 
@@ -257,7 +257,7 @@ void Motor_CreateDshotPacket(u32 throttle)
 void
 FTM0_IRQHandler(void)
 {
-    printf("%#2X \n\r", (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
+    //printf("%#2X \n\r", (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
     FTM0->CONTROLS[2].CnSC &= ~FTM_CnSC_CHF_MASK;
     // NOTE(MIGUEL): software dma request from here not a feasable solution. main loop gets blocked
     //DMA0->SSRT |= DMA_SSRT_SSRT(0); //Set Start bit in TCD control status register
@@ -289,7 +289,7 @@ DMA_Error_IRQHandler(void)
     GPIOC->PCOR |= LED_GREEN;
     
     // TODO(MIGUEL): Disable DMA so this doesn't block
-    
+    /*
     printf(    "HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
     printf(    "VLD: %#2X \n\r", DMA0->ES  & DMA_ES_VLD_MASK  );
     printf(    "ECX: %#2X \n\r", DMA0->ES  & DMA_ES_ECX_MASK  );
@@ -304,17 +304,17 @@ DMA_Error_IRQHandler(void)
     printf(    "SBE: %#2X \n\r", DMA0->ES  & DMA_ES_SBE_MASK  );
     printf(    "DBE: %#2X \n\r", DMA0->ES  & DMA_ES_DBE_MASK  );
     printf("DMACH0E: %#2X \n\r", DMA0->ERR & DMA_ERR_ERR0_MASK);
-    
+    */
     return;
 }
 
 void
 Motor_LogFtmStatus(void)
 {
-    printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
-    printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
+    //printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
+    //printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
     
-    printf("\n\n\r");
+    //printf("\n\n\r");
     
     return;
 }
@@ -326,12 +326,12 @@ Motor_log_dma_buffers(void)
     local_persist volatile u32 packet_bit_counter = 0;
     
     //SOURCE
-    printf("Dshot CMD Buffer[%2d]: %#2X \n\r",
-           packet_bit_counter, 
-           global_Dshot_command_buffer[packet_bit_counter++]);
+    //printf("Dshot CMD Buffer[%2d]: %#2X \n\r",
+    //packet_bit_counter, 
+    //global_Dshot_command_buffer[packet_bit_counter++]);
     
     //DESTINATION
-    printf("Dshot FTM counter   : %#2X \n\r" , (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
+    //printf("Dshot FTM counter   : %#2X \n\r" , (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
     
     packet_bit_counter *= (u32)(packet_bit_counter < 17);
     

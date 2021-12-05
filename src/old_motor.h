@@ -161,7 +161,7 @@ dma irq w/ printf for controled log on maj loop completion
 void 
 Motor_display_dma_status_errors(void)
 {
-    printf("HRS: %#2X \n\r"    , DMA0->HRS & DMA_HRS_HRS0_MASK);
+    /*printf("HRS: %#2X \n\r"    , DMA0->HRS & DMA_HRS_HRS0_MASK);
     printf("VLD: %#2X \n\r"    , DMA0->ES  & DMA_ES_VLD_MASK);
     printf("ECX: %#2X \n\r"    , DMA0->ES  & DMA_ES_ECX_MASK);
     printf("GPE: %#2X \n\r"    , DMA0->ES  & DMA_ES_GPE_MASK);
@@ -175,7 +175,7 @@ Motor_display_dma_status_errors(void)
     printf("SBE: %#2X \n\r"    , DMA0->ES  & DMA_ES_SBE_MASK);
     printf("DBE: %#2X \n\r"    , DMA0->ES  & DMA_ES_DBE_MASK);
     printf("DMACH0E: %#2X \n\r", DMA0->ERR & DMA_ERR_ERR0_MASK);
-    
+    */
     return;
 }
 
@@ -280,7 +280,7 @@ DMA_Error_IRQHandler(void)
     
     // TODO(MIGUEL): Disable DMA so this doesn't block
     
-    printf(    "HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
+    /*printf(    "HRS: %#2X \n\r", DMA0->HRS & DMA_HRS_HRS0_MASK);
     printf(    "VLD: %#2X \n\r", DMA0->ES  & DMA_ES_VLD_MASK  );
     printf(    "ECX: %#2X \n\r", DMA0->ES  & DMA_ES_ECX_MASK  );
     printf(    "GPE: %#2X \n\r", DMA0->ES  & DMA_ES_GPE_MASK  );
@@ -294,17 +294,17 @@ DMA_Error_IRQHandler(void)
     printf(    "SBE: %#2X \n\r", DMA0->ES  & DMA_ES_SBE_MASK  );
     printf(    "DBE: %#2X \n\r", DMA0->ES  & DMA_ES_DBE_MASK  );
     printf("DMACH0E: %#2X \n\r", DMA0->ERR & DMA_ERR_ERR0_MASK);
-    
+    */
     return;
 }
 
 void
 Motor_LogFtmStatus(void)
 {
-    printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
-    printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
+    //printf("FTMCH1 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH1F_MASK);
+    //printf("FTMCH2 : %#2X \n\r", FTM0->STATUS & FTM_STATUS_CH2F_MASK);
     
-    printf("\n\n\r");
+    //printf("\n\n\r");
     
     return;
 }
@@ -316,12 +316,12 @@ Motor_LogDmaBuffers(void)
     local_persist volatile u32 packet_bit_counter = 0;
     
     //SOURCE
-    printf("Dshot CMD Buffer[%2d]: %#2X \n\r",
-           packet_bit_counter, 
-           global_Dshot_command_buffer[packet_bit_counter++]);
+    //printf("Dshot CMD Buffer[%2d]: %#2X \n\r",
+    //packet_bit_counter, 
+    //global_Dshot_command_buffer[packet_bit_counter++]);
     
     //DESTINATION
-    printf("Dshot FTM counter   : %#2X \n\r" , (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
+    //printf("Dshot FTM counter   : %#2X \n\r" , (u32)(FTM0->CONTROLS[2].CnV & FTM_CnV_VAL_MASK));
     
     packet_bit_counter *= (u32)(packet_bit_counter < 17);
     

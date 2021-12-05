@@ -17,7 +17,9 @@
 // TODO(MIGUEL): CHANGE SYSTEM FREQUENCY
 
 
-u32 g_McuStateIndicator = LED_GREEN;
+volatile u32         g_McuStateIndicator = LED_RED;
+telem_state g_TelemState        = Telem_NoConnection;
+volatile b32         g_SysticTxOk = 0;
 
 #define TEST_CAMERA     0
 #define TEST_MOTOR      0
@@ -57,7 +59,7 @@ int main(void)
     OBLEDs_Init();
     Motor_Init();
     
-    printf("Core Frequency: %d \n\n\r", query_system_clock());
+    //printf("Core Frequency: %d \n\n\r", query_system_clock());
     
     // ************ ECOMPASS CONTROL *************
     {
@@ -82,9 +84,9 @@ int main(void)
         PORTC->PCR[13] = PORT_PCR_MUX(1); /// FXOS8700CQ Interrupt
         GPIOC->PDDR |= GPIO_PDDR_PDD(13);
         GPIOC->PSOR |= GPIO_PSOR_PTSO(13);
-        printf("initing ecompass\n\r");
+        //printf("initing ecompass\n\r");
         Ecompass_init((void *)0x00);
-        printf("initing ecompass done\n\r");
+        //printf("initing ecompass done\n\r");
         
 #endif
     }
@@ -173,8 +175,8 @@ int main(void)
 #endif
     }
     
-    printf("Core Frequency: %d \n\n\r", query_system_clock());
-    printf("Bus  Frequency: %d \n\n\r", query_bus_clock() );
+    //printf("Core Frequency: %d \n\n\r", query_system_clock());
+    //printf("Bus  Frequency: %d \n\n\r", query_bus_clock() );
 #if 0
     for (u32 i = 0; i < 17; i++)
         Motor_log_dma_buffers();
@@ -183,7 +185,7 @@ int main(void)
     //Motor_dshot_packet_create(1000);
     //Motor_dshot_packet_send();
     
-    printf("\n\n\r");
+    //printf("\n\n\r");
     readonly u32 CounterMax = (u32)(2000 / 5.3);
     u32 Counter = 0;
     u32 LedCounter = 0;
@@ -274,29 +276,35 @@ int main(void)
         Counter++;
     }
 #else
-    telem_state TelemState = Telem_NoConnection;
     
     while(1)
     {
-        /*
-        switch(TelemState)
+        switch(g_TelemState)
         {
             case Telem_NoConnection:
             {
+                SPData = (u32)RingBuffer_Dequeue_Byte(&receiveQueue);
                 
-                Telemetry_HandShaked(Telem_Data, Telem_str8, "hello world", sizeof("hello world"));
+                if(Telemetry_Handshake(SPData, &g_McuStateIndicator))
+                {
+                    g_McuStateIndicator = LED_GREEN;
+                    g_TelemState = Telem_Waiting;
+                }
             } break;
             case Telem_Waiting:
             {
+                SPData = (u32)RingBuffer_Dequeue_Byte(&receiveQueue);
                 
-                Telemetry_PackageAndSend(Telem_Data, Telem_str8, "hello world", sizeof("hello world"));
+                g_SysticTxOk = 1;
             } break;
-            case Telem_Ack:
+            
+            case Telem_TransmittingPacket:
             {
+                //Telemetry_PackageAndSend(Telem_Data, Telem_str8, "blow me\r\n", sizeof("blow me\r\n"));
                 
-                Telemetry_PackageAndSend(Telem_Data, Telem_str8, "hello world", sizeof("hello world"));
+                g_TelemState = Telem_Waiting;
             } break;
-        }*/
+        }
     }
 #endif
 }
@@ -311,7 +319,11 @@ void SysTick_Handler(void)
     else
     {
         GPIOC->PCOR |= g_McuStateIndicator;
-        Telemetry_PackageAndSend(Telem_Data, Telem_str8, "blow me", sizeof("blow me"));
+        
+        if(g_SysticTxOk)
+        {
+            Telemetry_PackageAndSend(Telem_Data, Telem_str8, "hello world", sizeof("hello world"));
+        }
     }
     
     SysTicked= !SysTicked;

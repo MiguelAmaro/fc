@@ -42,11 +42,11 @@ i2c_state i2cstate = { 0 };
 
 void I2C_DebugLogStatus(void)
 {
-    printf("I2C Status vvvv ");
+    //printf("I2C Status vvvv ");
     
     if(I2C3->S   & I2C_S_RXAK_MASK)
     {
-        printf("no ack signal was reacieved \n\r");
+        //printf("no ack signal was reacieved \n\r");
     }
     if(I2C3->S   & I2C_S_IICIF_MASK)
     {
@@ -65,41 +65,41 @@ void I2C_DebugLogStatus(void)
                "- In SMBus mode, any timeouts except SCL and SDA high timeouts\n\r"
                "- I2C bus stop or start detection if the SSIE bit in the Input Glitch Filter register is 1\n\r"
 */
-        printf("interrupt pending(possible reasons): \n\r");
+        //printf("interrupt pending(possible reasons): \n\r");
     }
     if(I2C3->S   & I2C_S_RAM_MASK)
     {
-        printf("addressed as slave\n\r");
+        //printf("addressed as slave\n\r");
     }
     if(I2C3->S   & I2C_S_BUSY_MASK    )
     {
-        printf("Bus is busy \n\r" );
+        //printf("Bus is busy \n\r" );
         
     }
     if(!(I2C3->S   & I2C_S_TCF_MASK    ) )
     {
-        printf("byte transfer is in progress\n\r");
+        //printf("byte transfer is in progress\n\r");
     }
     //printf("ADDRESED AS SLAVE     : %#2X \n\r", I2C3->S   & I2C_S_IAAS_MASK    );
     if(I2C3->S2  & I2C_S2_ERROR_MASK  )
     {
-        printf("3 or more read write errors during data transfer phase(empty flag not set & buffer busy)\n\r");
+        //printf("3 or more read write errors during data transfer phase(empty flag not set & buffer busy)\n\r");
     }
     if(!(I2C3->S2  & I2C_S2_EMPTY_MASK)  )
     {
-        printf("rx or tx buffer has data. cannot write at this time\n\r" );
+        //printf("rx or tx buffer has data. cannot write at this time\n\r" );
     }
     if(!(I2C3->FLT & I2C_FLT_STARTF_MASK))
     {
-        printf("no start status was detected on bus\n\r");
+        //printf("no start status was detected on bus\n\r");
         
     }
     if(!(I2C3->FLT & I2C_FLT_STOPF_MASK ))
     {
-        printf("no stop status was detected on bus\n\r");
+        //printf("no stop status was detected on bus\n\r");
         
     }
-    printf("\n\n\r");
+    //printf("\n\n\r");
     
     
     return;
@@ -116,7 +116,7 @@ void I2C_ReleaseBusDelay()
 
 void I2C_ReleaseBus(void)
 {
-    printf("releasing bus \n\r");
+    //printf("releasing bus \n\r");
     
     SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
     
@@ -174,7 +174,7 @@ void I2C_Init(u32 mult, u32 icr)
     
     
     
-    printf("configuring I2C \n\r");
+    //printf("configuring I2C \n\r");
 #if 1
     PORTA->PCR[1] &= ~PORT_PCR_LK_MASK;
     PORTA->PCR[2] &= ~PORT_PCR_LK_MASK;
@@ -232,7 +232,7 @@ void I2C_Init(u32 mult, u32 icr)
 #endif
     I2C3->C2   |= I2C_C2_HDRS_MASK ; /// HIGH DRIVE SELECT
     
-    printf("I2C config done \n\r");
+    //printf("I2C config done \n\r");
     return;
 }
 
@@ -522,7 +522,7 @@ void I2C_scanner()
     u32 baud[4] = { 100, 200,  400,   1000};
     u8 address = 0;
     
-    printf("scanning.. \n\r");
+    //printf("scanning.. \n\r");
     for(u32 i = 0; i < 4; i++)
     {
         // NOTE(MIGUEL): try different baud rates
@@ -533,13 +533,13 @@ void I2C_scanner()
         I2C3->F    |= I2C_F_ICR (icr[i]) ; /// CLOCK DIVIDER
         I2C3->C1   |= I2C_C1_IICEN_MASK; /// ENABLE I2C 
         
-        printf("baud %d\n\r",baud[i]);
+        //printf("baud %d\n\r",baud[i]);
         
         for(address = 0; address < 127; address++)
         {
             // NOTE(MIGUEL): try all possible address for a response
             
-            printf("address: %#2X\n\r", address);
+            //printf("address: %#2X\n\r", address);
             
             /// WRITE TRANSMITION CYCLE
             /// PHASE 1: SELECT SLAVE
@@ -553,12 +553,12 @@ void I2C_scanner()
             
             if(I2C_RX_ACK_RECIEVED)
             {
-                printf("device found \n\r" 
+                /*printf("device found \n\r" 
                        "address: %#2X\n\r"
                        "response: %#2X\n\r"
                        "baud %d\n\r",
                        address,
-                       baud[i]);
+                       baud[i]);*/
             }
             
             
@@ -571,7 +571,7 @@ void I2C_scanner()
             //printf("delay complete \n\r");
         }
     }
-    printf("scan done \n\r");
+    //printf("scan done \n\r");
     return;
 }
 #endif
