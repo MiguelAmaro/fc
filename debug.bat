@@ -7,7 +7,7 @@ rem ENTER: monitor reset halt
 rem AT Reset_Handler() ENTER: start
 echo %CD%
 
-set VER=0
+set VER=1
 
 if [%VER%] EQU [0] (call :VER0)
 if [%VER%] EQU [1] (call :VER1)
@@ -35,7 +35,7 @@ rem ==================================================
 rem        OPEN A CMD PROMPT & RUN ARM GBD 
 rem ==================================================
 
-start %ALACRITTY% --command "F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-gdb.exe --quiet -ex "target extended-remote localhost:3333" -f ./build/K82F_FlightController.axf"
+start %ALACRITTY% --command "F:\Dev_Tools\ARMGNU\bin\arm-none-eabi-gdb.exe --quiet -ex \"target extended-remote localhost:3333\" -f ./build/K82F_FlightController.axf"
 
 
 rem ==================================================

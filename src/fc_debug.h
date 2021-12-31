@@ -159,8 +159,8 @@ LPUART4_IRQHandler(void)
 
 
 //Retarget the fputc method to use the UART0
-s32 
-fputc(s32 byte, FILE *f)
+int
+fputc(int byte, FILE *f)
 {
     while(!(LPUART4->STAT & LPUART_STAT_TDRE_MASK) && !(LPUART4->STAT & LPUART_STAT_TC_MASK ));
     LPUART4->DATA = 0xFFU & byte;
@@ -169,7 +169,7 @@ fputc(s32 byte, FILE *f)
 }
 
 //Retarget the fgetc method to use the UART0
-s32 
+int
 fgetc(FILE *f)
 {
     while(!(LPUART4->STAT & LPUART_STAT_RDRF_MASK));
